@@ -3,170 +3,834 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Hand Gesture Controlled Robot — Jin Ziyu</title>
+<meta name="description" content="Jin Ziyu – Robotics Systems undergraduate at Singapore Institute of Technology. Portfolio showcasing robotics, automation, and engineering projects."/>
+<link rel="icon" type="image/png" href="assets/img/logo.png"/>
+<title>Jin Ziyu — Robotics Systems</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F0F6FF;--bg2:#E4EEFB;--card:#FFFFFF;--card2:#F5F9FF;
-  --border:#C2D8F0;--text:#0D1B2A;--muted:#4A6580;
-  --accent:#0077CC;--accent2:#E85D04;--accent-glow:rgba(0,119,204,0.12);
-  --font-head:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;
-  --font-mono:'Space Mono',monospace;--radius:12px;--transition:0.3s cubic-bezier(0.4,0,0.2,1);
+  --bg:#FFFFFF;
+  --bg2:#FFFFFF;
+  --card:#FFFFFF;
+  --card2:#FFFFFF;
+  --border:#FF8605;
+  --text:#FF8605;
+  --muted:#0000FF;
+  --accent:#FF8605;
+  --accent2:#0000FF;
+  --accent-glow:rgba(255,134,5,0.12);
+  --font-head:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'Space Mono',monospace;
+  --nav-h:68px;
+  --radius:12px;
+  --transition:0.3s cubic-bezier(0.4,0,0.2,1);
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;font-size:16px}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.65;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
+ul{list-style:none}
 img{max-width:100%;display:block}
+section{padding:100px 0}
+.section-bg{background:#FFFFFF}
+
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.container{max-width:860px;margin:0 auto;padding:0 24px}
-.topbar{position:sticky;top:0;z-index:99;background:rgba(240,246,255,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
-.topbar-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);transition:color var(--transition)}
-.topbar-back:hover{color:var(--accent)}
-.topbar-title{font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.05em}
-.proj-hero{background:#07111F;padding:80px 24px 64px;text-align:center;position:relative;overflow:hidden}
-.proj-hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,119,204,0.02) 2px,rgba(0,119,204,0.02) 4px)}
-.proj-eyebrow{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,150,255,0.7);margin-bottom:20px}
-.proj-title{font-family:var(--font-head);font-size:clamp(1.8rem,5vw,3rem);font-weight:700;color:#EEF4FF;line-height:1.1;margin-bottom:20px;position:relative;z-index:1}
-.proj-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px;position:relative;z-index:1}
-.proj-tags span{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.06em;padding:4px 12px;border-radius:20px;border:1px solid rgba(0,119,204,0.35);color:rgba(0,150,255,0.8)}
-.proj-meta{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;font-family:var(--font-mono);font-size:0.72rem;color:rgba(168,200,240,0.6);position:relative;z-index:1}
-.proj-meta span{display:flex;align-items:center;gap:6px}
-.award-banner{
-  background:linear-gradient(135deg,rgba(232,93,4,0.12),rgba(232,93,4,0.04));
-  border-bottom:1px solid rgba(232,93,4,0.2);
-  padding:18px 24px;text-align:center;
-  font-family:var(--font-mono);font-size:0.82rem;
-  color:var(--accent2);
-  display:flex;align-items:center;justify-content:center;gap:10px;
+
+.container{max-width:1140px;margin:0 auto;padding:0 24px}
+
+.section-label{
+  font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--accent);
+  display:flex;align-items:center;gap:12px;margin-bottom:48px;
 }
-.proj-img-placeholder{height:360px;background:linear-gradient(135deg,var(--card),var(--card2));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--muted)}
-.proj-img-placeholder i{font-size:3rem;color:var(--border)}
-.proj-img-placeholder span{font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em}
-.proj-body{padding:64px 0 80px}
-.proj-section{margin-bottom:52px}
-.proj-section-label{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:24px}
-.proj-section-label::after{content:'';flex:1;height:1px;background:var(--accent);opacity:0.2}
-.proj-section p{color:var(--muted);font-size:0.96rem;line-height:1.75;margin-bottom:14px}
-.proj-section p:last-child{margin-bottom:0}
-.spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px}
-.spec-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
-.spec-card h4{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;text-transform:uppercase}
-.spec-card p{font-size:0.88rem;color:var(--muted);margin:0}
-.highlight-box{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent2);border-radius:var(--radius);padding:20px 24px;margin:20px 0}
-.highlight-box p{color:var(--muted);font-size:0.93rem;margin:0}
-.proj-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.proj-list li{font-size:0.93rem;color:var(--muted);padding-left:20px;position:relative}
-.proj-list li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:0.7rem;top:2px}
-.proj-nav{border-top:1px solid var(--border);padding:40px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.proj-nav a{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.78rem;color:var(--muted);padding:10px 18px;border:1px solid var(--border);border-radius:8px;transition:all var(--transition)}
-.proj-nav a:hover{border-color:var(--accent);color:var(--accent)}
+.section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4}
+
+/* NAV */
+.site-nav{
+  position:fixed;top:0;left:0;right:0;z-index:999;height:var(--nav-h);
+  display:flex;align-items:center;
+  background:#FFFFFF;backdrop-filter:blur(0px);
+  transition:background var(--transition),backdrop-filter var(--transition),border-bottom var(--transition);
+  border-bottom:1px solid transparent;
+}
+.site-nav.scrolled{
+  background:#FFFFFF;backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{max-width:1140px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{
+  font-family:var(--font-mono);font-size:1.1rem;font-weight:700;color:var(--accent);
+  letter-spacing:0.05em;width:40px;height:40px;border:1.5px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;border-radius:8px;
+  transition:background var(--transition);overflow:hidden;
+}
+.nav-brand img{width:100%;height:100%;object-fit:cover}
+.nav-brand:hover{background:var(--accent-glow)}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-link{
+  font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.05em;
+  color:var(--muted);padding:6px 12px;border-radius:6px;
+  transition:color var(--transition),background var(--transition);
+}
+.nav-link:hover,.nav-link.active{color:var(--text);background:var(--card)}
+.nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:transform var(--transition),opacity var(--transition)}
+
+/* =====================
+   HERO — HUD / TERMINAL
+   ===================== */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;
+  padding:calc(var(--nav-h) + 60px) 0 80px;
+  background:linear-gradient(160deg,var(--bg) 0%,var(--card2) 55%,#FFFFFF 100%);
+  overflow:hidden;
+}
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:0.22;pointer-events:none}
+
+/* scan-line overlay */
+.hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,transparent 2px,
+    rgba(255,134,5,0.025) 2px,rgba(255,134,5,0.025) 4px
+  );
+}
+
+.hero-inner{
+  position:relative;z-index:2;max-width:1140px;margin:0 auto;padding:0 24px;
+  display:grid;grid-template-columns:1fr 340px;gap:64px;align-items:center;width:100%;
+}
+
+/* left column */
+.hero-left{}
+
+.hero-sys-line{
+  font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.2em;
+  color:#FF8605;opacity:0.7;margin-bottom:28px;
+  display:flex;align-items:center;gap:16px;
+}
+.hero-sys-line::before{
+  content:'';display:inline-block;width:8px;height:8px;border-radius:50%;
+  background:#FF8605;box-shadow:0 0 10px #FF8605;
+  animation:pulse-dot 2s infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.hero-name{
+  font-family:var(--font-head);
+  font-size:clamp(3.5rem,8vw,6.5rem);
+  font-weight:700;line-height:0.95;
+  letter-spacing:-0.03em;
+  color:var(--text);
+  margin-bottom:6px;
+}
+.hero-name-sub{
+  font-family:var(--font-mono);
+  font-size:clamp(1rem,2.5vw,1.35rem);
+  color:#FF8605;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  margin-bottom:32px;
+  opacity:0.9;
+}
+
+.hero-desc{
+  font-size:0.97rem;color:var(--muted);
+  max-width:460px;line-height:1.75;margin-bottom:40px;
+}
+
+.hero-links{display:flex;gap:12px;flex-wrap:wrap}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 22px;border:1.5px solid rgba(255,134,5,0.4);border-radius:8px;
+  font-family:var(--font-mono);font-size:0.78rem;letter-spacing:0.03em;
+  color:var(--muted);transition:all var(--transition);
+}
+.btn-ghost:hover{border-color:#FF8605;color:#fff;background:#FF8605}
+.btn-hud{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 22px;border-radius:8px;
+  background:#FF8605;color:#fff;
+  font-family:var(--font-mono);font-size:0.78rem;font-weight:700;letter-spacing:0.03em;
+  border:1.5px solid #FF8605;transition:all var(--transition);
+}
+.btn-hud:hover{background:transparent;color:#FF8605}
+
+/* right column — HUD panel */
+.hero-hud{
+  background:rgba(255,134,5,0.04);
+  border:1px solid rgba(255,134,5,0.22);
+  border-radius:12px;
+  padding:28px;
+  font-family:var(--font-mono);
+  font-size:0.78rem;
+}
+.hud-header{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:20px;padding-bottom:14px;
+  border-bottom:1px solid rgba(255,134,5,0.15);
+}
+.hud-dots{display:flex;gap:6px}
+.hud-dots span{width:10px;height:10px;border-radius:50%}
+.hud-dots span:nth-child(1){background:#0000FF}
+.hud-dots span:nth-child(2){background:#0000FF}
+.hud-dots span:nth-child(3){background:#FF8605}
+.hud-title{color:rgba(255,134,5,0.6);font-size:0.68rem;letter-spacing:0.12em;margin-left:4px}
+
+.hud-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:8px 0;border-bottom:1px solid rgba(255,134,5,0.07);
+}
+.hud-row:last-child{border-bottom:none}
+.hud-key{color:rgba(255,134,5,0.6);font-size:0.7rem;letter-spacing:0.08em}
+.hud-val{color:var(--text);font-size:0.78rem;text-align:right;max-width:160px}
+.hud-val.ok{color:#FF8605}
+.hud-val.warn{color:#0000FF}
+
+.hud-bar-wrap{margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,134,5,0.15)}
+.hud-bar-label{
+  display:flex;justify-content:space-between;
+  color:rgba(255,134,5,0.6);font-size:0.68rem;letter-spacing:0.08em;
+  margin-bottom:6px;
+}
+.hud-bar-track{height:4px;background:rgba(255,134,5,0.12);border-radius:2px;overflow:hidden;margin-bottom:10px}
+.hud-bar-fill{height:100%;background:linear-gradient(90deg,#FF8605,#0000FF);border-radius:2px;transition:width 1.4s ease}
+
+.hero-scroll{
+  position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;
+  color:rgba(255,134,5,0.5);font-size:1.3rem;animation:bounce 2s infinite;
+}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 2fr;gap:64px;align-items:center}
+.about-photo{position:relative}
+.about-photo img{
+  width:100%;border-radius:var(--radius);border:1.5px solid var(--border);
+  aspect-ratio:4/5;object-fit:cover;object-position:top;
+  filter:grayscale(20%);transition:filter var(--transition);
+}
+.about-photo:hover img{filter:grayscale(0%)}
+.about-photo::before{
+  content:'';position:absolute;inset:-10px;
+  border:1.5px solid var(--accent);border-radius:calc(var(--radius)+4px);
+  opacity:0.2;pointer-events:none;
+}
+.about-text h2{font-family:var(--font-head);font-size:clamp(1.5rem,3vw,2rem);font-weight:600;line-height:1.3;margin-bottom:20px}
+.about-text p{color:var(--muted);margin-bottom:16px;font-size:0.97rem}
+.about-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.about-tags span{
+  font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.05em;
+  padding:5px 12px;border-radius:20px;border:1px solid var(--border);color:var(--muted);
+  transition:all var(--transition);
+}
+.about-tags span:hover{border-color:var(--accent);color:var(--accent)}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.skill-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;transition:all var(--transition);cursor:default;
+}
+.skill-card:hover{border-color:var(--accent);transform:translateY(-4px);background:var(--card2)}
+.skill-card i{font-size:1.8rem;color:var(--accent);display:block;margin-bottom:16px}
+.skill-card h3{font-family:var(--font-head);font-size:1rem;font-weight:600;margin-bottom:10px}
+.skill-card p{font-size:0.88rem;color:var(--muted);line-height:1.65}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{
+  content:'';position:absolute;left:0;top:8px;bottom:8px;
+  width:1.5px;background:linear-gradient(to bottom,var(--accent),transparent);opacity:0.3;
+}
+.timeline-item{position:relative;padding-bottom:48px}
+.timeline-item:last-child{padding-bottom:0}
+.tl-dot{
+  position:absolute;left:-36px;top:6px;width:10px;height:10px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 12px var(--accent);
+}
+.tl-body{padding-left:8px}
+.tl-date{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.08em;color:var(--accent);display:block;margin-bottom:8px}
+.tl-body h3{font-family:var(--font-head);font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:4px}
+.tl-body h3 a{transition:color var(--transition)}
+.tl-body h3 a:hover{color:var(--accent)}
+.tl-role{font-size:0.88rem;color:var(--accent2);font-weight:500;margin-bottom:14px}
+.tl-body ul{display:flex;flex-direction:column;gap:6px}
+.tl-body ul li{font-size:0.88rem;color:var(--muted);padding-left:16px;position:relative}
+.tl-body ul li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:0.7rem;top:1px}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.project-wide{grid-column:span 2}
+.project-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:all var(--transition);display:flex;flex-direction:column;
+}
+.project-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.project-img{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--card2)}
+.project-wide .project-img{aspect-ratio:21/9}
+.project-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease}
+.project-card:hover .project-img img{transform:scale(1.04)}
+.project-placeholder{
+  width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;color:var(--muted);background:linear-gradient(135deg,var(--card),var(--card2));
+}
+.project-placeholder i{font-size:2.5rem;color:var(--border)}
+.project-placeholder span{font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em}
+.project-overlay{
+  position:absolute;inset:0;background:rgba(255,134,5,0.85);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity var(--transition);
+}
+.project-card:hover .project-overlay{opacity:1}
+.overlay-btn{
+  font-family:var(--font-mono);font-size:0.78rem;padding:10px 20px;
+  border:1.5px solid var(--accent);border-radius:6px;color:var(--accent);
+  transition:all var(--transition);display:flex;align-items:center;gap:8px;
+}
+.overlay-btn:hover{background:var(--accent);color:#fff}
+.project-body{padding:24px;flex:1;display:flex;flex-direction:column}
+.project-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.project-tags span{
+  font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.06em;
+  padding:3px 10px;border-radius:20px;background:var(--card2);border:1px solid var(--border);color:var(--muted);
+}
+.project-body h3{font-family:var(--font-head);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:10px}
+.project-body p{font-size:0.88rem;color:var(--muted);line-height:1.7;flex:1;margin-bottom:18px}
+.project-actions{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.action-link{
+  font-family:var(--font-mono);font-size:0.75rem;color:var(--accent);
+  display:flex;align-items:center;gap:6px;transition:gap var(--transition);
+}
+.action-link:hover{gap:10px}
+.action-gh{color:var(--muted)}
+.action-gh:hover{color:var(--text)}
+
+/* RESUME */
+.resume-wrap{display:flex;flex-direction:column;align-items:center;gap:28px}
+.resume-frame{width:100%;max-width:800px;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.resume-frame iframe{width:100%;height:680px;border:none;display:block}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:start}
+.contact-info h2{font-family:var(--font-head);font-size:2rem;font-weight:600;line-height:1.2;margin-bottom:16px}
+.contact-info p{color:var(--muted);margin-bottom:32px;font-size:0.97rem}
+.contact-socials{display:flex;flex-direction:column;gap:12px}
+.contact-socials a{
+  display:inline-flex;align-items:center;gap:10px;color:var(--muted);
+  font-family:var(--font-mono);font-size:0.82rem;padding:10px 16px;
+  border:1px solid var(--border);border-radius:8px;transition:all var(--transition);
+}
+.contact-socials a:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
+.contact-socials a i{font-size:1rem}
+.contact-form{display:flex;flex-direction:column;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.1em;color:var(--muted)}
+.form-group input,.form-group textarea{
+  background:var(--card);border:1.5px solid var(--border);border-radius:8px;
+  padding:12px 16px;font-family:var(--font-body);font-size:0.93rem;color:var(--text);
+  outline:none;transition:border-color var(--transition);resize:vertical;
+}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--accent)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--muted);opacity:0.6}
+.form-feedback{font-family:var(--font-mono);font-size:0.78rem;min-height:20px;padding:4px 0}
+.form-feedback.ok{color:var(--accent)}
+.form-feedback.err{color:var(--accent2)}
+
+/* FOOTER */
+.site-footer{background:#FFFFFF;border-top:1px solid var(--border);padding:28px 0;text-align:center}
+.site-footer p{font-family:var(--font-mono);font-size:0.75rem;color:var(--muted)}
+.site-footer a{color:var(--accent);transition:opacity var(--transition)}
+.site-footer a:hover{opacity:0.7}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.65s ease,transform 0.65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .hero-inner{grid-template-columns:1fr;gap:40px}
+  .hero-hud{display:none}
+}
+@media(max-width:900px){
+  .skills-grid{grid-template-columns:repeat(2,1fr)}
+  .about-grid{grid-template-columns:1fr;gap:40px}
+  .about-photo{max-width:260px;margin:0 auto}
+  .contact-grid{grid-template-columns:1fr;gap:40px}
+}
+@media(max-width:700px){
+  .projects-grid{grid-template-columns:1fr}
+  .project-wide{grid-column:span 1}
+  .skills-grid{grid-template-columns:1fr}
+  .nav-links{
+    display:none;flex-direction:column;gap:0;position:fixed;
+    top:var(--nav-h);left:0;right:0;
+    background:#FFFFFF;backdrop-filter:blur(16px);
+    padding:16px 0 24px;border-bottom:1px solid var(--border);
+  }
+  .nav-links.open{display:flex}
+  .nav-link{padding:12px 24px;font-size:0.85rem}
+  .nav-toggle{display:flex}
+  section{padding:72px 0}
+  .hero-name{font-size:3rem}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <a href="../index.html" class="topbar-back"><i class="bi bi-arrow-left"></i> Back to Portfolio</a>
-  <span class="topbar-title">JIN ZIYU · PROJECTS</span>
-</div>
-
-<div class="proj-hero">
-  <p class="proj-eyebrow">Embedded Systems · Haptics · 3D Printing</p>
-  <h1 class="proj-title">Hand Gesture<br>Controlled Robot</h1>
-  <div class="proj-tags">
-    <span>Arduino Nano</span><span>Bluetooth HC05</span><span>3D Printing</span>
-    <span>C</span><span>Servo Motors</span><span>Haptic Glove</span>
+<!-- NAV -->
+<nav class="site-nav" id="siteNav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#home"><img src="assets/img/logo.png" alt="Logo"/></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home"       class="nav-link">Home</a></li>
+      <li><a href="#about"      class="nav-link">About</a></li>
+      <li><a href="#skills"     class="nav-link">Skills</a></li>
+      <li><a href="#experience" class="nav-link">Experience</a></li>
+      <li><a href="#projects"   class="nav-link">Projects</a></li>
+      <li><a href="#education"  class="nav-link">Education</a></li>
+      <li><a href="#resume"     class="nav-link">Resume</a></li>
+      <li><a href="#contact"    class="nav-link">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-  <div class="proj-meta">
-    <span><i class="bi bi-calendar3"></i> Apr – Aug 2021</span>
-    <span><i class="bi bi-building"></i> Temasek Polytechnic</span>
-    <span><i class="bi bi-award"></i> Certificate of Commendation</span>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+
+  <div class="hero-inner">
+    <!-- LEFT -->
+    <div class="hero-left">
+      <div class="hero-sys-line reveal">SYS · ROBOTICS_SYSTEMS · SIT_SINGAPORE</div>
+      <h1 class="hero-name reveal">Jin<br>Ziyu</h1>
+      <p class="hero-name-sub reveal">Robotics&nbsp;&amp;&nbsp;Automation</p>
+      <p class="hero-desc reveal">Building intelligent systems at the intersection of hardware, software, and autonomous platforms.</p>
+      <div class="hero-links reveal">
+        <a href="https://www.linkedin.com/in/jin-ziyu/" target="_blank" class="btn-ghost"><i class="bi bi-linkedin"></i> LinkedIn</a>
+        <a href="https://github.com/Jin-Ziyu" target="_blank" class="btn-ghost"><i class="bi bi-github"></i> GitHub</a>
+        <a href="#projects" class="btn-hud">Projects <i class="bi bi-arrow-right"></i></a>
+      </div>
+    </div>
+
+    <!-- RIGHT — HUD PANEL -->
+    <div class="hero-hud reveal">
+      <div class="hud-header">
+        <div class="hud-dots"><span></span><span></span><span></span></div>
+        <span class="hud-title">SYSTEM · STATUS</span>
+      </div>
+      <div class="hud-row"><span class="hud-key">STATUS</span><span class="hud-val ok">● ONLINE</span></div>
+      <div class="hud-row"><span class="hud-key">ROLE</span><span class="hud-val">Robotics Engineer</span></div>
+      <div class="hud-row"><span class="hud-key">INSTITUTION</span><span class="hud-val">SIT Singapore</span></div>
+      <div class="hud-row"><span class="hud-key">DEGREE</span><span class="hud-val">BEng Robotics Systems</span></div>
+      <div class="hud-row"><span class="hud-key">STACK</span><span class="hud-val">ROS 2 · C++ · Python</span></div>
+      <div class="hud-row"><span class="hud-key">OPEN TO</span><span class="hud-val warn">● Opportunities</span></div>
+
+      <div class="hud-bar-wrap">
+        <div class="hud-bar-label"><span>ROS / SLAM</span><span id="b1v">0%</span></div>
+        <div class="hud-bar-track"><div class="hud-bar-fill" id="b1" style="width:0%"></div></div>
+        <div class="hud-bar-label"><span>C / C++</span><span id="b2v">0%</span></div>
+        <div class="hud-bar-track"><div class="hud-bar-fill" id="b2" style="width:0%"></div></div>
+        <div class="hud-bar-label"><span>Computer Vision</span><span id="b3v">0%</span></div>
+        <div class="hud-bar-track"><div class="hud-bar-fill" id="b3" style="width:0%"></div></div>
+        <div class="hud-bar-label"><span>Python</span><span id="b4v">0%</span></div>
+        <div class="hud-bar-track"><div class="hud-bar-fill" id="b4" style="width:0%"></div></div>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="award-banner">
-  <i class="bi bi-award-fill"></i>
-  Certificate of Commendation — Recognised as a top major project (Top 10%)
-</div>
+  <a href="#about" class="hero-scroll" aria-label="Scroll down"><i class="bi bi-chevron-double-down"></i></a>
+</section>
 
-<div class="proj-img-placeholder">
-  <i class="bi bi-hand-index"></i>
-  <span>Haptic Glove · 6-Axis Pick-and-Place Robot</span>
-</div>
-
-<div class="proj-body">
+<!-- ABOUT -->
+<section id="about">
   <div class="container">
-
-    <div class="proj-section">
-      <div class="proj-section-label">Overview</div>
-      <p>The Hand Gesture Controlled Robot is a six-axis pick-and-place robotic arm controlled wirelessly in real time via a Haptic Glove worn by the operator. Flex sensors on the glove capture finger bend angles, which are transmitted over Bluetooth and mapped directly to the servo joints of the 3D-printed robot arm.</p>
-      <p>The project was developed as the major project for the Diploma in Electronics at Temasek Polytechnic and received a Certificate of Commendation — placing it in the top 10% of major projects for that cohort.</p>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">System Design</div>
-      <div class="spec-grid">
-        <div class="spec-card">
-          <h4>Master (Glove)</h4>
-          <p>Haptic Glove with flex sensors on each finger, read by an Arduino Nano. Data transmitted wirelessly via HC05 Bluetooth module to the slave unit.</p>
-        </div>
-        <div class="spec-card">
-          <h4>Slave (Robot Arm)</h4>
-          <p>6-axis 3D-printed robotic arm with servo motors at each joint. Arduino Nano receives Bluetooth data and drives servos via PWM signals.</p>
-        </div>
-        <div class="spec-card">
-          <h4>Communication</h4>
-          <p>Master-Slave Bluetooth configuration using paired HC05 modules operating in AT command mode — achieves low-latency wireless control.</p>
-        </div>
-        <div class="spec-card">
-          <h4>Mechanical</h4>
-          <p>Entire robot arm structure 3D printed in PLA. Designed for lightweight, modular assembly with servo motor mounts at each of the six axes.</p>
+    <p class="section-label reveal">About Me</p>
+    <div class="about-grid">
+      <div class="about-photo reveal">
+        <img src="assets/img/profile.jpeg" alt="Jin Ziyu" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22500%22 viewBox=%220 0 400 500%22%3E%3Crect fill=%22%23141E33%22 width=%22400%22 height=%22500%22/%3E%3Ccircle cx=%22200%22 cy=%22180%22 r=%2280%22 fill=%22%231A2540%22/%3E%3Ccircle cx=%22200%22 cy=%22420%22 r=%22140%22 fill=%22%231A2540%22/%3E%3C/svg%3E'"/>
+      </div>
+      <div class="about-text reveal">
+        <h2>Robotics engineer with hands-on experience in QA and automation.</h2>
+        <p>I'm Jin Ziyu, a Robotics Systems undergraduate at the Singapore Institute of Technology with a strong foundation in electronics, automation, and robotics. My journey spans academic learning and real industry experience in quality assurance and supply chain operations.</p>
+        <p>As an Assistant QA Engineer at Kinergy Corporation, I conducted precision equipment inspections using UV light and feeler gauges, collaborating with cross-functional teams to enhance product quality. My internship at Wizlogix gave me deep insight into supply chain processes, inventory control, and SAP procurement systems.</p>
+        <p>I'm passionate about solving technical challenges, optimising systems, and applying robotics solutions in real-world environments — constantly seeking opportunities to innovate in robotics, automation, and quality engineering.</p>
+        <div class="about-tags">
+          <span>ROS 1 &amp; ROS 2</span><span>C / C++</span><span>Computer Vision</span>
+          <span>Smart Manufacturing</span><span>Control Systems</span><span>Embedded Systems</span>
         </div>
       </div>
     </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">Key Technical Work</div>
-      <ul class="proj-list">
-        <li>Designed and fabricated the 3D-printed 6-axis arm structure optimised for servo motor integration</li>
-        <li>Implemented flex sensor ADC reading and mapping to servo PWM range on the Arduino master</li>
-        <li>Configured HC05 Bluetooth modules in Master-Slave AT command pairing mode</li>
-        <li>Calibrated servo angle mapping to produce intuitive 1:1 gesture-to-joint control</li>
-        <li>Developed firmware in C for both master (glove) and slave (arm) Arduino Nano units</li>
-        <li>Tested pick-and-place operations with real objects, validating gesture control accuracy</li>
-      </ul>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">Technology Stack</div>
-      <ul class="proj-list">
-        <li><strong>Microcontrollers:</strong> Arduino Nano × 2 (master + slave)</li>
-        <li><strong>Wireless:</strong> HC05 Bluetooth module pair (Master-Slave configuration)</li>
-        <li><strong>Sensing:</strong> Flex sensors (one per finger) for gesture capture</li>
-        <li><strong>Actuation:</strong> SG90/MG996R servo motors at six axes</li>
-        <li><strong>Fabrication:</strong> FDM 3D printing (PLA) for full arm structure</li>
-        <li><strong>Language:</strong> C (Arduino firmware for master and slave)</li>
-      </ul>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">Recognition</div>
-      <div class="highlight-box">
-        <p>Awarded a Certificate of Commendation at Temasek Polytechnic, recognising the Hand Gesture Controlled Robot as one of the top major projects — placing in the top 10% of the cohort for innovation and technical execution.</p>
-      </div>
-    </div>
-
-    <div class="proj-nav">
-      <a href="sep-limo-arena.html"><i class="bi bi-arrow-left"></i> Prev: LIMO Navigation</a>
-      <a href="../index.html#projects"><i class="bi bi-grid"></i> All Projects</a>
-      <a href="sit-dashboard.html">Next: SIT Dashboard <i class="bi bi-arrow-right"></i></a>
-    </div>
-
   </div>
-</div>
+</section>
 
+<!-- SKILLS -->
+<section id="skills" class="section-bg">
+  <div class="container">
+    <p class="section-label reveal">Technical Skills</p>
+    <div class="skills-grid">
+      <div class="skill-card reveal"><i class="bi bi-cpu"></i><h3>Robotics &amp; ROS</h3><p>ROS 1 &amp; ROS 2 Humble, node architecture, topic/service communication, SLAM, robot system integration and navigation</p></div>
+      <div class="skill-card reveal"><i class="bi bi-code-slash"></i><h3>Programming</h3><p>C, C++, Python — embedded systems, data processing, automation scripting, and PLC programming</p></div>
+      <div class="skill-card reveal"><i class="bi bi-eye"></i><h3>Computer Vision</h3><p>Stereo depth estimation, camera calibration, and 3D dimension detection using ZED2i stereo camera</p></div>
+      <div class="skill-card reveal"><i class="bi bi-tools"></i><h3>Electronics &amp; Hardware</h3><p>Circuit design, PCB layout (EAGLE), load cells, HX711, Arduino, Raspberry Pi, feeler gauges, UV inspection tools</p></div>
+      <div class="skill-card reveal"><i class="bi bi-diagram-3"></i><h3>Systems Integration</h3><p>TCP communication bridges, ROS 2 middleware, multi-node architectures, hardware-software co-design</p></div>
+      <div class="skill-card reveal"><i class="bi bi-clipboard-check"></i><h3>Quality &amp; Operations</h3><p>QA inspection protocols, SAP inventory management, process improvement, SolidWorks, Tableau</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label reveal">Work Experience</p>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <span class="tl-date">May 2022 – Jul 2024</span>
+          <h3><a href="https://www.kinergycorp.com/" target="_blank">Kinergy Corporation Ltd. <i class="bi bi-arrow-up-right" style="font-size:0.8rem"></i></a></h3>
+          <p class="tl-role">Assistant Quality Assurance Engineer</p>
+          <ul>
+            <li>Conducted detailed equipment inspections using UV light to uphold stringent quality standards</li>
+            <li>Employed precision measurement tools including feeler gauges for equipment accuracy and performance checks</li>
+            <li>Developed solutions to technical challenges, optimising process efficiency and product reliability</li>
+            <li>Collaborated with the QA team to identify process improvement areas and implement strategic changes</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <span class="tl-date">Oct 2021 – Mar 2022</span>
+          <h3><a href="https://www.wizlogix.com/" target="_blank">Wizlogix Pte Ltd <i class="bi bi-arrow-up-right" style="font-size:0.8rem"></i></a></h3>
+          <p class="tl-role">Supply Chain Intern</p>
+          <ul>
+            <li>Monitored inventory levels to ensure accuracy and promptly addressed discrepancies</li>
+            <li>Generated Purchase Orders and Goods Received Notes within SAP to maintain procurement workflow</li>
+            <li>Collaborated with a team of 6 colleagues to optimise operations and support departmental goals</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section-bg">
+  <div class="container">
+    <p class="section-label reveal">Projects</p>
+    <div class="projects-grid">
+
+      <article class="project-card reveal">
+        <div class="project-img">
+          <img src="assets/img/project/intelligent-pallet-optimization.jpg" alt="Intelligent Pallet & Optimization System" onerror="this.parentElement.innerHTML='<div class=\'project-placeholder\'><i class=\'bi bi-cpu\'></i><span>pallet-optimization</span></div>'"/>
+          <div class="project-overlay">
+            <a href="projects/intelligent-pallet-optimization.html" class="overlay-btn">View Details <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags"><span>ROS 2</span><span>Computer Vision</span><span>Python</span><span>ZED2i</span></div>
+          <h3>Intelligent Pallet &amp; Optimization System</h3>
+          <p>An autonomous warehouse measurement system integrating load cell sensing and stereo camera vision to capture weight and 3D dimensions of palletised cargo at a fixed checkpoint with minimal human intervention.</p>
+          <div class="project-actions">
+            <a href="projects/intelligent-pallet-optimization.html" class="action-link">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card reveal">
+        <div class="project-img">
+          <img src="assets/img/project/sep-limo-arena.jpg" alt="SEP LIMO Autonomous Navigation" onerror="this.parentElement.innerHTML='<div class=\'project-placeholder\'><i class=\'bi bi-robot\'></i><span>sep-limo-arena</span></div>'"/>
+          <div class="project-overlay">
+            <a href="projects/sep-limo-arena.html" class="overlay-btn">View Details <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags"><span>ROS 1 Melodic</span><span>C++</span><span>SLAM</span><span>Autonomous Nav</span></div>
+          <h3>SEP — LIMO Autonomous Navigation System</h3>
+          <p>Designed, built, and tested an autonomous navigation system for the LIMO mobile robot using ROS 1 Melodic — covering SLAM, path planning, arena design, and real-world obstacle avoidance.</p>
+          <div class="project-actions">
+            <a href="projects/sep-limo-arena.html" class="action-link">Read More <i class="bi bi-arrow-right"></i></a>
+            <a href="https://github.com/Jin-Ziyu/Systems-Engineering-Project-1-Group-6" target="_blank" class="action-link action-gh"><i class="bi bi-github"></i> GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card reveal">
+        <div class="project-img">
+          <img src="assets/img/project/hand-gesture-robot.jpg" alt="Hand Gesture Controlled Robot" onerror="this.parentElement.innerHTML='<div class=\'project-placeholder\'><i class=\'bi bi-hand-index\'></i><span>hand-gesture-robot</span></div>'"/>
+          <div class="project-overlay">
+            <a href="projects/hand-gesture-robot.html" class="overlay-btn">View Details <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags"><span>Arduino</span><span>Bluetooth</span><span>3D Printing</span><span>C</span></div>
+          <h3>Hand Gesture Controlled Robot</h3>
+          <p>A six-axis pick-and-place robot controlled via a Haptic Glove — leveraging 3D printing, Arduino Nano, and HC05 Bluetooth modules in a Master-Slave configuration. Received a Certificate of Commendation.</p>
+          <div class="project-actions">
+            <a href="projects/hand-gesture-robot.html" class="action-link">Read More <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card project-wide reveal">
+        <div class="project-img">
+          <img src="assets/img/project/sit-dashboard.jpg" alt="SIT Student Dashboard" onerror="this.parentElement.innerHTML='<div class=\'project-placeholder\'><i class=\'bi bi-layout-text-window-reverse\'></i><span>sit-dashboard</span></div>'"/>
+          <div class="project-overlay">
+            <a href="projects/sit-dashboard.html" class="overlay-btn">View Details <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+          <h3>SIT Student Dashboard</h3>
+          <p>A student-facing web dashboard for Singapore Institute of Technology — featuring timetable integration, drag-and-drop panels, dark mode, and per-student data namespacing. Built as a practical tool for daily campus life.</p>
+          <div class="project-actions">
+            <a href="projects/sit-dashboard.html" class="action-link">Read More <i class="bi bi-arrow-right"></i></a>
+            <a href="https://github.com/Jin-Ziyu/sit-dashboard" target="_blank" class="action-link action-gh"><i class="bi bi-github"></i> GitHub</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <p class="section-label reveal">Education</p>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <span class="tl-date">Aug 2024 – Present</span>
+          <h3><a href="https://www.singaporetech.edu.sg/" target="_blank">Singapore Institute of Technology <i class="bi bi-arrow-up-right" style="font-size:0.8rem"></i></a></h3>
+          <p class="tl-role">BEng (Hons) Robotics Systems</p>
+          <ul>
+            <li>Focus on robotics systems design, autonomous platforms, and smart manufacturing</li>
+            <li>Coursework: C++ Programming, Embedded Systems, ROS1 &amp; ROS2, Systems Engineering</li>
+            <li>Student Coach at SIT Project Hub — mentoring peers in 3D printing, laser cutting, and microcontrollers</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <span class="tl-date">Oct 2022 – Sep 2023</span>
+          <h3><a href="https://www.tp.edu.sg/" target="_blank">Temasek Polytechnic <i class="bi bi-arrow-up-right" style="font-size:0.8rem"></i></a></h3>
+          <p class="tl-role">Specialist Diploma in Robotics &amp; Automation</p>
+          <ul>
+            <li>Advanced proficiency in robotics systems and automation technologies</li>
+            <li>Specialised in control systems design, Robotics Integration &amp; Adaption</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-body">
+          <span class="tl-date">Mar 2019 – Apr 2022</span>
+          <h3><a href="https://www.tp.edu.sg/" target="_blank">Temasek Polytechnic <i class="bi bi-arrow-up-right" style="font-size:0.8rem"></i></a></h3>
+          <p class="tl-role">Diploma in Electronics</p>
+          <ul>
+            <li>Acquired extensive knowledge of electronic circuits, systems, and components</li>
+            <li>Hands-on lab work in PCB design, signal processing, and embedded programming</li>
+            <li>Commendation Award in Major Project (top 10% of projects)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume" class="section-bg">
+  <div class="container">
+    <p class="section-label reveal" style="justify-content:center">Resume</p>
+    <div class="resume-wrap">
+      <div class="resume-frame reveal">
+        <iframe src="assets/resume.pdf" title="Jin Ziyu Resume" id="resumeIframe"></iframe>
+      </div>
+      <a href="assets/resume.pdf" download class="btn-hud reveal"><i class="bi bi-download"></i> Download Resume</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <p class="section-label reveal">Get In Touch</p>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h2>Let's connect.</h2>
+        <p>I'm open to internship opportunities, research collaborations, or just a conversation about robotics and automation. Feel free to reach out!</p>
+        <div class="contact-socials">
+          <a href="https://www.linkedin.com/in/jin-ziyu/" target="_blank"><i class="bi bi-linkedin"></i> LinkedIn</a>
+          <a href="https://github.com/Jin-Ziyu" target="_blank"><i class="bi bi-github"></i> GitHub</a>
+          <a href="mailto:jinziyu100@gmail.com"><i class="bi bi-envelope"></i> jinziyu100@gmail.com</a>
+          <a href="tel:+6596653059"><i class="bi bi-telephone"></i> +65 9665 3059</a>
+        </div>
+      </div>
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="form-group"><label for="cf-name">NAME</label><input type="text" id="cf-name" name="name" placeholder="Your name" required/></div>
+        <div class="form-group"><label for="cf-email">EMAIL</label><input type="email" id="cf-email" name="email" placeholder="your@email.com" required/></div>
+        <div class="form-group"><label for="cf-subject">SUBJECT</label><input type="text" id="cf-subject" name="subject" placeholder="What's this about?"/></div>
+        <div class="form-group"><label for="cf-msg">MESSAGE</label><textarea id="cf-msg" name="message" rows="5" placeholder="Tell me more..." required></textarea></div>
+        <button type="submit" class="btn-hud">Send Message <i class="bi bi-send"></i></button>
+        <p class="form-feedback" id="formFeedback" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>© 2025 Jin Ziyu · Robotics Systems, SIT Singapore ·
+      <a href="https://github.com/Jin-Ziyu" target="_blank">GitHub</a> ·
+      <a href="https://www.linkedin.com/in/jin-ziyu/" target="_blank">LinkedIn</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+/* NAV */
+const nav=document.getElementById('siteNav');
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('.nav-link');
+function updateNav(){
+  nav.classList.toggle('scrolled',window.scrollY>40);
+  let current='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120)current=s.id});
+  navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+current));
+}
+window.addEventListener('scroll',updateNav,{passive:true});
+updateNav();
+
+const toggle=document.getElementById('navToggle');
+const links=document.getElementById('navLinks');
+toggle.addEventListener('click',()=>{
+  links.classList.toggle('open');
+  const spans=toggle.querySelectorAll('span');
+  if(links.classList.contains('open')){
+    spans[0].style.transform='rotate(45deg) translate(5px,5px)';
+    spans[1].style.opacity='0';
+    spans[2].style.transform='rotate(-45deg) translate(5px,-5px)';
+  } else {spans.forEach(s=>{s.style.transform='';s.style.opacity=''})}
+});
+links.querySelectorAll('.nav-link').forEach(a=>a.addEventListener('click',()=>{
+  links.classList.remove('open');
+  toggle.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity=''});
+}));
+
+/* REVEAL */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+/* HUD BARS — animate in on load */
+window.addEventListener('load',()=>{
+  const bars=[
+    {fill:'b1',val:'b1v',pct:85},
+    {fill:'b2',val:'b2v',pct:78},
+    {fill:'b3',val:'b3v',pct:70},
+    {fill:'b4',val:'b4v',pct:75},
+  ];
+  bars.forEach(({fill,val,pct},i)=>{
+    setTimeout(()=>{
+      document.getElementById(fill).style.width=pct+'%';
+      let cur=0;
+      const t=setInterval(()=>{
+        cur+=2;
+        document.getElementById(val).textContent=Math.min(cur,pct)+'%';
+        if(cur>=pct)clearInterval(t);
+      },20);
+    },600+i*150);
+  });
+});
+
+/* HERO CANVAS — circuit grid */
+(function(){
+  const canvas=document.getElementById('heroCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,nodes=[];
+  const COLS=20,ROWS=12;
+  function resize(){
+    W=canvas.width=canvas.offsetWidth;
+    H=canvas.height=canvas.offsetHeight;
+    buildGrid();
+  }
+  function buildGrid(){
+    nodes=[];
+    const gx=W/(COLS-1),gy=H/(ROWS-1);
+    for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+      nodes.push({
+        x:c*gx+(Math.random()-0.5)*gx*0.4,
+        y:r*gy+(Math.random()-0.5)*gy*0.4,
+        pulse:Math.random()*Math.PI*2,
+        speed:0.008+Math.random()*0.012,
+        active:Math.random()>0.55
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.lineWidth=0.8;
+    for(let i=0;i<nodes.length;i++){
+      const n=nodes[i];
+      const col=i%COLS,row=Math.floor(i/COLS);
+      if(col<COLS-1){const m=nodes[i+1];const a=n.active&&m.active?0.2:0.06;ctx.strokeStyle=`rgba(255,134,5,${a})`;ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(m.x,m.y);ctx.stroke()}
+      if(row<ROWS-1){const m=nodes[i+COLS];const a=n.active&&m.active?0.2:0.06;ctx.strokeStyle=`rgba(255,134,5,${a})`;ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(m.x,m.y);ctx.stroke()}
+    }
+    nodes.forEach(n=>{
+      n.pulse+=n.speed;
+      const glow=0.4+0.4*Math.sin(n.pulse);
+      const r=n.active?2.5:1.2;
+      ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+      ctx.fillStyle=n.active?`rgba(0,150,255,${glow})`:`rgba(0,0,255,0.4)`;
+      ctx.fill();
+      if(n.active){ctx.beginPath();ctx.arc(n.x,n.y,r*3,0,Math.PI*2);ctx.fillStyle=`rgba(255,134,5,${glow*0.1})`;ctx.fill()}
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize);
+  resize();draw();
+  setInterval(()=>{const i=Math.floor(Math.random()*nodes.length);nodes[i].active=!nodes[i].active},300);
+})();
+
+/* CONTACT FORM */
+document.getElementById('contactForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const name=document.getElementById('cf-name').value.trim();
+  const email=document.getElementById('cf-email').value.trim();
+  const subject=document.getElementById('cf-subject').value.trim()||'Portfolio Enquiry';
+  const msg=document.getElementById('cf-msg').value.trim();
+  const fb=document.getElementById('formFeedback');
+  if(!name||!email||!msg){fb.textContent='Please fill in all required fields.';fb.className='form-feedback err';return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){fb.textContent='Please enter a valid email address.';fb.className='form-feedback err';return}
+  window.location.href=`mailto:jinziyu100@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${msg}`)}`;
+  fb.textContent='Opening your email client…';fb.className='form-feedback ok';
+  this.reset();setTimeout(()=>{fb.textContent='';fb.className='form-feedback'},4000);
+});
+
+
+
+document.getElementById('resumeIframe').addEventListener('error',function(){
+  this.closest('.resume-frame').outerHTML=`<div style="background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:60px 40px;text-align:center;max-width:800px;width:100%"><i class="bi bi-file-earmark-pdf" style="font-size:3rem;color:var(--accent);display:block;margin-bottom:20px"></i><p style="color:var(--muted);margin-bottom:24px">Resume preview not available. Click below to download.</p></div>`;
+});
+</script>
 </body>
 </html>
