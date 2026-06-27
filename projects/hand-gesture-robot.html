@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hand Gesture Controlled Robot — Jin Ziyu</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F0F6FF;--bg2:#E4EEFB;--card:#FFFFFF;--card2:#F5F9FF;
+  --border:#C2D8F0;--text:#0D1B2A;--muted:#4A6580;
+  --accent:#0077CC;--accent2:#E85D04;--accent-glow:rgba(0,119,204,0.12);
+  --font-head:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;
+  --font-mono:'Space Mono',monospace;--radius:12px;--transition:0.3s cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.container{max-width:860px;margin:0 auto;padding:0 24px}
+.topbar{position:sticky;top:0;z-index:99;background:rgba(240,246,255,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.topbar-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);transition:color var(--transition)}
+.topbar-back:hover{color:var(--accent)}
+.topbar-title{font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.05em}
+.proj-hero{background:#07111F;padding:80px 24px 64px;text-align:center;position:relative;overflow:hidden}
+.proj-hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,119,204,0.02) 2px,rgba(0,119,204,0.02) 4px)}
+.proj-eyebrow{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,150,255,0.7);margin-bottom:20px}
+.proj-title{font-family:var(--font-head);font-size:clamp(1.8rem,5vw,3rem);font-weight:700;color:#EEF4FF;line-height:1.1;margin-bottom:20px;position:relative;z-index:1}
+.proj-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px;position:relative;z-index:1}
+.proj-tags span{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.06em;padding:4px 12px;border-radius:20px;border:1px solid rgba(0,119,204,0.35);color:rgba(0,150,255,0.8)}
+.proj-meta{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;font-family:var(--font-mono);font-size:0.72rem;color:rgba(168,200,240,0.6);position:relative;z-index:1}
+.proj-meta span{display:flex;align-items:center;gap:6px}
+.award-banner{
+  background:linear-gradient(135deg,rgba(232,93,4,0.12),rgba(232,93,4,0.04));
+  border-bottom:1px solid rgba(232,93,4,0.2);
+  padding:18px 24px;text-align:center;
+  font-family:var(--font-mono);font-size:0.82rem;
+  color:var(--accent2);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.proj-img-placeholder{height:360px;background:linear-gradient(135deg,var(--card),var(--card2));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--muted)}
+.proj-img-placeholder i{font-size:3rem;color:var(--border)}
+.proj-img-placeholder span{font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em}
+.proj-body{padding:64px 0 80px}
+.proj-section{margin-bottom:52px}
+.proj-section-label{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.proj-section-label::after{content:'';flex:1;height:1px;background:var(--accent);opacity:0.2}
+.proj-section p{color:var(--muted);font-size:0.96rem;line-height:1.75;margin-bottom:14px}
+.proj-section p:last-child{margin-bottom:0}
+.spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px}
+.spec-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.spec-card h4{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;text-transform:uppercase}
+.spec-card p{font-size:0.88rem;color:var(--muted);margin:0}
+.highlight-box{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent2);border-radius:var(--radius);padding:20px 24px;margin:20px 0}
+.highlight-box p{color:var(--muted);font-size:0.93rem;margin:0}
+.proj-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.proj-list li{font-size:0.93rem;color:var(--muted);padding-left:20px;position:relative}
+.proj-list li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:0.7rem;top:2px}
+.proj-nav{border-top:1px solid var(--border);padding:40px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.proj-nav a{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.78rem;color:var(--muted);padding:10px 18px;border:1px solid var(--border);border-radius:8px;transition:all var(--transition)}
+.proj-nav a:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="topbar-back"><i class="bi bi-arrow-left"></i> Back to Portfolio</a>
+  <span class="topbar-title">JIN ZIYU · PROJECTS</span>
+</div>
+
+<div class="proj-hero">
+  <p class="proj-eyebrow">Embedded Systems · Haptics · 3D Printing</p>
+  <h1 class="proj-title">Hand Gesture<br>Controlled Robot</h1>
+  <div class="proj-tags">
+    <span>Arduino Nano</span><span>Bluetooth HC05</span><span>3D Printing</span>
+    <span>C</span><span>Servo Motors</span><span>Haptic Glove</span>
+  </div>
+  <div class="proj-meta">
+    <span><i class="bi bi-calendar3"></i> Apr – Aug 2021</span>
+    <span><i class="bi bi-building"></i> Temasek Polytechnic</span>
+    <span><i class="bi bi-award"></i> Certificate of Commendation</span>
+  </div>
+</div>
+
+<div class="award-banner">
+  <i class="bi bi-award-fill"></i>
+  Certificate of Commendation — Recognised as a top major project (Top 10%)
+</div>
+
+<div class="proj-img-placeholder">
+  <i class="bi bi-hand-index"></i>
+  <span>Haptic Glove · 6-Axis Pick-and-Place Robot</span>
+</div>
+
+<div class="proj-body">
+  <div class="container">
+
+    <div class="proj-section">
+      <div class="proj-section-label">Overview</div>
+      <p>The Hand Gesture Controlled Robot is a six-axis pick-and-place robotic arm controlled wirelessly in real time via a Haptic Glove worn by the operator. Flex sensors on the glove capture finger bend angles, which are transmitted over Bluetooth and mapped directly to the servo joints of the 3D-printed robot arm.</p>
+      <p>The project was developed as the major project for the Diploma in Electronics at Temasek Polytechnic and received a Certificate of Commendation — placing it in the top 10% of major projects for that cohort.</p>
+    </div>
+
+    <div class="proj-section">
+      <div class="proj-section-label">System Design</div>
+      <div class="spec-grid">
+        <div class="spec-card">
+          <h4>Master (Glove)</h4>
+          <p>Haptic Glove with flex sensors on each finger, read by an Arduino Nano. Data transmitted wirelessly via HC05 Bluetooth module to the slave unit.</p>
+        </div>
+        <div class="spec-card">
+          <h4>Slave (Robot Arm)</h4>
+          <p>6-axis 3D-printed robotic arm with servo motors at each joint. Arduino Nano receives Bluetooth data and drives servos via PWM signals.</p>
+        </div>
+        <div class="spec-card">
+          <h4>Communication</h4>
+          <p>Master-Slave Bluetooth configuration using paired HC05 modules operating in AT command mode — achieves low-latency wireless control.</p>
+        </div>
+        <div class="spec-card">
+          <h4>Mechanical</h4>
+          <p>Entire robot arm structure 3D printed in PLA. Designed for lightweight, modular assembly with servo motor mounts at each of the six axes.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-section">
+      <div class="proj-section-label">Key Technical Work</div>
+      <ul class="proj-list">
+        <li>Designed and fabricated the 3D-printed 6-axis arm structure optimised for servo motor integration</li>
+        <li>Implemented flex sensor ADC reading and mapping to servo PWM range on the Arduino master</li>
+        <li>Configured HC05 Bluetooth modules in Master-Slave AT command pairing mode</li>
+        <li>Calibrated servo angle mapping to produce intuitive 1:1 gesture-to-joint control</li>
+        <li>Developed firmware in C for both master (glove) and slave (arm) Arduino Nano units</li>
+        <li>Tested pick-and-place operations with real objects, validating gesture control accuracy</li>
+      </ul>
+    </div>
+
+    <div class="proj-section">
+      <div class="proj-section-label">Technology Stack</div>
+      <ul class="proj-list">
+        <li><strong>Microcontrollers:</strong> Arduino Nano × 2 (master + slave)</li>
+        <li><strong>Wireless:</strong> HC05 Bluetooth module pair (Master-Slave configuration)</li>
+        <li><strong>Sensing:</strong> Flex sensors (one per finger) for gesture capture</li>
+        <li><strong>Actuation:</strong> SG90/MG996R servo motors at six axes</li>
+        <li><strong>Fabrication:</strong> FDM 3D printing (PLA) for full arm structure</li>
+        <li><strong>Language:</strong> C (Arduino firmware for master and slave)</li>
+      </ul>
+    </div>
+
+    <div class="proj-section">
+      <div class="proj-section-label">Recognition</div>
+      <div class="highlight-box">
+        <p>Awarded a Certificate of Commendation at Temasek Polytechnic, recognising the Hand Gesture Controlled Robot as one of the top major projects — placing in the top 10% of the cohort for innovation and technical execution.</p>
+      </div>
+    </div>
+
+    <div class="proj-nav">
+      <a href="sep-limo-arena.html"><i class="bi bi-arrow-left"></i> Prev: LIMO Navigation</a>
+      <a href="../index.html#projects"><i class="bi bi-grid"></i> All Projects</a>
+      <a href="sit-dashboard.html">Next: SIT Dashboard <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
