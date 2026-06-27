@@ -11,16 +11,16 @@
 /* ===== RESET & BASE ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0A0F1E;
-  --bg2:#111827;
-  --card:#141E33;
-  --card2:#1A2540;
-  --border:#1E2D4A;
-  --text:#E8F4FD;
-  --muted:#7A9BB8;
-  --accent:#00D4FF;
-  --accent2:#FF6B35;
-  --accent-glow:rgba(0,212,255,0.15);
+  --bg:#F0F6FF;
+  --bg2:#E4EEFB;
+  --card:#FFFFFF;
+  --card2:#F5F9FF;
+  --border:#C2D8F0;
+  --text:#0D1B2A;
+  --muted:#4A6580;
+  --accent:#0077CC;
+  --accent2:#E85D04;
+  --accent-glow:rgba(0,119,204,0.12);
   --font-head:'Space Grotesk',sans-serif;
   --font-body:'Inter',sans-serif;
   --font-mono:'Space Mono',monospace;
@@ -29,11 +29,12 @@
   --transition:0.3s cubic-bezier(0.4,0,0.2,1);
 }
 html{scroll-behavior:smooth;font-size:16px}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.65;overflow-x:hidden}
+body{background:var(--bg) url('assets/img/bg.jpg') center/cover fixed no-repeat;color:var(--text);font-family:var(--font-body);line-height:1.65;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 ul{list-style:none}
 img{max-width:100%;display:block}
-section{padding:100px 0}
+section{padding:100px 0;background:rgba(240,246,255,0.82)}
+.alt-bg{background:rgba(228,238,251,0.88)!important}
 
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar{width:6px}
@@ -60,13 +61,13 @@ section{padding:100px 0}
   position:fixed;top:0;left:0;right:0;z-index:999;
   height:var(--nav-h);
   display:flex;align-items:center;
-  background:rgba(10,15,30,0);
+  background:rgba(240,246,255,0);
   backdrop-filter:blur(0px);
   transition:background var(--transition),backdrop-filter var(--transition),border-bottom var(--transition);
   border-bottom:1px solid transparent;
 }
 .site-nav.scrolled{
-  background:rgba(10,15,30,0.92);
+  background:rgba(240,246,255,0.94);
   backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
 }
@@ -334,7 +335,7 @@ section{padding:100px 0}
 
 /* ===== FOOTER ===== */
 .site-footer{
-  background:var(--bg);border-top:1px solid var(--border);
+  background:rgba(240,246,255,0.92);border-top:1px solid var(--border);
   padding:28px 0;text-align:center;
 }
 .site-footer p{font-family:var(--font-mono);font-size:0.75rem;color:var(--muted)}
@@ -368,6 +369,22 @@ section{padding:100px 0}
   section{padding:72px 0}
   .hero-name{font-size:2.8rem}
 }
+/* ===== PALLET VIDEO UPLOAD ===== */
+.pallet-dropzone{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  background:var(--card2);
+  border:2px dashed var(--border);
+  cursor:pointer;transition:all var(--transition);
+  padding:24px;text-align:center;
+}
+.pallet-dropzone:hover,.pallet-dropzone.drag-over{
+  border-color:var(--accent);background:var(--accent-glow);
+}
+.pallet-dropzone i{font-size:2.8rem;color:var(--accent);opacity:0.7}
+.pallet-dropzone p{font-family:var(--font-mono);font-size:0.82rem;color:var(--muted);line-height:1.6}
+.pallet-dropzone p span{font-size:0.72rem;color:var(--accent);text-decoration:underline}
+.pallet-dropzone.drag-over i{opacity:1;transform:scale(1.1)}
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
   .reveal{opacity:1;transform:none}
@@ -524,18 +541,25 @@ section{padding:100px 0}
     <div class="projects-grid">
 
       <article class="project-card reveal">
-        <div class="project-img">
-          <img src="assets/img/project/ceva-project.jpg" alt="CEVA Intelligent Pallet System" onerror="this.style.display='none';this.nextElementSibling.style.display='none';this.parentElement.innerHTML='<div class=\'project-placeholder\'><i class=\'bi bi-boxes\'></i><span>ceva-project</span></div>'"/>
-          <div class="project-overlay">
-            <a href="projects/ceva-project.html" target="_blank" class="overlay-btn">View Details <i class="bi bi-arrow-right"></i></a>
+        <div class="project-img" id="palletMediaWrap" style="cursor:default">
+          <div id="palletDropZone" class="pallet-dropzone"
+            onclick="document.getElementById('palletFileInput').click()"
+            ondragover="event.preventDefault();this.classList.add('drag-over')"
+            ondragleave="this.classList.remove('drag-over')"
+            ondrop="palletHandleDrop(event)">
+            <i class="bi bi-film"></i>
+            <p>Drop video here<br/><span>or click to browse</span></p>
+            <input type="file" id="palletFileInput" accept="video/*" style="display:none" onchange="palletLoadVideo(this.files[0])"/>
           </div>
+          <video id="palletVideo" style="display:none;width:100%;height:100%;object-fit:cover" controls playsinline></video>
+          <button id="palletRemoveBtn" onclick="palletRemove()" style="display:none;position:absolute;top:10px;right:10px;background:rgba(240,246,255,0.88);border:1.5px solid var(--border);color:var(--text);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--font-mono);cursor:pointer;z-index:5"><i class="bi bi-x-lg"></i> Remove</button>
         </div>
         <div class="project-body">
           <div class="project-tags"><span>ROS 2</span><span>Computer Vision</span><span>Python</span><span>ZED2i</span></div>
-          <h3>CEVA — Intelligent Pallet Optimisation System</h3>
+          <h3>Intelligent Pallet &amp; Optimization System</h3>
           <p>An autonomous warehouse measurement system integrating load cell sensing and stereo camera vision to capture weight and 3D dimensions of palletised cargo at a fixed checkpoint with minimal human intervention.</p>
           <div class="project-actions">
-            <a href="projects/ceva-project.html" target="_blank" class="action-link">Read More <i class="bi bi-arrow-right"></i></a>
+            <a href="projects/intelligent-pallet-optimization.html" target="_blank" class="action-link">Read More <i class="bi bi-arrow-right"></i></a>
           </div>
         </div>
       </article>
@@ -797,14 +821,14 @@ document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
       if(col<COLS-1){
         const m=nodes[i+1];
         const a=n.active&&m.active?0.18:0.06;
-        ctx.strokeStyle=`rgba(0,212,255,${a})`;
+        ctx.strokeStyle=`rgba(0,119,204,${a})`;
         ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(m.x,m.y);ctx.stroke();
       }
       // down
       if(row<ROWS-1){
         const m=nodes[i+COLS];
         const a=n.active&&m.active?0.18:0.06;
-        ctx.strokeStyle=`rgba(0,212,255,${a})`;
+        ctx.strokeStyle=`rgba(0,119,204,${a})`;
         ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(m.x,m.y);ctx.stroke();
       }
     }
@@ -815,12 +839,12 @@ document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
       const r=n.active?2.5:1.2;
       ctx.beginPath();
       ctx.arc(n.x,n.y,r,0,Math.PI*2);
-      ctx.fillStyle=n.active?`rgba(0,212,255,${glow})`:`rgba(30,45,74,0.8)`;
+      ctx.fillStyle=n.active?`rgba(0,119,204,${glow})`:`rgba(194,216,240,0.8)`;
       ctx.fill();
       if(n.active){
         ctx.beginPath();
         ctx.arc(n.x,n.y,r*2.5,0,Math.PI*2);
-        ctx.fillStyle=`rgba(0,212,255,${glow*0.12})`;
+        ctx.fillStyle=`rgba(0,119,204,${glow*0.12})`;
         ctx.fill();
       }
     });
@@ -861,6 +885,38 @@ document.getElementById('contactForm').addEventListener('submit',function(e){
   this.reset();
   setTimeout(()=>{fb.textContent='';fb.className='form-feedback'},4000);
 });
+
+/* ===== PALLET VIDEO UPLOAD ===== */
+function palletLoadVideo(file){
+  if(!file||!file.type.startsWith('video/')) return;
+  const url = URL.createObjectURL(file);
+  const video = document.getElementById('palletVideo');
+  const drop  = document.getElementById('palletDropZone');
+  const btn   = document.getElementById('palletRemoveBtn');
+  video.src = url;
+  video.style.display = 'block';
+  drop.style.display  = 'none';
+  btn.style.display   = 'block';
+}
+function palletHandleDrop(e){
+  e.preventDefault();
+  document.getElementById('palletDropZone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  palletLoadVideo(file);
+}
+function palletRemove(){
+  const video = document.getElementById('palletVideo');
+  const drop  = document.getElementById('palletDropZone');
+  const btn   = document.getElementById('palletRemoveBtn');
+  const input = document.getElementById('palletFileInput');
+  video.pause();
+  URL.revokeObjectURL(video.src);
+  video.src = '';
+  video.style.display = 'none';
+  drop.style.display  = 'flex';
+  btn.style.display   = 'none';
+  input.value = '';
+}
 
 /* ===== RESUME IFRAME FALLBACK ===== */
 document.getElementById('resumeIframe').addEventListener('error',function(){
