@@ -4,165 +4,250 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>SIT Student Dashboard — Jin Ziyu</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F0F6FF;--bg2:#E4EEFB;--card:#FFFFFF;--card2:#F5F9FF;
-  --border:#C2D8F0;--text:#0D1B2A;--muted:#4A6580;
-  --accent:#0077CC;--accent2:#E85D04;--accent-glow:rgba(0,119,204,0.12);
-  --font-head:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;
-  --font-mono:'Space Mono',monospace;--radius:12px;--transition:0.3s cubic-bezier(0.4,0,0.2,1);
+  --void:#FAFAF8;
+  --surface:#F2F1ED;
+  --panel:#FFFFFF;
+  --card:#F7F6F2;
+  --border:rgba(28,24,16,0.10);
+  --border-hi:rgba(28,24,16,0.20);
+  --cyan:#DAA613;
+  --cyan-dim:rgba(218,166,19,0.08);
+  --cyan-mid:rgba(218,166,19,0.35);
+  --amber:#DAA000;
+  --amber-dim:rgba(218,160,0,0.10);
+  --purple:#613DAA;
+  --purple-dim:rgba(97,61,170,0.08);
+  --navy:#000DAA;
+  --text:#1C1810;
+  --text-2:rgba(28,24,16,0.58);
+  --text-3:rgba(28,24,16,0.35);
+  --font-display:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --ease:cubic-bezier(0.4,0,0.2,1);
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.65;overflow-x:hidden}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--void);color:var(--text);font-family:var(--font-body);line-height:1.7;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.container{max-width:860px;margin:0 auto;padding:0 24px}
-.topbar{position:sticky;top:0;z-index:99;background:rgba(240,246,255,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
-.topbar-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);transition:color var(--transition)}
-.topbar-back:hover{color:var(--accent)}
-.topbar-title{font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.05em}
-.proj-hero{background:#07111F;padding:80px 24px 64px;text-align:center;position:relative;overflow:hidden}
-.proj-hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,119,204,0.02) 2px,rgba(0,119,204,0.02) 4px)}
-.proj-eyebrow{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,150,255,0.7);margin-bottom:20px}
-.proj-title{font-family:var(--font-head);font-size:clamp(1.8rem,5vw,3rem);font-weight:700;color:#EEF4FF;line-height:1.1;margin-bottom:20px;position:relative;z-index:1}
-.proj-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px;position:relative;z-index:1}
-.proj-tags span{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.06em;padding:4px 12px;border-radius:20px;border:1px solid rgba(0,119,204,0.35);color:rgba(0,150,255,0.8)}
-.proj-meta{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;font-family:var(--font-mono);font-size:0.72rem;color:rgba(168,200,240,0.6);position:relative;z-index:1}
+.container{max-width:880px;margin:0 auto;padding:0 28px}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:rgba(218,166,19,0.4);border-radius:0}
+
+.plate{position:relative;border:1px solid var(--border);background:var(--panel)}
+.plate::before,.plate::after{content:'';position:absolute;width:11px;height:11px;pointer-events:none}
+.plate::before{top:-1px;left:-1px;border-top:2px solid var(--text);border-left:2px solid var(--text)}
+.plate::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--text);border-right:2px solid var(--text)}
+
+.topbar{position:sticky;top:0;z-index:99;background:rgba(250,250,248,0.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between}
+.topbar-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-2);transition:color 0.2s}
+.topbar-back:hover{color:var(--cyan)}
+.topbar-title{font-family:var(--font-mono);font-size:0.66rem;color:var(--text-3);letter-spacing:0.08em}
+
+.proj-hero{position:relative;padding:64px 24px 48px;border-bottom:1px solid var(--border);background:var(--surface);overflow:hidden}
+#sigCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.proj-hero-inner{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.proj-tagid{display:inline-block;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.06em;color:var(--cyan);border:1px solid var(--cyan);padding:4px 10px;margin-bottom:18px}
+.proj-eyebrow{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple);margin-bottom:14px}
+.proj-title{font-family:var(--font-display);font-size:clamp(1.7rem,4.4vw,2.7rem);font-weight:800;color:var(--text);line-height:1.12;margin-bottom:22px;max-width:680px;letter-spacing:-0.02em}
+.proj-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px}
+.proj-tags span{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.03em;padding:4px 10px;border:1px solid rgba(97,61,170,0.4);color:rgba(97,61,170,0.85);text-transform:uppercase;background:var(--purple-dim)}
+.proj-meta{display:flex;gap:26px;flex-wrap:wrap;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-2);border-top:1px dashed var(--border-hi);padding-top:16px}
 .proj-meta span{display:flex;align-items:center;gap:6px}
-.proj-img-placeholder{height:360px;background:linear-gradient(135deg,var(--card),var(--card2));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--muted)}
-.proj-img-placeholder i{font-size:3rem;color:var(--border)}
-.proj-img-placeholder span{font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em}
-.proj-body{padding:64px 0 80px}
-.proj-section{margin-bottom:52px}
-.proj-section-label{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:24px}
-.proj-section-label::after{content:'';flex:1;height:1px;background:var(--accent);opacity:0.2}
-.proj-section p{color:var(--muted);font-size:0.96rem;line-height:1.75;margin-bottom:14px}
+.proj-meta i{color:var(--cyan)}
+
+.proj-figure{border-bottom:1px solid var(--border)}
+.proj-figure svg{width:100%;height:auto;display:block;max-height:420px}
+.proj-figure-cap{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.05em;color:var(--text-3);text-transform:uppercase;text-align:center;padding:10px 0;background:var(--surface);border-bottom:1px solid var(--border)}
+
+.proj-body{padding:60px 0 80px;background:var(--panel)}
+.proj-section{margin-bottom:52px;max-width:880px;margin-left:auto;margin-right:auto;padding:0 28px}
+.proj-section-label{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.proj-section-label .n{color:var(--text);font-weight:600}
+.proj-section-label::after{content:'';flex:1;max-width:90px;height:1px;background:repeating-linear-gradient(90deg,var(--text) 0 6px,transparent 6px 10px);opacity:0.5}
+.proj-section p{color:var(--text-2);font-size:0.96rem;line-height:1.78;margin-bottom:14px}
 .proj-section p:last-child{margin-bottom:0}
-.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px}
-.feature-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
-.feature-card h4{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;text-transform:uppercase}
-.feature-card p{font-size:0.88rem;color:var(--muted);margin:0}
-.highlight-box{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--radius);padding:20px 24px;margin:20px 0}
-.highlight-box p{color:var(--muted);font-size:0.93rem;margin:0}
-.proj-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.proj-list li{font-size:0.93rem;color:var(--muted);padding-left:20px;position:relative}
-.proj-list li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:0.7rem;top:2px}
-.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--font-mono);font-size:0.78rem;color:var(--muted);transition:all var(--transition)}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
-.proj-nav{border-top:1px solid var(--border);padding:40px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.proj-nav a{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.78rem;color:var(--muted);padding:10px 18px;border:1px solid var(--border);border-radius:8px;transition:all var(--transition)}
-.proj-nav a:hover{border-color:var(--accent);color:var(--accent)}
+
+.spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(218,166,19,0.10);border:1px solid var(--border);margin-top:6px}
+.spec-card{background:var(--panel);padding:20px;transition:background 0.25s}
+.spec-card:hover{background:rgba(97,61,170,0.06)}
+.spec-card h4{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.06em;color:var(--cyan);margin-bottom:8px;text-transform:uppercase}
+.spec-card p{font-size:0.87rem;color:var(--text-2);margin:0}
+
+.highlight-box{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);padding:20px 24px;margin:18px 0}
+.highlight-box p{color:var(--text-2);font-size:0.92rem;margin:0}
+
+.proj-list{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.proj-list li{font-size:0.92rem;color:var(--text-2);padding-left:20px;position:relative}
+.proj-list li::before{content:'—';position:absolute;left:0;color:var(--purple);top:0}
+.proj-list li strong{color:var(--text)}
+
+.obj-list{display:flex;flex-direction:column;gap:0;margin-top:6px;border:1px solid var(--border)}
+.obj-list li{font-size:0.92rem;color:var(--text);padding:13px 16px;position:relative;border-bottom:1px solid var(--border);display:flex;gap:12px}
+.obj-list li:last-child{border-bottom:none}
+.obj-list li:hover{background:rgba(97,61,170,0.05)}
+.obj-list li .ono{font-family:var(--font-mono);font-size:0.72rem;color:var(--cyan);flex:0 0 30px}
+
+.media-frame{border:1px solid var(--border);background:var(--surface);position:relative}
+.media-frame video{width:100%;display:block;max-height:480px;background:#000}
+.media-placeholder{min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:36px;text-align:center;background:var(--card)}
+.media-placeholder i{font-size:2.2rem;color:var(--border-hi)}
+.media-placeholder span{font-family:var(--font-mono);font-size:0.74rem;color:var(--text-2);line-height:1.7}
+
+.repo-card{display:flex;justify-content:space-between;align-items:center;gap:16px;border:1px solid var(--border);background:var(--panel);padding:20px 22px;flex-wrap:wrap}
+.repo-card .repo-meta{font-family:var(--font-mono);font-size:0.78rem;color:var(--text-2)}
+.repo-card .repo-meta strong{color:var(--text);display:block;font-family:var(--font-display);font-size:1rem;margin-bottom:4px}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border:1.5px solid var(--border-hi);font-family:var(--font-mono);font-size:0.74rem;color:var(--text-2);text-transform:uppercase;letter-spacing:0.02em;transition:all 0.2s}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+
+.proj-nav{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;max-width:880px;margin:0 auto;background:var(--surface)}
+.proj-nav a{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.74rem;color:var(--text-2);padding:10px 16px;border:1px solid var(--border);transition:all 0.2s;text-transform:uppercase;letter-spacing:0.02em}
+.proj-nav a:hover{border-color:var(--cyan);color:var(--cyan)}
+
+@media(max-width:600px){.spec-grid{grid-template-columns:1fr}.proj-meta{gap:16px}}
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <a href="../index.html" class="topbar-back"><i class="bi bi-arrow-left"></i> Back to Portfolio</a>
-  <span class="topbar-title">JIN ZIYU · PROJECTS</span>
+  <span class="topbar-title">JIN ZIYU · PROJECT FILE</span>
 </div>
-
 <div class="proj-hero">
-  <p class="proj-eyebrow">Web Development · Student Tools</p>
-  <h1 class="proj-title">SIT Student<br>Dashboard</h1>
-  <div class="proj-tags">
-    <span>HTML</span><span>CSS</span><span>JavaScript</span>
-    <span>localStorage</span><span>Drag &amp; Drop</span><span>Dark Mode</span>
-  </div>
-  <div class="proj-meta">
-    <span><i class="bi bi-calendar3"></i> 2024 – 2025</span>
-    <span><i class="bi bi-person"></i> Personal Project</span>
-    <span><i class="bi bi-github"></i> Open Source</span>
+  <canvas id="sigCanvas" aria-hidden="true"></canvas>
+  <div class="proj-hero-inner">
+    <span class="proj-tagid">RBX-04</span>
+    <p class="proj-eyebrow">Web Development · Student Tools</p>
+    <h1 class="proj-title">SIT Student Dashboard</h1>
+    <div class="proj-tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>localStorage</span><span>Drag &amp; Drop</span><span>Dark Mode</span></div>
+    <div class="proj-meta"><span><i class='bi bi-calendar3'></i> 2024 – 2025</span><span><i class='bi bi-person'></i> Personal Project</span><span><i class='bi bi-github'></i> Open Source</span></div>
   </div>
 </div>
-
-<div class="proj-img-placeholder">
-  <i class="bi bi-layout-text-window-reverse"></i>
-  <span>SIT Student Dashboard · Web App</span>
+<div class="proj-figure plate"><svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg">
+<rect width="880" height="420" fill="#F2F1ED"/>
+<g stroke="#613DAA" stroke-width="1" opacity="0.15"><line x1="0" y1="90" x2="880" y2="90"/><line x1="0" y1="330" x2="880" y2="330"/></g>
+<rect x="120" y="90" width="640" height="240" fill="none" stroke="#1C1810" stroke-width="2.5"/>
+<line x1="120" y1="130" x2="760" y2="130" stroke="#1C1810" stroke-width="1.5"/>
+<rect x="142" y="150" width="180" height="64" fill="none" stroke="#DAA613" stroke-width="1.8"/>
+<rect x="340" y="150" width="180" height="64" fill="none" stroke="#DAA613" stroke-width="1.8"/>
+<rect x="538" y="150" width="180" height="64" fill="none" stroke="#DAA613" stroke-width="1.8"/>
+<rect x="142" y="232" width="576" height="62" fill="none" stroke="#613DAA" stroke-width="1.8"/>
+<text x="232" y="186" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#DAA000">TIMETABLE</text>
+<text x="430" y="186" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#DAA000">ALERTS</text>
+<text x="628" y="186" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#DAA000">QUICK LINKS</text>
+<text x="430" y="266" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#613DAA">localStorage · per-student namespace</text>
+<text x="440" y="55" text-anchor="middle" font-family="DM Mono,monospace" font-size="12" letter-spacing="2" fill="#5B6358">FIG.01 — DASHBOARD PANEL LAYOUT</text>
+</svg></div><div class="proj-figure-cap">FIG.01 — Dashboard panel layout</div><div class="proj-body"><div class="proj-section">
+  <div class="proj-section-label"><span class="n">01</span> Project Overview</div>
+  <p>The SIT Student Dashboard is a single-file, browser-based web application built as a practical daily tool for students at the Singapore Institute of Technology. It consolidates timetable views, campus alerts, and quick-access links into a unified interface — without requiring any backend or login infrastructure.</p><p>Built entirely with vanilla HTML, CSS, and JavaScript, the dashboard is designed for zero-dependency deployment: it runs as a static file, is hosted on GitHub Pages, and persists data per student using namespaced localStorage keys.</p><div style='margin-top:10px'><a href='https://github.com/Jin-Ziyu/sit-dashboard' target='_blank' class='btn-outline'><i class='bi bi-github'></i> View on GitHub</a></div>
 </div>
-
-<div class="proj-body">
-  <div class="container">
-
-    <div class="proj-section">
-      <div class="proj-section-label">Overview</div>
-      <p>The SIT Student Dashboard is a single-file, browser-based web application built as a practical daily tool for students at the Singapore Institute of Technology. It consolidates timetable views, campus alerts, and quick-access links into a unified interface — without requiring any backend or login infrastructure.</p>
-      <p>Built entirely with vanilla HTML, CSS, and JavaScript, the dashboard is designed for zero-dependency deployment: it runs as a static file, can be hosted on GitHub Pages, and persists data per student using namespaced localStorage keys.</p>
-      <div style="margin-top:20px">
-        <a href="https://github.com/Jin-Ziyu/sit-dashboard" target="_blank" class="btn-outline"><i class="bi bi-github"></i> View on GitHub</a>
-      </div>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">Features</div>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <h4>Timetable Integration</h4>
-          <p>Weekly timetable view with xSITE integration support — students can view their class schedule directly within the dashboard.</p>
-        </div>
-        <div class="feature-card">
-          <h4>Drag &amp; Drop Panels</h4>
-          <p>Customisable dashboard layout with drag-and-drop panel repositioning, letting each student arrange their workspace to preference.</p>
-        </div>
-        <div class="feature-card">
-          <h4>Dark Mode</h4>
-          <p>Full dark/light mode toggle with persistent theme preference saved to localStorage across sessions.</p>
-        </div>
-        <div class="feature-card">
-          <h4>Per-Student Namespacing</h4>
-          <p>localStorage data is namespaced by student ID, enabling multiple users to share the same browser without data conflicts.</p>
-        </div>
-        <div class="feature-card">
-          <h4>Campus Alerts</h4>
-          <p>Alert panel for displaying campus announcements, deadlines, or important notices — editable directly in the interface.</p>
-        </div>
-        <div class="feature-card">
-          <h4>Mobile Navigation</h4>
-          <p>Responsive mobile navigation with a collapsible menu, optimised for use on phones and tablets on campus.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">Technical Decisions</div>
-      <ul class="proj-list">
-        <li>Single HTML file architecture — no build tools, no dependencies, no backend required</li>
-        <li>Vanilla JS drag-and-drop implementation using the HTML5 Drag and Drop API</li>
-        <li>localStorage used for all persistent state: theme, timetable data, panel layout, student ID namespace</li>
-        <li>CSS custom properties (variables) for theming — dark/light mode swap handled entirely in CSS</li>
-        <li>Designed for GitHub Pages hosting with no server-side logic needed</li>
-      </ul>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">Technology Stack</div>
-      <ul class="proj-list">
-        <li><strong>Frontend:</strong> HTML5 · CSS3 (custom properties, grid, flexbox) · Vanilla JavaScript (ES6+)</li>
-        <li><strong>Storage:</strong> Web Storage API (localStorage) with per-student namespacing</li>
-        <li><strong>Hosting:</strong> GitHub Pages (static hosting, zero-config)</li>
-        <li><strong>UI:</strong> Bootstrap Icons · Google Fonts · No external JS frameworks</li>
-      </ul>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">Motivation</div>
-      <div class="highlight-box">
-        <p>Built out of a genuine need — existing SIT student tools were scattered across different portals. The dashboard brings timetables, alerts, and links together in one place, and served as a personal project to develop web development skills alongside the Robotics Systems degree.</p>
-      </div>
-    </div>
-
-    <div class="proj-nav">
-      <a href="hand-gesture-robot.html"><i class="bi bi-arrow-left"></i> Prev: Haptic Glove Robot</a>
-      <a href="../index.html#projects"><i class="bi bi-grid"></i> All Projects</a>
-    </div>
-
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">02</span> Objectives</div>
+  <ul class='obj-list'><li><span class='ono'>01</span><span>Consolidate scattered SIT student tools (timetable, alerts, links) into a single page</span></li><li><span class='ono'>02</span><span>Avoid any backend or login requirement — run entirely client-side</span></li><li><span class='ono'>03</span><span>Let each student customise their own panel layout and theme</span></li><li><span class='ono'>04</span><span>Keep data persistent per student on a shared browser via namespaced storage</span></li></ul>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">03</span> Demo Video</div>
+  <div class="media-frame"><div class="media-placeholder"><i class="bi bi-film"></i><span>Best experienced live — visit the hosted dashboard linked under Project Repository below.</span></div></div>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">04</span> Report Preview</div>
+  <div class="media-frame" style="background:var(--panel)">
+    <iframe src="../assets/reports/sit-dashboard-presentation.pdf" title="Design Process Deck" style="width:100%;height:600px;border:none;display:block" onerror="this.closest('.media-frame').innerHTML='<div class=\'media-placeholder\'><i class=\'bi bi-file-earmark-pdf\'></i><span>Report preview unavailable.</span></div>'"></iframe>
   </div>
 </div>
-
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">05</span> System Context</div>
+  <div class='spec-grid'><div class='spec-card'><h4>Timetable Integration</h4><p>Weekly timetable view with xSITE integration support — students view their class schedule directly within the dashboard.</p></div><div class='spec-card'><h4>Drag &amp; Drop Panels</h4><p>Customisable layout with drag-and-drop panel repositioning, letting each student arrange their workspace to preference.</p></div><div class='spec-card'><h4>Per-Student Namespacing</h4><p>localStorage data is namespaced by student ID, enabling multiple users to share the same browser without data conflicts.</p></div><div class='spec-card'><h4>Hosting</h4><p>Single HTML file architecture deployed on GitHub Pages — no build tools, dependencies, or backend required.</p></div></div>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">06</span> Technical Stack</div>
+  <ul class='proj-list'><li><strong>Frontend:</strong> HTML5 · CSS3 (custom properties, grid, flexbox) · Vanilla JavaScript (ES6+)</li><li><strong>Storage:</strong> Web Storage API (localStorage) with per-student namespacing</li><li><strong>Hosting:</strong> GitHub Pages (static hosting, zero-config)</li><li><strong>UI:</strong> Bootstrap Icons · Google Fonts · No external JS frameworks</li></ul>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">07</span> Role &amp; Contribution</div>
+  <p>This was a solo personal project end-to-end: I designed the information architecture, built the drag-and-drop layout system with the HTML5 Drag and Drop API, implemented the dark/light theme system using CSS custom properties, and built the per-student localStorage namespacing so the dashboard could be safely shared on lab computers.</p>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">08</span> Verification &amp; Validation</div>
+  <div class='spec-grid'><div class='spec-card'><h4>Cross-Browser Testing</h4><p>Manually tested layout, drag-and-drop, and theme persistence across Chrome, Safari, and Edge on desktop and mobile.</p></div><div class='spec-card'><h4>Data Isolation</h4><p>Verified that namespaced localStorage correctly isolates timetable and layout data between different student IDs on the same browser.</p></div><div class='spec-card'><h4>Timezone Fix Verification</h4><p>Re-tested ICS timetable parsing after fixing a timezone bug to confirm class times displayed correctly.</p></div><div class='spec-card'><h4>Usability</h4><p>Iterated panel visibility and column-picker controls based on direct use during daily timetable checks.</p></div></div><div class='highlight-box'><p>Built out of a genuine need — existing SIT student tools were scattered across different portals. The dashboard brings timetables, alerts, and links together in one place, and served as a personal project to develop web development skills alongside the Robotics Systems degree.</p></div>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">09</span> Project Repository</div>
+  <div class="repo-card">
+      <div class="repo-meta"><strong>Project Repository</strong>Source code, build files, and documentation on GitHub.</div>
+      <a href="https://github.com/Jin-Ziyu/sit-dashboard" target="_blank" class="btn-outline"><i class="bi bi-github"></i> View Repository</a>
+    </div>
+</div>
+</div><div class="proj-nav">
+  <a href="hand-gesture-robot.html"><i class="bi bi-arrow-left"></i> Prev: Haptic Glove Robot</a>
+  <a href="../index.html#projects"><i class="bi bi-grid"></i> All Projects</a>
+  <span></span>
+</div>
+<script>
+(function(){
+  const c=document.getElementById('sigCanvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  let W,H,t=0;
+  const zone=document.querySelector('.proj-hero');
+  let mx=0.5,my=0.5;
+  function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight}
+  window.addEventListener('resize',resize);
+  resize();
+  zone.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    mx=(e.clientX-r.left)/W;my=(e.clientY-r.top)/H;
+  });
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t+=0.02;
+    const dmx=0.5+Math.sin(t*0.35)*0.4;
+    const dmy=0.5+Math.cos(t*0.27)*0.35;
+    const gx=W/18,gy=H/10;
+    for(let r=0;r<=10;r++) for(let cc=0;cc<=18;cc++){
+      const px=cc*gx,py=r*gy;
+      const dist=Math.hypot(px/W-dmx,py/H-dmy);
+      const a=Math.max(0,0.12-dist*0.22);
+      ctx.beginPath();ctx.arc(px,py,1,0,Math.PI*2);
+      ctx.fillStyle=`rgba(218,166,19,${a})`;ctx.fill();
+    }
+    ctx.beginPath();
+    ctx.strokeStyle='rgba(218,166,19,0.28)';ctx.lineWidth=1.5;
+    for(let x=0;x<=W;x+=2){
+      const norm=x/W;
+      const freq=3+dmx*4;
+      const amp=H*0.08*(0.5+dmy*0.8);
+      const y=H*0.5+Math.sin(norm*Math.PI*freq-t*1.6)*amp+Math.sin(norm*Math.PI*freq*1.7-t*1.1)*(amp*0.3);
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle='rgba(97,61,170,0.18)';ctx.lineWidth=1;
+    for(let x=0;x<=W;x+=2){
+      const norm=x/W;
+      const y=H*0.35+Math.sin(norm*Math.PI*5-t*2.1)*H*0.04;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle='rgba(218,160,0,0.16)';ctx.lineWidth=1;
+    for(let x=0;x<=W;x+=2){
+      const norm=x/W;
+      const y=H*0.68+Math.sin(norm*Math.PI*3.4+t*1.4)*H*0.05;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
 </body>
 </html>
