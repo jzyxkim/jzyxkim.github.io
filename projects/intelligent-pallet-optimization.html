@@ -56,35 +56,15 @@ img{max-width:100%;display:block}
   backdrop-filter:blur(18px);
   border-bottom:1px solid var(--border);
 }
-.nav-inner{
-  max-width:1100px;margin:0 auto;padding:0 32px;
-  width:100%;display:flex;align-items:center;justify-content:space-between;
-}
-.nav-logo{
-  font-family:var(--font-mono);font-size:0.78rem;font-weight:500;
-  color:var(--text);letter-spacing:0.04em;
-  display:flex;align-items:center;gap:10px;
-}
-.nav-logo-mark{
-  width:34px;height:34px;border:1px solid var(--border-hi);
-  display:flex;align-items:center;justify-content:center;
-  font-size:0.72rem;color:var(--text);
-  transition:background 0.2s;overflow:hidden;
-}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 32px;width:100%;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--font-mono);font-size:0.78rem;font-weight:500;color:var(--text);letter-spacing:0.04em;display:flex;align-items:center;gap:10px}
+.nav-logo-mark{width:34px;height:34px;border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;font-size:0.72rem;color:var(--text);transition:background 0.2s;overflow:hidden}
 .nav-logo-mark img{width:100%;height:100%;object-fit:cover}
 .nav-logo-mark:hover{background:var(--cyan-dim);color:var(--cyan)}
 .nav-links{display:flex;gap:0;align-items:center}
-.nav-link{
-  font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;
-  color:var(--text-2);padding:8px 14px;
-  transition:color 0.2s;position:relative;
-}
+.nav-link{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-2);padding:8px 14px;transition:color 0.2s;position:relative}
 .nav-link:hover{color:var(--text)}
-.nav-link::after{
-  content:'';position:absolute;bottom:4px;left:14px;right:14px;height:1px;
-  background:var(--cyan);transform:scaleX(0);transition:transform 0.2s var(--ease);
-  transform-origin:left;
-}
+.nav-link::after{content:'';position:absolute;bottom:4px;left:14px;right:14px;height:1px;background:var(--cyan);transform:scaleX(0);transition:transform 0.2s var(--ease);transform-origin:left}
 .nav-link:hover::after{transform:scaleX(1)}
 .nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:4px;flex-direction:column;gap:5px}
 .nav-toggle span{display:block;width:20px;height:1.5px;background:var(--text);transition:transform 0.25s,opacity 0.25s}
@@ -97,81 +77,65 @@ img{max-width:100%;display:block}
   border-bottom:1px solid var(--border);
   overflow:hidden;
 }
-/* notebook lines */
 .proj-hero::after{
   content:'';position:absolute;inset:0;pointer-events:none;
   background-image:repeating-linear-gradient(to bottom,transparent,transparent 31px,rgba(218,166,19,0.07) 31px,rgba(218,166,19,0.07) 32px);
   z-index:0;
 }
-#sigCanvas{
-  position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;z-index:1;
-}
-.hero-geo{
-  position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;overflow:hidden;z-index:1;
-}
-.proj-hero-inner{
-  position:relative;z-index:2;
-  max-width:900px;margin:0 auto;padding:0 32px;
+#sigCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.hero-geo{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:1}
+.proj-hero-inner{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:0 32px}
+
+.proj-tagid{
+  display:inline-block;font-family:var(--font-mono);font-size:0.68rem;
+  letter-spacing:0.1em;color:var(--cyan);
+  border:1px solid rgba(218,166,19,0.4);padding:4px 12px;
+  margin-bottom:20px;text-transform:uppercase;
+  opacity:0;animation:fadeUp 0.8s 0.05s var(--ease) forwards;
 }
 .proj-eyebrow{
   font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.18em;
   color:var(--amber);text-transform:uppercase;
-  display:flex;align-items:center;gap:12px;
-  margin-bottom:24px;
-  opacity:0;animation:fadeUp 0.8s 0.1s var(--ease) forwards;
+  display:flex;align-items:center;gap:12px;margin-bottom:22px;
+  opacity:0;animation:fadeUp 0.8s 0.15s var(--ease) forwards;
 }
-.proj-eyebrow-dot{
-  width:6px;height:6px;border-radius:50%;background:var(--cyan);
-  animation:pulseDot 2.4s infinite;
-}
+.proj-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulseDot 2.4s infinite}
 @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.7)}}
 .proj-title{
   font-family:var(--font-display);
   font-size:clamp(2rem,5vw,3.8rem);
-  font-weight:800;line-height:1.0;
-  letter-spacing:-0.03em;
-  color:var(--text);
-  margin-bottom:28px;
-  opacity:0;animation:fadeUp 0.9s 0.25s var(--ease) forwards;
+  font-weight:800;line-height:1.0;letter-spacing:-0.03em;
+  color:var(--text);margin-bottom:28px;
+  opacity:0;animation:fadeUp 0.9s 0.28s var(--ease) forwards;
 }
-.proj-tags{
-  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;
-  opacity:0;animation:fadeUp 0.9s 0.4s var(--ease) forwards;
-}
-.proj-tag{
-  font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.04em;
-  padding:5px 12px;border:1px solid rgba(97,61,170,0.4);
-  color:rgba(160,127,224,0.85);text-transform:uppercase;
-  background:rgba(97,61,170,0.10);
-}
-.proj-meta{
-  display:flex;gap:28px;flex-wrap:wrap;
-  font-family:var(--font-mono);font-size:0.72rem;color:var(--text-3);
-  opacity:0;animation:fadeUp 0.9s 0.55s var(--ease) forwards;
-}
+.proj-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;opacity:0;animation:fadeUp 0.9s 0.42s var(--ease) forwards}
+.proj-tag{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.04em;padding:5px 12px;border:1px solid rgba(97,61,170,0.4);color:rgba(160,127,224,0.85);text-transform:uppercase;background:rgba(97,61,170,0.10)}
+.proj-meta{display:flex;gap:28px;flex-wrap:wrap;font-family:var(--font-mono);font-size:0.72rem;color:var(--text-3);opacity:0;animation:fadeUp 0.9s 0.55s var(--ease) forwards}
 .proj-meta span{display:flex;align-items:center;gap:8px}
 .proj-meta i{color:var(--cyan)}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── MEDIA ── */
-.proj-media{
+/* ── FIGURE / SVG DIAGRAM ── */
+.proj-figure{
   background:var(--card);
   border-bottom:1px solid var(--border);
+  position:relative;
 }
-.proj-media video{width:100%;max-height:520px;display:block;background:var(--card)}
-.proj-media-placeholder{
-  min-height:320px;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:16px;
-  padding:48px;text-align:center;
-  border:1px dashed var(--border-hi);margin:32px;
+.proj-figure svg{width:100%;height:auto;display:block;max-height:440px}
+.proj-figure-cap{
+  font-family:var(--font-mono);font-size:0.64rem;letter-spacing:0.1em;
+  color:var(--text-3);text-transform:uppercase;text-align:center;
+  padding:10px 0;background:var(--surface);
+  border-bottom:1px solid var(--border);
 }
-.proj-media-placeholder i{font-size:2.5rem;color:var(--cyan);opacity:0.4}
-.proj-media-placeholder span{
-  font-family:var(--font-mono);font-size:0.76rem;color:var(--text-3);line-height:1.7
-}
+
+/* ── MEDIA ── */
+.proj-media{background:var(--card);border-bottom:1px solid var(--border)}
+.proj-media video{width:100%;display:block;max-height:500px;background:var(--card)}
+.media-placeholder{min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:48px;text-align:center}
+.media-placeholder i{font-size:2.2rem;color:var(--cyan);opacity:0.35}
+.media-placeholder span{font-family:var(--font-mono);font-size:0.74rem;color:var(--text-3);line-height:1.7}
 
 /* ── BODY ── */
 .proj-body{padding:80px 0 100px}
@@ -180,7 +144,7 @@ img{max-width:100%;display:block}
 .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.65s var(--ease),transform 0.65s var(--ease)}
 .reveal.up{opacity:1;transform:translateY(0)}
 
-/* section label */
+/* ── SECTION ── */
 .proj-section{margin-bottom:64px}
 .sec-label{
   font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.18em;
@@ -188,89 +152,99 @@ img{max-width:100%;display:block}
   display:flex;align-items:center;gap:16px;margin-bottom:20px;
 }
 .sec-label::before{content:'';width:24px;height:1px;background:var(--cyan)}
-
-.proj-section p{
-  color:var(--text-2);font-size:0.97rem;line-height:1.8;margin-bottom:14px;
+.sec-label .n{
+  color:var(--text-3);font-size:0.62rem;margin-left:-6px;
 }
+.proj-section p{color:var(--text-2);font-size:0.97rem;line-height:1.8;margin-bottom:14px}
 .proj-section p:last-child{margin-bottom:0}
 .proj-section h2{
   font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.4rem);
-  font-weight:700;line-height:1.1;letter-spacing:-0.02em;
-  color:var(--text);margin-bottom:32px;
+  font-weight:700;line-height:1.1;letter-spacing:-0.02em;color:var(--text);margin-bottom:32px;
 }
 
 /* spec grid */
 .spec-grid{
   display:grid;grid-template-columns:repeat(2,1fr);
   gap:1px;background:rgba(218,166,19,0.10);
-  border:1px solid var(--border);
-  margin-top:8px;
+  border:1px solid var(--border);margin-top:8px;
 }
-.spec-card{
-  background:var(--panel);padding:32px 28px;
-  transition:background 0.25s;position:relative;overflow:hidden;
-}
-.spec-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:var(--cyan);transform:scaleX(0);transform-origin:left;
-  transition:transform 0.3s var(--ease);
-}
+.spec-card{background:var(--panel);padding:28px 24px;transition:background 0.25s;position:relative;overflow:hidden}
+.spec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform 0.3s var(--ease)}
 .spec-card:hover{background:var(--card)}
 .spec-card:hover::before{transform:scaleX(1)}
-.spec-card h4{
-  font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.1em;
-  color:var(--cyan);margin-bottom:10px;text-transform:uppercase;
-}
+.spec-card h4{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.1em;color:var(--cyan);margin-bottom:10px;text-transform:uppercase}
 .spec-card p{font-size:0.88rem;color:var(--text-2);margin:0;line-height:1.7}
 
+/* objectives list */
+.obj-list{display:flex;flex-direction:column;gap:1px;background:rgba(218,166,19,0.10);border:1px solid var(--border);margin-top:8px}
+.obj-list li{background:var(--panel);font-size:0.92rem;color:var(--text-2);padding:18px 22px;display:flex;gap:18px;align-items:baseline;transition:background 0.2s}
+.obj-list li:hover{background:var(--card)}
+.obj-list li .ono{font-family:var(--font-mono);font-size:0.66rem;color:var(--cyan);flex:0 0 28px;opacity:0.7}
+
 /* highlight box */
-.highlight-box{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-left:3px solid var(--cyan);
-  padding:24px 28px;
-  margin:8px 0;
-}
+.highlight-box{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--cyan);padding:22px 26px;margin:16px 0}
 .highlight-box p{color:var(--text-2);font-size:0.95rem;margin:0;line-height:1.8}
 
-/* list */
+/* dash list */
 .proj-list{display:flex;flex-direction:column;gap:12px;margin-top:8px}
-.proj-list li{
-  font-size:0.92rem;color:var(--text-2);
-  padding-left:24px;position:relative;line-height:1.65;
+.proj-list li{font-size:0.92rem;color:var(--text-2);padding-left:24px;position:relative;line-height:1.65}
+.proj-list li::before{content:'';position:absolute;left:0;top:11px;width:10px;height:1px;background:var(--cyan);opacity:0.7}
+
+/* report card */
+.report-card{
+  display:flex;gap:20px;align-items:center;
+  border:1px solid var(--border);background:var(--panel);
+  padding:20px 22px;transition:background 0.2s;
 }
-.proj-list li::before{
-  content:'';position:absolute;left:0;top:11px;
-  width:10px;height:1px;background:var(--cyan);opacity:0.7;
+.report-card:hover{background:var(--card)}
+.report-thumb{
+  flex:0 0 54px;height:70px;border:1px solid var(--border);
+  background:var(--card);display:flex;align-items:center;justify-content:center;
+}
+.report-thumb i{font-size:1.5rem;color:var(--cyan);opacity:0.6}
+.report-info{flex:1}
+.report-info h4{font-family:var(--font-display);font-size:0.96rem;font-weight:600;margin-bottom:4px;color:var(--text)}
+.report-info p{font-size:0.84rem;color:var(--text-2);margin:0}
+.report-link{
+  font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--text-2);display:flex;align-items:center;gap:8px;flex:0 0 auto;
+  border:1px solid var(--border-hi);padding:10px 16px;
+  transition:all 0.22s var(--ease);
+}
+.report-link:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+
+/* repo card */
+.repo-card{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  border:1px solid var(--border);background:var(--panel);
+  padding:22px 24px;flex-wrap:wrap;
+}
+.repo-meta{font-family:var(--font-mono);font-size:0.76rem;color:var(--text-2)}
+.repo-meta strong{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text);display:block;margin-bottom:4px}
+.btn-muted{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--text-3);border:1px solid var(--border);padding:10px 18px;
+  opacity:0.6;cursor:default;
 }
 
-/* divider */
-.proj-divider{
-  border:none;border-top:1px solid var(--border);margin:0 0 64px;
-}
-
-/* nav footer */
+/* proj nav */
 .proj-nav{
   border-top:2px solid rgba(218,166,19,0.2);
   padding:48px 0 0;
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:16px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
 }
 .proj-nav a{
   display:inline-flex;align-items:center;gap:10px;
-  font-family:var(--font-mono);font-size:0.74rem;letter-spacing:0.04em;
-  text-transform:uppercase;color:var(--text-2);
-  padding:13px 22px;border:1px solid var(--border-hi);
+  font-family:var(--font-mono);font-size:0.74rem;letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--text-2);padding:13px 22px;border:1px solid var(--border-hi);
   transition:all 0.22s var(--ease);
 }
 .proj-nav a:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
 
-/* ── FOOTER ── */
+/* footer */
 .footer{background:var(--panel);border-top:1px solid var(--border);padding:28px 0}
-.footer-inner{
-  max-width:1100px;margin:0 auto;padding:0 32px;
-  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
-}
+.footer-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
 .footer p{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.04em;color:var(--text-3)}
 .footer-links{display:flex;gap:20px}
 .footer-links a{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.04em;color:var(--text-3);transition:color 0.2s}
@@ -280,12 +254,8 @@ img{max-width:100%;display:block}
 @media(max-width:640px){
   .spec-grid{grid-template-columns:1fr}
   .proj-nav{flex-direction:column}
-  .nav-links{
-    display:none;flex-direction:column;gap:0;
-    position:fixed;top:var(--nav-h);left:0;right:0;
-    background:rgba(250,250,248,0.97);backdrop-filter:blur(18px);
-    padding:12px 0 24px;border-bottom:1px solid var(--border);
-  }
+  .report-card{flex-direction:column;align-items:flex-start}
+  .nav-links{display:none;flex-direction:column;gap:0;position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(250,250,248,0.97);backdrop-filter:blur(18px);padding:12px 0 24px;border-bottom:1px solid var(--border)}
   .nav-links.open{display:flex}
   .nav-link{padding:13px 24px;font-size:0.76rem}
   .nav-toggle{display:flex}
@@ -327,9 +297,10 @@ img{max-width:100%;display:block}
     </svg>
   </div>
   <div class="proj-hero-inner">
+    <span class="proj-tagid">RBX — 01</span>
     <div class="proj-eyebrow">
       <div class="proj-eyebrow-dot"></div>
-      Robotics &amp; Automation · Warehouse Systems · SIT Capstone
+      Robotics &amp; Automation · Warehouse Systems
     </div>
     <h1 class="proj-title">Intelligent Pallet &amp;<br>Optimization System</h1>
     <div class="proj-tags">
@@ -348,32 +319,107 @@ img{max-width:100%;display:block}
   </div>
 </div>
 
-<!-- MEDIA -->
-<div class="proj-media">
-  <video
-    src="../assets/video/pallet-demo.mp4"
-    controls
-    playsinline
-    poster="../assets/img/project/pallet-poster.jpg"
-    onerror="this.outerHTML='<div class=\'proj-media-placeholder\'><i class=\'bi bi-film\'></i><span>Place pallet-demo.mp4 in assets/video/ to show the demo here.</span></div>'"
-  ></video>
+<!-- SYSTEM DIAGRAM -->
+<div class="proj-figure">
+  <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
+    <rect width="900" height="400" fill="#F7F6F2"/>
+    <!-- subtle grid -->
+    <g stroke="#DAA613" stroke-width="0.5" opacity="0.10">
+      <line x1="0" y1="100" x2="900" y2="100"/>
+      <line x1="0" y1="300" x2="900" y2="300"/>
+      <line x1="225" y1="0" x2="225" y2="400"/>
+      <line x1="675" y1="0" x2="675" y2="400"/>
+    </g>
+    <!-- geometric accent -->
+    <polygon points="720,0 900,0 900,400 810,400" fill="#000DAA" opacity="0.025"/>
+    <line x1="720" y1="0" x2="810" y2="400" stroke="#DAA613" stroke-width="0.8" opacity="0.20"/>
+    <!-- pallet cargo box -->
+    <rect x="310" y="230" width="280" height="88" fill="none" stroke="#1C1810" stroke-width="2"/>
+    <text x="450" y="280" text-anchor="middle" font-family="DM Mono,monospace" font-size="13" fill="#1C1810" letter-spacing="0.05em">PALLET CARGO</text>
+    <!-- load cell bar -->
+    <rect x="270" y="322" width="360" height="22" fill="none" stroke="#DAA613" stroke-width="2"/>
+    <text x="450" y="338" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#DAA613" letter-spacing="0.08em">LOAD CELL · HX711</text>
+    <!-- ZED2i camera circle -->
+    <circle cx="640" cy="138" r="36" fill="none" stroke="#DAA613" stroke-width="2"/>
+    <circle cx="640" cy="138" r="8" fill="#DAA613" opacity="0.35"/>
+    <line x1="640" y1="174" x2="640" y2="230" stroke="#DAA613" stroke-width="2"/>
+    <text x="640" y="128" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#DAA613" letter-spacing="0.05em">ZED2i</text>
+    <text x="640" y="143" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="rgba(218,166,19,0.6)">STEREO</text>
+    <!-- depth rays -->
+    <path d="M610,170 L360,230" stroke="#DAA613" stroke-width="1.2" stroke-dasharray="5,5" opacity="0.55"/>
+    <path d="M670,170 L540,230" stroke="#DAA613" stroke-width="1.2" stroke-dasharray="5,5" opacity="0.55"/>
+    <!-- ROS 2 aggregator node -->
+    <rect x="160" y="120" width="130" height="54" fill="none" stroke="rgba(97,61,170,0.6)" stroke-width="1.5"/>
+    <text x="225" y="144" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="rgba(97,61,170,0.7)" letter-spacing="0.04em">ROS 2 NODE</text>
+    <text x="225" y="162" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="rgba(97,61,170,0.5)">Aggregator</text>
+    <!-- output arrow -->
+    <line x1="290" y1="147" x2="360" y2="260" stroke="rgba(97,61,170,0.35)" stroke-width="1.2" stroke-dasharray="4,5"/>
+    <!-- figure label -->
+    <text x="450" y="44" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="rgba(28,24,16,0.30)" letter-spacing="0.12em">FIG.01 — CHECKPOINT MEASUREMENT RIG</text>
+  </svg>
 </div>
+<div class="proj-figure-cap">Fig.01 — Checkpoint measurement rig: ZED2i stereo vision + load cell weight capture</div>
 
 <!-- BODY -->
 <div class="proj-body">
   <div class="container">
 
-    <!-- OVERVIEW -->
+    <!-- 01 OVERVIEW -->
     <div class="proj-section reveal">
-      <div class="sec-label">Overview</div>
-      <h2>Autonomous cargo measurement at warehouse checkpoints.</h2>
-      <p>The Intelligent Pallet &amp; Optimization System is an autonomous warehouse measurement platform designed to reduce manual labour and human error in cargo dimensioning and weighing workflows. By integrating load cell sensing with stereo camera-based computer vision, the system captures both the weight and 3D bounding dimensions of palletised cargo at a fixed checkpoint — with minimal operator intervention.</p>
-      <p>Developed as part of the SIT Robotics Systems capstone curriculum, it targets smart manufacturing and logistics automation use cases where accurate, real-time cargo data is critical for warehouse management systems.</p>
+      <div class="sec-label"><span class="n">01 —</span> Project Overview</div>
+      <p>The Intelligent Pallet &amp; Optimization System is an autonomous warehouse measurement platform built to reduce manual labour and human error in cargo dimensioning and weighing. It pairs load-cell sensing with stereo camera vision to capture both the weight and 3D bounding dimensions of palletised cargo at a fixed checkpoint — with minimal operator intervention.</p>
+      <p>Developed as part of the SIT Robotics Systems capstone curriculum, the project targets smart manufacturing and logistics automation use cases where accurate, real-time cargo data is critical for warehouse management systems.</p>
     </div>
 
-    <!-- ARCHITECTURE -->
+    <!-- 02 OBJECTIVES -->
     <div class="proj-section reveal">
-      <div class="sec-label">System Architecture</div>
+      <div class="sec-label"><span class="n">02 —</span> Objectives</div>
+      <ul class="obj-list">
+        <li><span class="ono">01</span><span>Capture accurate weight readings of palletised cargo using a load-cell array at a fixed checkpoint</span></li>
+        <li><span class="ono">02</span><span>Estimate 3D bounding dimensions (L × W × H) of cargo using stereo depth from a ZED2i camera</span></li>
+        <li><span class="ono">03</span><span>Synchronise and aggregate weight and vision data streams into a single timestamped payload</span></li>
+        <li><span class="ono">04</span><span>Validate the feasibility of low-cost stereo-camera dimensioning against manual measurement</span></li>
+      </ul>
+    </div>
+
+    <!-- 03 DEMO VIDEO -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">03 —</span> Demo Video</div>
+      <div class="proj-media">
+        <video
+          src="../assets/video/pallet-demo.mp4"
+          controls playsinline
+          poster="../assets/img/project/pallet-poster.jpg"
+          onerror="this.outerHTML='<div class=\'media-placeholder\'><i class=\'bi bi-film\'></i><span>Demo video unavailable.<br>Place pallet-demo.mp4 in assets/video/ to show the recorded test run here.</span></div>'"
+        ></video>
+      </div>
+    </div>
+
+    <!-- 04 REPORT -->
+    <div class="proj-section">
+    <div class="proj-section-label">
+        <span class="n">04</span> Report Preview
+    </div>
+
+    <div class="pdf-frame">
+        <iframe
+            src="../assets/reports/intelligent-pallet-optimization.pdf"
+            title="Hand Gesture Controlled Robot Report">
+        </iframe>
+    </div>
+
+    <div class="pdf-actions">
+        <a href="../assets/reports/intelligent-pallet-optimization.pdf"
+           target="_blank"
+           class="btn-outline">
+            <i class="bi bi-box-arrow-up-right"></i>
+            Open Full Report
+        </a>
+    </div>
+</div>
+    <!-- 05 SYSTEM ARCHITECTURE -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">05 —</span> System Architecture</div>
       <div class="spec-grid">
         <div class="spec-card">
           <h4>Weight Subsystem</h4>
@@ -381,7 +427,7 @@ img{max-width:100%;display:block}
         </div>
         <div class="spec-card">
           <h4>Vision Subsystem</h4>
-          <p>ZED2i stereo camera capturing RGB-D frames. Stereo depth estimation and point cloud processing compute 3D bounding box dimensions of the pallet cargo.</p>
+          <p>ZED2i stereo camera capturing RGB-D frames. Stereo depth estimation and point cloud processing compute the 3D bounding box of the cargo.</p>
         </div>
         <div class="spec-card">
           <h4>ROS 2 Integration</h4>
@@ -394,21 +440,9 @@ img{max-width:100%;display:block}
       </div>
     </div>
 
-    <!-- CHALLENGES -->
+    <!-- 06 TECH STACK -->
     <div class="proj-section reveal">
-      <div class="sec-label">Key Technical Challenges</div>
-      <ul class="proj-list">
-        <li>Achieving accurate stereo depth estimation under variable warehouse lighting conditions</li>
-        <li>Synchronising weight and vision data streams with consistent timestamping across ROS 2 nodes</li>
-        <li>Filtering point cloud noise to produce reliable bounding box estimates for irregular cargo shapes</li>
-        <li>Calibrating the ZED2i camera for the fixed checkpoint geometry to ensure measurement accuracy</li>
-        <li>Designing a robust load cell mounting that accounts for pallet positioning variance</li>
-      </ul>
-    </div>
-
-    <!-- TECH STACK -->
-    <div class="proj-section reveal">
-      <div class="sec-label">Technology Stack</div>
+      <div class="sec-label"><span class="n">06 —</span> Technology Stack</div>
       <ul class="proj-list">
         <li><strong>Middleware:</strong> ROS 2 (Robot Operating System 2)</li>
         <li><strong>Vision:</strong> ZED2i Stereo Camera · ZED SDK · Point cloud processing</li>
@@ -418,11 +452,47 @@ img{max-width:100%;display:block}
       </ul>
     </div>
 
-    <!-- OUTCOMES -->
+    <!-- 07 ROLE -->
     <div class="proj-section reveal">
-      <div class="sec-label">Outcomes</div>
+      <div class="sec-label"><span class="n">07 —</span> Role &amp; Contribution</div>
+      <p>I independently designed and built the full measurement pipeline for this capstone project: integrating the load cell and HX711 amplifier with a ROS 2 publisher node, developing the ZED2i stereo vision pipeline for depth estimation and bounding-box extraction, and writing the aggregator node that timestamps and merges both data streams into a single output payload for the warehouse dashboard.</p>
+    </div>
+
+    <!-- 08 V&V -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">08 —</span> Verification &amp; Validation</div>
+      <div class="spec-grid">
+        <div class="spec-card">
+          <h4>Depth Accuracy</h4>
+          <p>Tested stereo depth estimation across varying warehouse lighting conditions to confirm consistent bounding-box accuracy.</p>
+        </div>
+        <div class="spec-card">
+          <h4>Data Sync</h4>
+          <p>Verified consistent timestamp alignment between the weight topic and vision topic across repeated runs.</p>
+        </div>
+        <div class="spec-card">
+          <h4>Noise Filtering</h4>
+          <p>Filtered point cloud noise to produce reliable bounding boxes for irregular cargo shapes.</p>
+        </div>
+        <div class="spec-card">
+          <h4>Checkpoint Calibration</h4>
+          <p>Calibrated the ZED2i camera for the fixed checkpoint geometry and confirmed measurement repeatability.</p>
+        </div>
+      </div>
       <div class="highlight-box">
-        <p>The system demonstrated autonomous measurement of pallet cargo weight and 3D dimensions with minimal human intervention, validating the feasibility of low-cost stereo camera-based dimensioning for warehouse logistics checkpoints.</p>
+        <p>The system demonstrated autonomous measurement of pallet cargo weight and 3D dimensions with minimal human intervention, validating the feasibility of low-cost stereo-camera dimensioning for warehouse logistics checkpoints.</p>
+      </div>
+    </div>
+
+    <!-- 09 REPO -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">09 —</span> Project Repository</div>
+      <div class="repo-card">
+        <div class="repo-meta">
+          <strong>Project Repository</strong>
+          Capstone source maintained under SIT coursework; available on request.
+        </div>
+        <span class="btn-muted"><i class="bi bi-lock"></i> Private</span>
       </div>
     </div>
 
@@ -473,10 +543,10 @@ nlEl.querySelectorAll('.nav-link').forEach(a => a.addEventListener('click', () =
 /* SCROLL REVEAL */
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); obs.unobserve(e.target); } });
-}, {threshold:0.1, rootMargin:'0px 0px -40px 0px'});
+}, {threshold:0.08, rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-/* SIGNAL CANVAS — cursor-reactive oscilloscope trace */
+/* SIGNAL CANVAS */
 (function(){
   const c = document.getElementById('sigCanvas');
   const ctx = c.getContext('2d');
@@ -492,7 +562,6 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   function draw(){
     ctx.clearRect(0, 0, W, H);
     t += 0.012;
-    /* grid dots */
     const gx = W/18, gy = H/10;
     for(let r=0; r<=10; r++) for(let cc=0; cc<=18; cc++){
       const px = cc*gx, py = r*gy;
@@ -501,7 +570,6 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
       ctx.beginPath(); ctx.arc(px, py, 1, 0, Math.PI*2);
       ctx.fillStyle = `rgba(218,166,19,${a})`; ctx.fill();
     }
-    /* primary signal trace */
     ctx.beginPath();
     ctx.strokeStyle = 'rgba(218,166,19,0.20)'; ctx.lineWidth = 1.5;
     for(let x=0; x<=W; x+=2){
@@ -512,7 +580,6 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
       x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
     }
     ctx.stroke();
-    /* secondary faint trace */
     ctx.beginPath();
     ctx.strokeStyle = 'rgba(97,61,170,0.12)'; ctx.lineWidth = 1;
     for(let x=0; x<=W; x+=2){
