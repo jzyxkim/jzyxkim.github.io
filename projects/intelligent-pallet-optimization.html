@@ -115,7 +115,26 @@ img{max-width:100%;display:block}
 .proj-meta i{color:var(--cyan)}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  
+.pdf-frame{
+    width:100%;
+    height:700px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    overflow:hidden;
+}
 
+.pdf-frame iframe{
+    width:100%;
+    height:100%;
+    border:none;
+}
+
+.pdf-actions{
+    margin-top:18px;
+    display:flex;
+    justify-content:flex-end;
+}
 /* ── FIGURE / SVG DIAGRAM ── */
 .proj-figure{
   background:var(--card);
@@ -397,10 +416,25 @@ img{max-width:100%;display:block}
 
     <!-- 04 REPORT -->
   <div class="proj-section">
-  <div class="proj-section-label"><span class="n">04</span> Report Preview</div>
-  <div class="media-frame" style="background:var(--panel)">
-    <iframe src="../assets/reports/intelligent-pallet-optimization.pdf" title="Design Process Deck" style="width:100%;height:600px;border:none;display:block" onerror="this.closest('.media-frame').innerHTML='<div class=\'media-placeholder\'><i class=\'bi bi-file-earmark-pdf\'></i><span>Report preview unavailable.</span></div>'"></iframe>
-  </div>
+    <div class="proj-section-label">
+        <span class="n">04</span> Report Preview
+    </div>
+
+    <div class="pdf-frame">
+        <iframe
+            src="../assets/reports/hand-gesture-robot.pdf"
+            title="Hand Gesture Controlled Robot Report">
+        </iframe>
+    </div>
+
+    <div class="pdf-actions">
+        <a href="../assets/reports/hand-gesture-robot.pdf"
+           target="_blank"
+           class="btn-outline">
+            <i class="bi bi-box-arrow-up-right"></i>
+            Open Full Report
+        </a>
+    </div>
 </div>
     <!-- 05 SYSTEM ARCHITECTURE -->
     <div class="proj-section reveal">
