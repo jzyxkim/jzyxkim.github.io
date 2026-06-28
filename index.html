@@ -19,22 +19,31 @@
    ========================================================= */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#E2E7DD;
-  --bg-deep:#E2E7DD;
-  --paper:#FBFBF8;
+  /* Background */
+  --bg:#F7F7F7;
+  --bg-deep:#ECECEC;
+  --paper:#FFFFFF;
   --card:#FFFFFF;
-  --line:#daa613;
-  --line-soft:#D9DFD3;
-  --ink:#daa000;
-  --muted:#5B6358;
-  --accent:#D6531F;      /* stamp orange */
-  --accent-ink:#9C3C13;
-  --accent2:#1F6F6B;      /* as-built teal */
-  --accent2-soft:rgba(31,111,107,0.10);
-  --accent-soft:rgba(214,83,31,0.10);
+
+  /* Main Theme */
+  --line:#DAA613;          /* Gold */
+  --line-soft:#F2D98C;
+
+  --ink:#000DAA;           /* Deep Blue */
+  --muted:#5C5C6B;
+
+  --accent:#613DAA;        /* Purple */
+  --accent-ink:#4B2E87;
+
+  --accent2:#DAA000;       /* Orange */
+  --accent2-soft:rgba(218,160,0,0.12);
+
+  --accent-soft:rgba(97,61,170,0.12);
+
   --font-head:'Archivo',sans-serif;
   --font-body:'Source Sans 3',sans-serif;
   --font-mono:'IBM Plex Mono',monospace;
+
   --nav-h:64px;
   --r:4px;
   --t:0.25s cubic-bezier(0.4,0,0.2,1);
@@ -75,7 +84,8 @@ section{padding:108px 0;position:relative}
 .site-nav{
   position:fixed;top:0;left:0;right:0;z-index:999;height:var(--nav-h);
   display:flex;align-items:center;
-  background:rgba(218, 166, 19,0.0);
+     background:transparent;
+
   border-bottom:1px solid transparent;
   transition:background var(--t),border-color var(--t);
 }
