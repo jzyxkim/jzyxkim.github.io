@@ -8,101 +8,124 @@
 <link rel="shortcut icon" href="../assets/img/logo.png">
 <link rel="apple-touch-icon" href="../assets/img/logo.png">
 <title>Hand Gesture Controlled Robot — Jin Ziyu</title>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#EDF0E9;--bg-deep:#E2E7DD;--paper:#FBFBF8;--card:#FFFFFF;
-  --line:#C7CFC1;--line-soft:#D9DFD3;--ink:#15201C;--muted:#5B6358;
-  --accent:#D6531F;--accent-ink:#9C3C13;--accent2:#1F6F6B;
-  --accent2-soft:rgba(31,111,107,0.10);--accent-soft:rgba(214,83,31,0.10);
-  --font-head:'Archivo',sans-serif;--font-body:'Source Sans 3',sans-serif;--font-mono:'IBM Plex Mono',monospace;
-  --t:0.25s cubic-bezier(0.4,0,0.2,1);
+  --void:#FAFAF8;
+  --surface:#F2F1ED;
+  --panel:#FFFFFF;
+  --card:#F7F6F2;
+  --border:rgba(28,24,16,0.10);
+  --border-hi:rgba(28,24,16,0.20);
+  --cyan:#DAA613;
+  --cyan-dim:rgba(218,166,19,0.08);
+  --cyan-mid:rgba(218,166,19,0.35);
+  --amber:#DAA000;
+  --amber-dim:rgba(218,160,0,0.10);
+  --purple:#613DAA;
+  --purple-dim:rgba(97,61,170,0.08);
+  --navy:#000DAA;
+  --text:#1C1810;
+  --text-2:rgba(28,24,16,0.58);
+  --text-3:rgba(28,24,16,0.35);
+  --font-display:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --ease:cubic-bezier(0.4,0,0.2,1);
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--font-body);line-height:1.65;overflow-x:hidden;
-  background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
-  background-size:48px 48px;background-attachment:fixed;}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--void);color:var(--text);font-family:var(--font-body);line-height:1.7;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 .container{max-width:880px;margin:0 auto;padding:0 28px}
 
-.plate{position:relative;border:1px solid var(--line);background:var(--card)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:rgba(218,166,19,0.4);border-radius:0}
+
+.plate{position:relative;border:1px solid var(--border);background:var(--panel)}
 .plate::before,.plate::after{content:'';position:absolute;width:11px;height:11px;pointer-events:none}
-.plate::before{top:-1px;left:-1px;border-top:2px solid var(--ink);border-left:2px solid var(--ink)}
-.plate::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--ink);border-right:2px solid var(--ink)}
+.plate::before{top:-1px;left:-1px;border-top:2px solid var(--text);border-left:2px solid var(--text)}
+.plate::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--text);border-right:2px solid var(--text)}
 
-.topbar{position:sticky;top:0;z-index:99;background:rgba(251,251,248,0.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between}
-.topbar-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.03em;text-transform:uppercase;color:var(--muted);transition:color var(--t)}
-.topbar-back:hover{color:var(--accent-ink)}
-.topbar-title{font-family:var(--font-mono);font-size:0.68rem;color:var(--muted);letter-spacing:0.06em}
+.topbar{position:sticky;top:0;z-index:99;background:rgba(250,250,248,0.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between}
+.topbar-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-2);transition:color 0.2s}
+.topbar-back:hover{color:var(--cyan)}
+.topbar-title{font-family:var(--font-mono);font-size:0.66rem;color:var(--text-3);letter-spacing:0.08em}
 
-.proj-hero{padding:64px 24px 48px;border-bottom:1px solid var(--line);background:var(--paper)}
-.proj-hero-inner{max-width:880px;margin:0 auto}
-.proj-tagid{display:inline-block;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.06em;color:var(--accent-ink);border:1px solid var(--accent);padding:4px 10px;margin-bottom:18px}
-.proj-eyebrow{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent2);margin-bottom:14px}
-.proj-title{font-family:var(--font-head);font-size:clamp(1.7rem,4.4vw,2.7rem);font-weight:800;color:var(--ink);line-height:1.12;margin-bottom:22px;max-width:680px}
+.proj-hero{position:relative;padding:64px 24px 48px;border-bottom:1px solid var(--border);background:var(--surface);overflow:hidden}
+#sigCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.proj-hero-inner{position:relative;z-index:1;max-width:880px;margin:0 auto}
+.proj-tagid{display:inline-block;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.06em;color:var(--cyan);border:1px solid var(--cyan);padding:4px 10px;margin-bottom:18px}
+.proj-eyebrow{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple);margin-bottom:14px}
+.proj-title{font-family:var(--font-display);font-size:clamp(1.7rem,4.4vw,2.7rem);font-weight:800;color:var(--text);line-height:1.12;margin-bottom:22px;max-width:680px;letter-spacing:-0.02em}
 .proj-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px}
-.proj-tags span{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.03em;padding:4px 10px;border:1px solid var(--line);color:var(--muted);text-transform:uppercase;background:var(--card)}
-.proj-meta{display:flex;gap:26px;flex-wrap:wrap;font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:16px}
+.proj-tags span{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.03em;padding:4px 10px;border:1px solid rgba(97,61,170,0.4);color:rgba(97,61,170,0.85);text-transform:uppercase;background:var(--purple-dim)}
+.proj-meta{display:flex;gap:26px;flex-wrap:wrap;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-2);border-top:1px dashed var(--border-hi);padding-top:16px}
 .proj-meta span{display:flex;align-items:center;gap:6px}
+.proj-meta i{color:var(--cyan)}
 
-.award-banner{background:var(--accent-soft);border-bottom:1px solid var(--line);padding:14px 24px;text-align:center;font-family:var(--font-mono);font-size:0.78rem;color:var(--accent-ink);display:flex;align-items:center;justify-content:center;gap:10px}
+.award-banner{background:var(--cyan-dim);border-bottom:1px solid var(--border);padding:14px 24px;text-align:center;font-family:var(--font-mono);font-size:0.78rem;color:var(--amber);display:flex;align-items:center;justify-content:center;gap:10px}
 
-.proj-figure{border-bottom:1px solid var(--line)}
+.proj-figure{border-bottom:1px solid var(--border)}
 .proj-figure svg{width:100%;height:auto;display:block;max-height:420px}
-.proj-figure-cap{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.05em;color:var(--muted);text-transform:uppercase;text-align:center;padding:10px 0;background:var(--paper);border-bottom:1px solid var(--line)}
+.proj-figure-cap{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.05em;color:var(--text-3);text-transform:uppercase;text-align:center;padding:10px 0;background:var(--surface);border-bottom:1px solid var(--border)}
 
-.proj-body{padding:60px 0 80px}
+.proj-body{padding:60px 0 80px;background:var(--panel)}
 .proj-section{margin-bottom:52px;max-width:880px;margin-left:auto;margin-right:auto;padding:0 28px}
-.proj-section-label{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent-ink);display:flex;align-items:center;gap:12px;margin-bottom:22px}
-.proj-section-label .n{color:var(--ink);font-weight:600}
-.proj-section-label::after{content:'';flex:1;max-width:90px;height:1px;background:repeating-linear-gradient(90deg,var(--ink) 0 6px,transparent 6px 10px)}
-.proj-section p{color:var(--muted);font-size:0.96rem;line-height:1.78;margin-bottom:14px}
+.proj-section-label{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.proj-section-label .n{color:var(--text);font-weight:600}
+.proj-section-label::after{content:'';flex:1;max-width:90px;height:1px;background:repeating-linear-gradient(90deg,var(--text) 0 6px,transparent 6px 10px);opacity:0.5}
+.proj-section p{color:var(--text-2);font-size:0.96rem;line-height:1.78;margin-bottom:14px}
 .proj-section p:last-child{margin-bottom:0}
 
-.spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:6px}
-.spec-card{background:var(--card);padding:20px}
-.spec-card h4{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.06em;color:var(--accent-ink);margin-bottom:8px;text-transform:uppercase}
-.spec-card p{font-size:0.87rem;color:var(--muted);margin:0}
+.spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(218,166,19,0.10);border:1px solid var(--border);margin-top:6px}
+.spec-card{background:var(--panel);padding:20px;transition:background 0.25s}
+.spec-card:hover{background:rgba(97,61,170,0.06)}
+.spec-card h4{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.06em;color:var(--cyan);margin-bottom:8px;text-transform:uppercase}
+.spec-card p{font-size:0.87rem;color:var(--text-2);margin:0}
 
-.highlight-box{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent2);padding:20px 24px;margin:18px 0}
-.highlight-box p{color:var(--muted);font-size:0.92rem;margin:0}
+.highlight-box{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--purple);padding:20px 24px;margin:18px 0}
+.highlight-box p{color:var(--text-2);font-size:0.92rem;margin:0}
 
 .proj-list{display:flex;flex-direction:column;gap:10px;margin-top:6px}
-.proj-list li{font-size:0.92rem;color:var(--muted);padding-left:20px;position:relative}
-.proj-list li::before{content:'—';position:absolute;left:0;color:var(--accent2);top:0}
+.proj-list li{font-size:0.92rem;color:var(--text-2);padding-left:20px;position:relative}
+.proj-list li::before{content:'—';position:absolute;left:0;color:var(--purple);top:0}
+.proj-list li strong{color:var(--text)}
 
-.obj-list{display:flex;flex-direction:column;gap:0;margin-top:6px;border:1px solid var(--line)}
-.obj-list li{font-size:0.92rem;color:var(--ink);padding:13px 16px;position:relative;border-bottom:1px solid var(--line);display:flex;gap:12px}
+.obj-list{display:flex;flex-direction:column;gap:0;margin-top:6px;border:1px solid var(--border)}
+.obj-list li{font-size:0.92rem;color:var(--text);padding:13px 16px;position:relative;border-bottom:1px solid var(--border);display:flex;gap:12px}
 .obj-list li:last-child{border-bottom:none}
-.obj-list li .ono{font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-ink);flex:0 0 30px}
+.obj-list li:hover{background:rgba(97,61,170,0.05)}
+.obj-list li .ono{font-family:var(--font-mono);font-size:0.72rem;color:var(--cyan);flex:0 0 30px}
 
-.media-frame{border:1px solid var(--line);background:var(--bg-deep);position:relative}
+.media-frame{border:1px solid var(--border);background:var(--surface);position:relative}
 .media-frame video{width:100%;display:block;max-height:480px;background:#000}
-.media-placeholder{min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:36px;text-align:center;background:var(--paper)}
-.media-placeholder i{font-size:2.2rem;color:var(--line)}
-.media-placeholder span{font-family:var(--font-mono);font-size:0.74rem;color:var(--muted);line-height:1.7}
+.media-placeholder{min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:36px;text-align:center;background:var(--card)}
+.media-placeholder i{font-size:2.2rem;color:var(--border-hi)}
+.media-placeholder span{font-family:var(--font-mono);font-size:0.74rem;color:var(--text-2);line-height:1.7}
 
-.report-card{display:flex;gap:18px;align-items:center;border:1px solid var(--line);background:var(--card);padding:18px;}
-.report-thumb{flex:0 0 64px;height:80px;border:1px solid var(--line);background:var(--bg-deep);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);text-align:center}
-.report-thumb i{font-size:1.6rem;color:var(--accent-ink)}
+.report-card{display:flex;gap:18px;align-items:center;border:1px solid var(--border);background:var(--panel);padding:18px}
+.report-thumb{flex:0 0 64px;height:80px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.6rem;color:var(--text-2);text-align:center}
+.report-thumb i{font-size:1.6rem;color:var(--cyan)}
 .report-info{flex:1}
-.report-info h4{font-family:var(--font-head);font-size:0.95rem;font-weight:700;margin-bottom:4px}
-.report-info p{font-size:0.84rem;color:var(--muted);margin:0}
-.report-link{font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-ink);display:flex;align-items:center;gap:6px;flex:0 0 auto;border:1px solid var(--line);padding:8px 14px;text-transform:uppercase;letter-spacing:0.03em;transition:all var(--t)}
-.report-link:hover{border-color:var(--accent);background:var(--accent-soft)}
+.report-info h4{font-family:var(--font-display);font-size:0.95rem;font-weight:700;margin-bottom:4px;color:var(--text)}
+.report-info p{font-size:0.84rem;color:var(--text-2);margin:0}
+.report-link{font-family:var(--font-mono);font-size:0.72rem;color:var(--cyan);display:flex;align-items:center;gap:6px;flex:0 0 auto;border:1px solid var(--border-hi);padding:8px 14px;text-transform:uppercase;letter-spacing:0.03em;transition:all 0.2s}
+.report-link:hover{border-color:var(--cyan);background:var(--cyan-dim)}
 
-.repo-card{display:flex;justify-content:space-between;align-items:center;gap:16px;border:1px solid var(--line);background:var(--card);padding:20px 22px;flex-wrap:wrap}
-.repo-card .repo-meta{font-family:var(--font-mono);font-size:0.78rem;color:var(--muted)}
-.repo-card .repo-meta strong{color:var(--ink);display:block;font-family:var(--font-head);font-size:1rem;margin-bottom:4px}
-.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border:1.5px solid var(--ink);font-family:var(--font-mono);font-size:0.74rem;color:var(--ink);text-transform:uppercase;letter-spacing:0.02em;transition:all var(--t)}
-.btn-outline:hover{background:var(--ink);color:var(--paper)}
+.repo-card{display:flex;justify-content:space-between;align-items:center;gap:16px;border:1px solid var(--border);background:var(--panel);padding:20px 22px;flex-wrap:wrap}
+.repo-card .repo-meta{font-family:var(--font-mono);font-size:0.78rem;color:var(--text-2)}
+.repo-card .repo-meta strong{color:var(--text);display:block;font-family:var(--font-display);font-size:1rem;margin-bottom:4px}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border:1.5px solid var(--border-hi);font-family:var(--font-mono);font-size:0.74rem;color:var(--text-2);text-transform:uppercase;letter-spacing:0.02em;transition:all 0.2s}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
 
-.proj-nav{border-top:1px solid var(--line);padding:36px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;max-width:880px;margin:0 auto}
-.proj-nav a{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.74rem;color:var(--muted);padding:10px 16px;border:1px solid var(--line);transition:all var(--t);text-transform:uppercase;letter-spacing:0.02em}
-.proj-nav a:hover{border-color:var(--ink);color:var(--ink)}
+.proj-nav{border-top:1px solid var(--border);padding:36px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;max-width:880px;margin:0 auto;background:var(--surface)}
+.proj-nav a{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.74rem;color:var(--text-2);padding:10px 16px;border:1px solid var(--border);transition:all 0.2s;text-transform:uppercase;letter-spacing:0.02em}
+.proj-nav a:hover{border-color:var(--cyan);color:var(--cyan)}
 
 @media(max-width:600px){.spec-grid{grid-template-columns:1fr}.proj-meta{gap:16px}}
 </style>
@@ -113,6 +136,7 @@ img{max-width:100%;display:block}
   <span class="topbar-title">JIN ZIYU · PROJECT FILE</span>
 </div>
 <div class="proj-hero">
+  <canvas id="sigCanvas" aria-hidden="true"></canvas>
   <div class="proj-hero-inner">
     <span class="proj-tagid">RBX-03</span>
     <p class="proj-eyebrow">Embedded Systems · Haptics · 3D Printing</p>
@@ -121,26 +145,27 @@ img{max-width:100%;display:block}
     <div class="proj-meta"><span><i class='bi bi-calendar3'></i> Apr – Aug 2021</span><span><i class='bi bi-building'></i> Temasek Polytechnic</span><span><i class='bi bi-award'></i> Certificate of Commendation</span></div>
   </div>
 </div>
-<div class="award-banner"><i class="bi bi-award-fill"></i> Certificate of Commendation — recognised as a top major project (Top 10%)</div><div class="proj-figure plate"><svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg">
-<rect width="880" height="420" fill="#E2E7DD"/>
-<g stroke="#1F6F6B" stroke-width="1" opacity="0.2"><line x1="440" y1="0" x2="440" y2="420"/><line x1="0" y1="210" x2="880" y2="210"/></g>
+<div class="award-banner"><i class="bi bi-award-fill"></i> Certificate of Commendation — recognised as a top major project (Top 10%)</div>
+<div class="proj-figure plate"><svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg">
+<rect width="880" height="420" fill="#F2F1ED"/>
+<g stroke="#613DAA" stroke-width="1" opacity="0.15"><line x1="440" y1="0" x2="440" y2="420"/><line x1="0" y1="210" x2="880" y2="210"/></g>
 <g transform="translate(140,130)">
-  <rect x="-10" y="0" width="60" height="100" rx="14" fill="none" stroke="#15201C" stroke-width="2.5"/>
-  <rect x="6" y="-70" width="14" height="74" fill="none" stroke="#15201C" stroke-width="2"/>
-  <rect x="26" y="-60" width="14" height="64" fill="none" stroke="#15201C" stroke-width="2"/>
-  <text x="20" y="130" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#15201C">HAPTIC GLOVE</text>
-  <text x="20" y="148" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#5B6358">FLEX SENSORS</text>
+  <rect x="-10" y="0" width="60" height="100" rx="14" fill="none" stroke="#1C1810" stroke-width="2.5"/>
+  <rect x="6" y="-70" width="14" height="74" fill="none" stroke="#1C1810" stroke-width="2"/>
+  <rect x="26" y="-60" width="14" height="64" fill="none" stroke="#1C1810" stroke-width="2"/>
+  <text x="20" y="130" text-anchor="middle" font-family="DM Mono,monospace" font-size="13" fill="#1C1810">HAPTIC GLOVE</text>
+  <text x="20" y="148" text-anchor="middle" font-family="DM Mono,monospace" font-size="10" fill="#5B6358">FLEX SENSORS</text>
 </g>
 <g transform="translate(560,120)">
-  <rect x="0" y="130" width="120" height="20" fill="none" stroke="#D6531F" stroke-width="2.5"/>
-  <line x1="60" y1="130" x2="60" y2="60" stroke="#D6531F" stroke-width="2.5"/>
-  <line x1="60" y1="60" x2="140" y2="20" stroke="#D6531F" stroke-width="2.5"/>
-  <circle cx="140" cy="20" r="9" fill="#D6531F"/>
-  <text x="60" y="172" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#D6531F">6-AXIS ARM</text>
+  <rect x="0" y="130" width="120" height="20" fill="none" stroke="#DAA613" stroke-width="2.5"/>
+  <line x1="60" y1="130" x2="60" y2="60" stroke="#DAA613" stroke-width="2.5"/>
+  <line x1="60" y1="60" x2="140" y2="20" stroke="#DAA613" stroke-width="2.5"/>
+  <circle cx="140" cy="20" r="9" fill="#DAA613"/>
+  <text x="60" y="172" text-anchor="middle" font-family="DM Mono,monospace" font-size="13" fill="#DAA000">6-AXIS ARM</text>
 </g>
-<path d="M230,180 C320,150 420,150 540,190" fill="none" stroke="#15201C" stroke-width="2" stroke-dasharray="3,6"/>
-<text x="385" y="150" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#15201C">BLUETOOTH HC05 · MASTER/SLAVE</text>
-<text x="440" y="40" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" letter-spacing="2" fill="#5B6358">FIG.01 — GESTURE-TO-SERVO CONTROL LINK</text>
+<path d="M230,180 C320,150 420,150 540,190" fill="none" stroke="#1C1810" stroke-width="2" stroke-dasharray="3,6" opacity="0.5"/>
+<text x="385" y="150" text-anchor="middle" font-family="DM Mono,monospace" font-size="12" fill="#1C1810">BLUETOOTH HC05 · MASTER/SLAVE</text>
+<text x="440" y="40" text-anchor="middle" font-family="DM Mono,monospace" font-size="12" letter-spacing="2" fill="#5B6358">FIG.01 — GESTURE-TO-SERVO CONTROL LINK</text>
 </svg></div><div class="proj-figure-cap">FIG.01 — Gesture-to-servo control link</div><div class="proj-body"><div class="proj-section">
   <div class="proj-section-label"><span class="n">01</span> Project Overview</div>
   <p>The Hand Gesture Controlled Robot is a six-axis pick-and-place robotic arm controlled wirelessly in real time via a Haptic Glove worn by the operator. Flex sensors on the glove capture finger bend angles, which are transmitted over Bluetooth and mapped directly to the servo joints of the 3D-printed robot arm.</p><p>Developed as the major project for the Diploma in Electronics at Temasek Polytechnic, it received a Certificate of Commendation, placing it in the top 10% of major projects for that cohort.</p>
@@ -189,7 +214,67 @@ img{max-width:100%;display:block}
   <a href="../index.html#projects"><i class="bi bi-grid"></i> All Projects</a>
   <a href="sit-dashboard.html">Next: SIT Dashboard <i class="bi bi-arrow-right"></i></a>
 </div>
+<script>
+(function(){
+  const c=document.getElementById('sigCanvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  let W,H,mx=0.5,my=0.5,t=0;
+  const zone=document.querySelector('.proj-hero');
+  function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight}
+  window.addEventListener('resize',resize);
+  resize();
+  zone.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    mx=(e.clientX-r.left)/W;my=(e.clientY-r.top)/H;
+  });
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t+=0.02;
+    /* mx/my auto-drift continuously so the signal always moves, even with no mouse input */
+    const dmx=0.5+Math.sin(t*0.35)*0.4;
+    const dmy=0.5+Math.cos(t*0.27)*0.35;
+    const gx=W/18,gy=H/10;
+    for(let r=0;r<=10;r++) for(let cc=0;cc<=18;cc++){
+      const px=cc*gx,py=r*gy;
+      const dist=Math.hypot(px/W-dmx,py/H-dmy);
+      const a=Math.max(0,0.12-dist*0.22);
+      ctx.beginPath();ctx.arc(px,py,1,0,Math.PI*2);
+      ctx.fillStyle=`rgba(218,166,19,${a})`;ctx.fill();
+    }
+    /* primary signal trace — scrolls continuously via -t phase */
+    ctx.beginPath();
+    ctx.strokeStyle='rgba(218,166,19,0.28)';ctx.lineWidth=1.5;
+    for(let x=0;x<=W;x+=2){
+      const norm=x/W;
+      const freq=3+dmx*4;
+      const amp=H*0.08*(0.5+dmy*0.8);
+      const y=H*0.5+Math.sin(norm*Math.PI*freq-t*1.6)*amp+Math.sin(norm*Math.PI*freq*1.7-t*1.1)*(amp*0.3);
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    /* secondary faint trace, different speed/phase */
+    ctx.beginPath();
+    ctx.strokeStyle='rgba(97,61,170,0.18)';ctx.lineWidth=1;
+    for(let x=0;x<=W;x+=2){
+      const norm=x/W;
+      const y=H*0.35+Math.sin(norm*Math.PI*5-t*2.1)*H*0.04;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    /* third trace travelling the opposite direction for visible cross-motion */
+    ctx.beginPath();
+    ctx.strokeStyle='rgba(218,160,0,0.16)';ctx.lineWidth=1;
+    for(let x=0;x<=W;x+=2){
+      const norm=x/W;
+      const y=H*0.68+Math.sin(norm*Math.PI*3.4+t*1.4)*H*0.05;
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
 </body>
 </html>
-
-
