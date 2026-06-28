@@ -4,200 +4,186 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Hand Gesture Controlled Robot — Jin Ziyu</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F0F6FF;--bg2:#E4EEFB;--card:#FFFFFF;--card2:#F5F9FF;
-  --border:#C2D8F0;--text:#0D1B2A;--muted:#4A6580;
-  --accent:#0077CC;--accent2:#E85D04;
-  --accent-glow:rgba(0,119,204,0.12);--accent2-glow:rgba(232,93,4,0.12);
-  --font-head:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;
-  --font-mono:'Space Mono',monospace;--radius:12px;--transition:0.3s cubic-bezier(0.4,0,0.2,1);
+  --bg:#EDF0E9;--bg-deep:#E2E7DD;--paper:#FBFBF8;--card:#FFFFFF;
+  --line:#C7CFC1;--line-soft:#D9DFD3;--ink:#15201C;--muted:#5B6358;
+  --accent:#D6531F;--accent-ink:#9C3C13;--accent2:#1F6F6B;
+  --accent2-soft:rgba(31,111,107,0.10);--accent-soft:rgba(214,83,31,0.10);
+  --font-head:'Archivo',sans-serif;--font-body:'Source Sans 3',sans-serif;--font-mono:'IBM Plex Mono',monospace;
+  --t:0.25s cubic-bezier(0.4,0,0.2,1);
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.65;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);line-height:1.65;overflow-x:hidden;
+  background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+  background-size:48px 48px;background-attachment:fixed;}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.container{max-width:860px;margin:0 auto;padding:0 24px}
+.container{max-width:880px;margin:0 auto;padding:0 28px}
 
-.topbar{position:sticky;top:0;z-index:99;background:rgba(240,246,255,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
-.topbar-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);transition:color var(--transition)}
-.topbar-back:hover{color:var(--accent2)}
-.topbar-title{font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.05em}
+.plate{position:relative;border:1px solid var(--line);background:var(--card)}
+.plate::before,.plate::after{content:'';position:absolute;width:11px;height:11px;pointer-events:none}
+.plate::before{top:-1px;left:-1px;border-top:2px solid var(--ink);border-left:2px solid var(--ink)}
+.plate::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--ink);border-right:2px solid var(--ink)}
 
-.proj-hero{
-  background:linear-gradient(160deg,var(--card) 0%,var(--card2) 55%,#FFF1E6 100%);
-  padding:80px 24px 64px;text-align:center;position:relative;overflow:hidden;
-  border-bottom:3px solid var(--accent2);
-}
-.proj-hero::after{
-  content:'';position:absolute;top:-120px;right:-120px;width:320px;height:320px;border-radius:50%;
-  background:radial-gradient(circle,rgba(232,93,4,0.12),transparent 70%);pointer-events:none;
-}
-.proj-eyebrow{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent2);margin-bottom:20px;position:relative;z-index:1}
-.proj-title{font-family:var(--font-head);font-size:clamp(1.8rem,5vw,3rem);font-weight:700;color:var(--text);line-height:1.1;margin-bottom:20px;position:relative;z-index:1}
-.proj-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px;position:relative;z-index:1}
-.proj-tags span{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.06em;padding:4px 12px;border-radius:20px;border:1px solid rgba(0,119,204,0.4);color:var(--accent)}
-.proj-tags span:nth-child(even){border-color:rgba(232,93,4,0.45);color:var(--accent2)}
-.proj-meta{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);position:relative;z-index:1}
+.topbar{position:sticky;top:0;z-index:99;background:rgba(251,251,248,0.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between}
+.topbar-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.03em;text-transform:uppercase;color:var(--muted);transition:color var(--t)}
+.topbar-back:hover{color:var(--accent-ink)}
+.topbar-title{font-family:var(--font-mono);font-size:0.68rem;color:var(--muted);letter-spacing:0.06em}
+
+.proj-hero{padding:64px 24px 48px;border-bottom:1px solid var(--line);background:var(--paper)}
+.proj-hero-inner{max-width:880px;margin:0 auto}
+.proj-tagid{display:inline-block;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.06em;color:var(--accent-ink);border:1px solid var(--accent);padding:4px 10px;margin-bottom:18px}
+.proj-eyebrow{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent2);margin-bottom:14px}
+.proj-title{font-family:var(--font-head);font-size:clamp(1.7rem,4.4vw,2.7rem);font-weight:800;color:var(--ink);line-height:1.12;margin-bottom:22px;max-width:680px}
+.proj-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px}
+.proj-tags span{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.03em;padding:4px 10px;border:1px solid var(--line);color:var(--muted);text-transform:uppercase;background:var(--card)}
+.proj-meta{display:flex;gap:26px;flex-wrap:wrap;font-family:var(--font-mono);font-size:0.7rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:16px}
 .proj-meta span{display:flex;align-items:center;gap:6px}
-.proj-meta span:last-child{color:var(--accent2)}
 
-.award-banner{
-  background:linear-gradient(135deg,rgba(232,93,4,0.14),rgba(0,119,204,0.06));
-  border-bottom:1px solid rgba(232,93,4,0.25);
-  padding:18px 24px;text-align:center;
-  font-family:var(--font-mono);font-size:0.82rem;
-  color:var(--accent2);
-  display:flex;align-items:center;justify-content:center;gap:10px;
-}
+.award-banner{background:var(--accent-soft);border-bottom:1px solid var(--line);padding:14px 24px;text-align:center;font-family:var(--font-mono);font-size:0.78rem;color:var(--accent-ink);display:flex;align-items:center;justify-content:center;gap:10px}
 
-.proj-img-placeholder{
-  height:360px;background:linear-gradient(135deg,var(--card),var(--card2));
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--muted);
-  border-bottom:1px solid var(--border);position:relative;overflow:hidden;
-}
-.proj-img-placeholder::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);
-}
-.proj-img-placeholder::after{
-  content:'';position:absolute;right:0;top:0;bottom:0;width:4px;background:var(--accent2);
-}
-.proj-img-placeholder i{font-size:3rem;color:var(--accent)}
-.proj-img-placeholder span{font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em}
+.proj-figure{border-bottom:1px solid var(--line)}
+.proj-figure svg{width:100%;height:auto;display:block;max-height:420px}
+.proj-figure-cap{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.05em;color:var(--muted);text-transform:uppercase;text-align:center;padding:10px 0;background:var(--paper);border-bottom:1px solid var(--line)}
 
-.proj-body{padding:64px 0 80px}
-.proj-section{margin-bottom:52px}
-.proj-section-label{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:24px}
-.proj-section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:0.4}
-.proj-section:nth-of-type(even) .proj-section-label{color:var(--accent2)}
-.proj-section:nth-of-type(even) .proj-section-label::after{background:linear-gradient(90deg,var(--accent2),var(--accent))}
-.proj-section p{color:var(--muted);font-size:0.96rem;line-height:1.75;margin-bottom:14px}
+.proj-body{padding:60px 0 80px}
+.proj-section{margin-bottom:52px;max-width:880px;margin-left:auto;margin-right:auto;padding:0 28px}
+.proj-section-label{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent-ink);display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.proj-section-label .n{color:var(--ink);font-weight:600}
+.proj-section-label::after{content:'';flex:1;max-width:90px;height:1px;background:repeating-linear-gradient(90deg,var(--ink) 0 6px,transparent 6px 10px)}
+.proj-section p{color:var(--muted);font-size:0.96rem;line-height:1.78;margin-bottom:14px}
 .proj-section p:last-child{margin-bottom:0}
 
-.spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px}
-.spec-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;border-top:3px solid var(--accent);transition:transform var(--transition),border-color var(--transition)}
-.spec-card:nth-child(even){border-top-color:var(--accent2)}
-.spec-card:hover{transform:translateY(-3px)}
-.spec-card h4{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;text-transform:uppercase}
-.spec-card:nth-child(even) h4{color:var(--accent2)}
-.spec-card p{font-size:0.88rem;color:var(--muted);margin:0}
+.spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:6px}
+.spec-card{background:var(--card);padding:20px}
+.spec-card h4{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.06em;color:var(--accent-ink);margin-bottom:8px;text-transform:uppercase}
+.spec-card p{font-size:0.87rem;color:var(--muted);margin:0}
 
-.highlight-box{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-left:3px solid var(--accent2);border-radius:var(--radius);padding:20px 24px;margin:20px 0;position:relative}
-.highlight-box::before{content:'\f6b2';font-family:'bootstrap-icons';position:absolute;top:16px;right:20px;color:var(--accent2);opacity:0.25;font-size:1.6rem}
-.highlight-box p{color:var(--muted);font-size:0.93rem;margin:0}
+.highlight-box{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent2);padding:20px 24px;margin:18px 0}
+.highlight-box p{color:var(--muted);font-size:0.92rem;margin:0}
 
-.proj-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.proj-list li{font-size:0.93rem;color:var(--muted);padding-left:20px;position:relative}
-.proj-list li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:0.7rem;top:2px}
-.proj-list li:nth-child(even)::before{color:var(--accent2)}
+.proj-list{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.proj-list li{font-size:0.92rem;color:var(--muted);padding-left:20px;position:relative}
+.proj-list li::before{content:'—';position:absolute;left:0;color:var(--accent2);top:0}
 
-.proj-nav{border-top:1px solid var(--border);padding:40px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.proj-nav a{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.78rem;color:var(--muted);padding:10px 18px;border:1px solid var(--border);border-radius:8px;transition:all var(--transition)}
-.proj-nav a:hover{border-color:var(--accent2);color:var(--accent2);background:var(--accent2-glow)}
+.obj-list{display:flex;flex-direction:column;gap:0;margin-top:6px;border:1px solid var(--line)}
+.obj-list li{font-size:0.92rem;color:var(--ink);padding:13px 16px;position:relative;border-bottom:1px solid var(--line);display:flex;gap:12px}
+.obj-list li:last-child{border-bottom:none}
+.obj-list li .ono{font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-ink);flex:0 0 30px}
+
+.media-frame{border:1px solid var(--line);background:var(--bg-deep);position:relative}
+.media-frame video{width:100%;display:block;max-height:480px;background:#000}
+.media-placeholder{min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:36px;text-align:center;background:var(--paper)}
+.media-placeholder i{font-size:2.2rem;color:var(--line)}
+.media-placeholder span{font-family:var(--font-mono);font-size:0.74rem;color:var(--muted);line-height:1.7}
+
+.report-card{display:flex;gap:18px;align-items:center;border:1px solid var(--line);background:var(--card);padding:18px;}
+.report-thumb{flex:0 0 64px;height:80px;border:1px solid var(--line);background:var(--bg-deep);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:0.6rem;color:var(--muted);text-align:center}
+.report-thumb i{font-size:1.6rem;color:var(--accent-ink)}
+.report-info{flex:1}
+.report-info h4{font-family:var(--font-head);font-size:0.95rem;font-weight:700;margin-bottom:4px}
+.report-info p{font-size:0.84rem;color:var(--muted);margin:0}
+.report-link{font-family:var(--font-mono);font-size:0.72rem;color:var(--accent-ink);display:flex;align-items:center;gap:6px;flex:0 0 auto;border:1px solid var(--line);padding:8px 14px;text-transform:uppercase;letter-spacing:0.03em;transition:all var(--t)}
+.report-link:hover{border-color:var(--accent);background:var(--accent-soft)}
+
+.repo-card{display:flex;justify-content:space-between;align-items:center;gap:16px;border:1px solid var(--line);background:var(--card);padding:20px 22px;flex-wrap:wrap}
+.repo-card .repo-meta{font-family:var(--font-mono);font-size:0.78rem;color:var(--muted)}
+.repo-card .repo-meta strong{color:var(--ink);display:block;font-family:var(--font-head);font-size:1rem;margin-bottom:4px}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border:1.5px solid var(--ink);font-family:var(--font-mono);font-size:0.74rem;color:var(--ink);text-transform:uppercase;letter-spacing:0.02em;transition:all var(--t)}
+.btn-outline:hover{background:var(--ink);color:var(--paper)}
+
+.proj-nav{border-top:1px solid var(--line);padding:36px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;max-width:880px;margin:0 auto}
+.proj-nav a{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.74rem;color:var(--muted);padding:10px 16px;border:1px solid var(--line);transition:all var(--t);text-transform:uppercase;letter-spacing:0.02em}
+.proj-nav a:hover{border-color:var(--ink);color:var(--ink)}
+
+@media(max-width:600px){.spec-grid{grid-template-columns:1fr}.proj-meta{gap:16px}}
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <a href="../index.html" class="topbar-back"><i class="bi bi-arrow-left"></i> Back to Portfolio</a>
-  <span class="topbar-title">JIN ZIYU · PROJECTS</span>
+  <span class="topbar-title">JIN ZIYU · PROJECT FILE</span>
 </div>
-
 <div class="proj-hero">
-  <p class="proj-eyebrow">Embedded Systems · Haptics · 3D Printing</p>
-  <h1 class="proj-title">Hand Gesture<br>Controlled Robot</h1>
-  <div class="proj-tags">
-    <span>Arduino Nano</span><span>Bluetooth HC05</span><span>3D Printing</span>
-    <span>C</span><span>Servo Motors</span><span>Haptic Glove</span>
-  </div>
-  <div class="proj-meta">
-    <span><i class="bi bi-calendar3"></i> Apr – Aug 2021</span>
-    <span><i class="bi bi-building"></i> Temasek Polytechnic</span>
-    <span><i class="bi bi-award"></i> Certificate of Commendation</span>
+  <div class="proj-hero-inner">
+    <span class="proj-tagid">RBX-03</span>
+    <p class="proj-eyebrow">Embedded Systems · Haptics · 3D Printing</p>
+    <h1 class="proj-title">Hand Gesture Controlled Robot</h1>
+    <div class="proj-tags"><span>Arduino Nano</span><span>Bluetooth HC05</span><span>3D Printing</span><span>C</span><span>Servo Motors</span><span>Haptic Glove</span></div>
+    <div class="proj-meta"><span><i class='bi bi-calendar3'></i> Apr – Aug 2021</span><span><i class='bi bi-building'></i> Temasek Polytechnic</span><span><i class='bi bi-award'></i> Certificate of Commendation</span></div>
   </div>
 </div>
-
-<div class="award-banner">
-  <i class="bi bi-award-fill"></i>
-  Certificate of Commendation — Recognised as a top major project (Top 10%)
+<div class="award-banner"><i class="bi bi-award-fill"></i> Certificate of Commendation — recognised as a top major project (Top 10%)</div><div class="proj-figure plate"><svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg">
+<rect width="880" height="420" fill="#E2E7DD"/>
+<g stroke="#1F6F6B" stroke-width="1" opacity="0.2"><line x1="440" y1="0" x2="440" y2="420"/><line x1="0" y1="210" x2="880" y2="210"/></g>
+<g transform="translate(140,130)">
+  <rect x="-10" y="0" width="60" height="100" rx="14" fill="none" stroke="#15201C" stroke-width="2.5"/>
+  <rect x="6" y="-70" width="14" height="74" fill="none" stroke="#15201C" stroke-width="2"/>
+  <rect x="26" y="-60" width="14" height="64" fill="none" stroke="#15201C" stroke-width="2"/>
+  <text x="20" y="130" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#15201C">HAPTIC GLOVE</text>
+  <text x="20" y="148" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#5B6358">FLEX SENSORS</text>
+</g>
+<g transform="translate(560,120)">
+  <rect x="0" y="130" width="120" height="20" fill="none" stroke="#D6531F" stroke-width="2.5"/>
+  <line x1="60" y1="130" x2="60" y2="60" stroke="#D6531F" stroke-width="2.5"/>
+  <line x1="60" y1="60" x2="140" y2="20" stroke="#D6531F" stroke-width="2.5"/>
+  <circle cx="140" cy="20" r="9" fill="#D6531F"/>
+  <text x="60" y="172" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#D6531F">6-AXIS ARM</text>
+</g>
+<path d="M230,180 C320,150 420,150 540,190" fill="none" stroke="#15201C" stroke-width="2" stroke-dasharray="3,6"/>
+<text x="385" y="150" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#15201C">BLUETOOTH HC05 · MASTER/SLAVE</text>
+<text x="440" y="40" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" letter-spacing="2" fill="#5B6358">FIG.01 — GESTURE-TO-SERVO CONTROL LINK</text>
+</svg></div><div class="proj-figure-cap">FIG.01 — Gesture-to-servo control link</div><div class="proj-body"><div class="proj-section">
+  <div class="proj-section-label"><span class="n">01</span> Project Overview</div>
+  <p>The Hand Gesture Controlled Robot is a six-axis pick-and-place robotic arm controlled wirelessly in real time via a Haptic Glove worn by the operator. Flex sensors on the glove capture finger bend angles, which are transmitted over Bluetooth and mapped directly to the servo joints of the 3D-printed robot arm.</p><p>Developed as the major project for the Diploma in Electronics at Temasek Polytechnic, it received a Certificate of Commendation, placing it in the top 10% of major projects for that cohort.</p>
 </div>
-
-<div class="proj-body">
-  <div class="container">
-
-    <div class="proj-section">
-      <div class="proj-section-label">Overview</div>
-      <p>The Hand Gesture Controlled Robot is a six-axis pick-and-place robotic arm controlled wirelessly in real time via a Haptic Glove worn by the operator. Flex sensors on the glove capture finger bend angles, which are transmitted over Bluetooth and mapped directly to the servo joints of the 3D-printed robot arm.</p>
-      <p>The project was developed as the major project for the Diploma in Electronics at Temasek Polytechnic and received a Certificate of Commendation — placing it in the top 10% of major projects for that cohort.</p>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">System Design</div>
-      <div class="spec-grid">
-        <div class="spec-card">
-          <h4>Master (Glove)</h4>
-          <p>Haptic Glove with flex sensors on each finger, read by an Arduino Nano. Data transmitted wirelessly via HC05 Bluetooth module to the slave unit.</p>
-        </div>
-        <div class="spec-card">
-          <h4>Slave (Robot Arm)</h4>
-          <p>6-axis 3D-printed robotic arm with servo motors at each joint. Arduino Nano receives Bluetooth data and drives servos via PWM signals.</p>
-        </div>
-        <div class="spec-card">
-          <h4>Communication</h4>
-          <p>Master-Slave Bluetooth configuration using paired HC05 modules operating in AT command mode — achieves low-latency wireless control.</p>
-        </div>
-        <div class="spec-card">
-          <h4>Mechanical</h4>
-          <p>Entire robot arm structure 3D printed in PLA. Designed for lightweight, modular assembly with servo motor mounts at each of the six axes.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">Key Technical Work</div>
-      <ul class="proj-list">
-        <li>Designed and fabricated the 3D-printed 6-axis arm structure optimised for servo motor integration</li>
-        <li>Implemented flex sensor ADC reading and mapping to servo PWM range on the Arduino master</li>
-        <li>Configured HC05 Bluetooth modules in Master-Slave AT command pairing mode</li>
-        <li>Calibrated servo angle mapping to produce intuitive 1:1 gesture-to-joint control</li>
-        <li>Developed firmware in C for both master (glove) and slave (arm) Arduino Nano units</li>
-        <li>Tested pick-and-place operations with real objects, validating gesture control accuracy</li>
-      </ul>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">Technology Stack</div>
-      <ul class="proj-list">
-        <li><strong>Microcontrollers:</strong> Arduino Nano × 2 (master + slave)</li>
-        <li><strong>Wireless:</strong> HC05 Bluetooth module pair (Master-Slave configuration)</li>
-        <li><strong>Sensing:</strong> Flex sensors (one per finger) for gesture capture</li>
-        <li><strong>Actuation:</strong> SG90/MG996R servo motors at six axes</li>
-        <li><strong>Fabrication:</strong> FDM 3D printing (PLA) for full arm structure</li>
-        <li><strong>Language:</strong> C (Arduino firmware for master and slave)</li>
-      </ul>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">Recognition</div>
-      <div class="highlight-box">
-        <p>Awarded a Certificate of Commendation at Temasek Polytechnic, recognising the Hand Gesture Controlled Robot as one of the top major projects — placing in the top 10% of the cohort for innovation and technical execution.</p>
-      </div>
-    </div>
-
-    <div class="proj-nav">
-      <a href="sep-limo-arena.html"><i class="bi bi-arrow-left"></i> Prev: LIMO Navigation</a>
-      <a href="../index.html#projects"><i class="bi bi-grid"></i> All Projects</a>
-      <a href="sit-dashboard.html">Next: SIT Dashboard <i class="bi bi-arrow-right"></i></a>
-    </div>
-
-  </div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">02</span> Objectives</div>
+  <ul class='obj-list'><li><span class='ono'>01</span><span>Capture finger gestures in real time using a wearable flex-sensor glove</span></li><li><span class='ono'>02</span><span>Transmit gesture data wirelessly with low latency to a remote robotic arm</span></li><li><span class='ono'>03</span><span>Map gesture data to six servo joints for intuitive 1:1 control of the arm</span></li><li><span class='ono'>04</span><span>Validate the system through real pick-and-place trials, aiding tasks for users with limited mobility</span></li></ul>
 </div>
-
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">03</span> Demo Video</div>
+  <div class="media-frame"><div class="media-placeholder"><i class="bi bi-film"></i><span>No recorded demo currently published — pick-and-place trials were demonstrated live for assessment.</span></div></div>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">04</span> Report Preview</div>
+  <div class="report-card">
+      <div class="report-thumb"><i class="bi bi-file-earmark-text"></i></div>
+      <div class="report-info"><h4>Major Project Report</h4><p>Diploma major project write-up covering glove design, servo calibration, and Bluetooth pairing.</p></div>
+      <a href="../assets/reports/hand-gesture-robot.pdf" target="_blank" class="report-link" onclick="return true;"><i class="bi bi-eye"></i> Preview</a>
+    </div>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">05</span> System Context</div>
+  <div class='spec-grid'><div class='spec-card'><h4>Master (Glove)</h4><p>Haptic Glove with flex sensors on each finger, read by an Arduino Nano. Data transmitted wirelessly via HC05 Bluetooth module to the slave unit.</p></div><div class='spec-card'><h4>Slave (Robot Arm)</h4><p>6-axis 3D-printed robotic arm with servo motors at each joint. Arduino Nano receives Bluetooth data and drives servos via PWM signals.</p></div><div class='spec-card'><h4>Communication</h4><p>Master-Slave Bluetooth configuration using paired HC05 modules operating in AT command mode for low-latency wireless control.</p></div><div class='spec-card'><h4>Mechanical</h4><p>Entire robot arm structure 3D printed in PLA, designed for lightweight, modular assembly with servo mounts at each of the six axes.</p></div></div>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">06</span> Technical Stack</div>
+  <ul class='proj-list'><li><strong>Microcontrollers:</strong> Arduino Nano × 2 (master + slave)</li><li><strong>Wireless:</strong> HC05 Bluetooth module pair (Master-Slave configuration)</li><li><strong>Sensing:</strong> Flex sensors (one per finger) for gesture capture</li><li><strong>Actuation:</strong> SG90/MG996R servo motors at six axes</li><li><strong>Fabrication:</strong> FDM 3D printing (PLA) for the full arm structure</li><li><strong>Language:</strong> C (Arduino firmware for master and slave)</li></ul>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">07</span> Role &amp; Contribution</div>
+  <p>Within the project team, I designed and fabricated the 3D-printed six-axis arm structure, implemented the flex-sensor ADC reading and servo PWM mapping on the master Arduino, and configured the HC05 Bluetooth modules for Master-Slave pairing. I also developed the C firmware for both master and slave units and led calibration of the gesture-to-joint mapping for intuitive control.</p>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">08</span> Verification &amp; Validation</div>
+  <div class='spec-grid'><div class='spec-card'><h4>Calibration</h4><p>Calibrated servo angle mapping to produce intuitive 1:1 gesture-to-joint control.</p></div><div class='spec-card'><h4>Wireless Reliability</h4><p>Tested the HC05 Master-Slave link for consistent low-latency response under normal indoor conditions.</p></div><div class='spec-card'><h4>Pick-and-Place Trials</h4><p>Tested pick-and-place operations with real objects, validating gesture control accuracy.</p></div><div class='spec-card'><h4>Recognition</h4><p>Awarded a Certificate of Commendation, placing the project in the top 10% of the cohort for innovation and technical execution.</p></div></div>
+</div>
+<div class="proj-section">
+  <div class="proj-section-label"><span class="n">09</span> Project Repository</div>
+  <div class="repo-card">
+      <div class="repo-meta"><strong>Project Repository</strong>Project files retained from polytechnic coursework; not publicly hosted.</div>
+      <span class="btn-outline" style="opacity:0.5;cursor:default"><i class="bi bi-lock"></i> Private</span>
+    </div>
+</div>
+</div><div class="proj-nav">
+  <a href="sep-limo-arena.html"><i class="bi bi-arrow-left"></i> Prev: LIMO Navigation</a>
+  <a href="../index.html#projects"><i class="bi bi-grid"></i> All Projects</a>
+  <a href="sit-dashboard.html">Next: SIT Dashboard <i class="bi bi-arrow-right"></i></a>
+</div>
 </body>
 </html>
