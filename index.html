@@ -105,8 +105,25 @@ section{padding:108px 0;position:relative}
   color:var(--muted);padding:8px 13px;
   transition:color var(--t),background var(--t);
 }
-.nav-link:hover,.nav-link.active{color:var(--accent-ink);background:var(--accent-soft)}
-.nav-link.active{font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
+.nav-link:hover,
+.nav-link.active{
+    color:#613DAA;
+    background:rgba(97,61,170,0.12);
+}
+
+.action-link{
+    color:#613DAA;
+}
+
+.contact-socials a:hover{
+    border-color:#613DAA;
+    color:#613DAA;
+}
+
+.form-group input:focus,
+.form-group textarea:focus{
+    border-color:#613DAA;
+}
 .nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
 .nav-toggle span{display:block;width:20px;height:2px;background:var(--ink);transition:transform var(--t),opacity var(--t)}
 
@@ -152,11 +169,11 @@ section{padding:108px 0;position:relative}
 .btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
 .btn-hud{
   display:inline-flex;align-items:center;gap:8px;
-  padding:11px 20px;background:var(--ink);color:var(--paper);
+  padding:11px 20px;background:#DAA613;color:FFF;
   font-family:var(--font-mono);font-size:0.74rem;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;
-  border:1.5px solid var(--ink);transition:all var(--t);
+  border:1.5px solid #DAA613;transition:all var(--t);
 }
-.btn-hud:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-hud:hover{background:#613DAA;border-color:#613DAA;color:#fff}
 
 /* right column — title-block panel */
 .hero-hud{
