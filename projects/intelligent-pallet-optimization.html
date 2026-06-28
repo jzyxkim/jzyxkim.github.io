@@ -418,11 +418,14 @@ img{max-width:100%;display:block}
       <div class="sec-label"><span class="n">03 —</span> Demo Video</div>
       <div class="proj-media">
         <video
-          src="../assets/videos/intelligent-pallet-optimization.mp4"
-          controls playsinline
-          poster="../assets/img/project/pallet-poster.jpg"
-          onerror="this.outerHTML='<div class=\'media-placeholder\'><i class=\'bi bi-film\'></i><span>Demo video unavailable.<br>Place pallet-demo.mp4 in assets/video/ to show the recorded test run here.</span></div>'"
-        ></video>
+            src="../assets/videos/intelligent-pallet-optimization.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            disablePictureInPicture>
+        </video>
       </div>
     </div>
 
