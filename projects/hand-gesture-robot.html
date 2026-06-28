@@ -36,18 +36,15 @@ img{max-width:100%;display:block}
 .topbar-title{
     display:flex;
     align-items:center;
-    gap:10px;
-    font-family:var(--font-mono);
-    font-size:0.68rem;
-    color:var(--muted);
-    letter-spacing:0.06em;
+    justify-content:center;
 }
 
 .site-logo{
-    width:36px;
-    height:36px;
-    object-fit:contain;
+    height:38px;
+    width:auto;
+    display:block;
 }
+
 .proj-hero{padding:64px 24px 48px;border-bottom:1px solid var(--line);background:var(--paper)}
 .proj-hero-inner{max-width:880px;margin:0 auto}
 .proj-tagid{display:inline-block;font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.06em;color:var(--accent-ink);border:1px solid var(--accent);padding:4px 10px;margin-bottom:18px}
@@ -118,9 +115,15 @@ img{max-width:100%;display:block}
 </style>
 </head>
 <body>
-<div class="topbar-title">
-    <img src="../assets/img/logo.png" alt="Logo" class="site-logo">
-    <span>JIN ZIYU · PROJECT FILE</span>
+<div class="topbar">
+    <a href="../index.html" class="topbar-back">
+        <i class="bi bi-arrow-left"></i>
+        Back to Portfolio
+    </a>
+
+    <div class="topbar-title">
+        <img src="../assets/img/logo.png" alt="Jin Ziyu Logo" class="site-logo">
+    </div>
 </div>
 <div class="proj-hero">
   <div class="proj-hero-inner">
@@ -201,3 +204,5 @@ img{max-width:100%;display:block}
 </div>
 </body>
 </html>
+
+
