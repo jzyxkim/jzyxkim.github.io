@@ -104,7 +104,21 @@ img{max-width:100%;display:block}
 .media-placeholder{min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:36px;text-align:center;background:var(--card)}
 .media-placeholder i{font-size:2.2rem;color:var(--border-hi)}
 .media-placeholder span{font-family:var(--font-mono);font-size:0.74rem;color:var(--text-2);line-height:1.7}
+.video-container{
+    width:100%;
+    max-width:1400px;
+    margin:40px auto;
+}
 
+.video-container video{
+    width:100%;
+    height:700px;
+    display:block;
+    object-fit:cover;
+    border:2px solid var(--line);
+    border-radius:8px;
+    background:#000;
+}
 .repo-card{display:flex;justify-content:space-between;align-items:center;gap:16px;border:1px solid var(--border);background:var(--panel);padding:20px 22px;flex-wrap:wrap}
 .repo-card .repo-meta{font-family:var(--font-mono);font-size:0.78rem;color:var(--text-2)}
 .repo-card .repo-meta strong{color:var(--text);display:block;font-family:var(--font-display);font-size:1rem;margin-bottom:4px}
@@ -157,11 +171,28 @@ img{max-width:100%;display:block}
 </div>
 <div class="proj-section">
   <div class="proj-section-label"><span class="n">03</span> Demo Video</div>
-  <div class="media-frame">
-    <video controls preload="metadata" poster="../assets/img/sit-dashboard-thumbnail.jpg">
-        <source src="../assets/videos/sit-dashboard-demo.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+<section id="demo" class="section-bg">
+    <div class="container">
+
+        <p class="section-label">
+            <span class="idx">03</span> Demo Video
+        </p>
+
+        <div class="video-container">
+            <video
+                autoplay
+                muted
+                loop
+                playsinline
+                controls
+                preload="auto">
+                <source src="../assets/video/demo.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+    </div>
+</section>
 </div></div>
 <div class="proj-section">
   <div class="proj-section-label"><span class="n">04</span> Report Preview</div>
