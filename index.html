@@ -48,7 +48,7 @@ body{
 a{color:inherit;text-decoration:none}
 ul{list-style:none}
 img{max-width:100%;display:block}
-section{padding:120px 0}
+section{padding:80px 0}
 .container{max-width:1100px;margin:0 auto;padding:0 32px}
 
 /* scrollbar */
@@ -60,13 +60,13 @@ section{padding:120px 0}
 .nav{
   position:fixed;top:0;left:0;right:0;z-index:999;height:var(--nav-h);
   display:flex;align-items:center;
-  background:transparent;
-  transition:background 0.35s var(--ease),backdrop-filter 0.35s var(--ease);
-}
-.nav.scrolled{
-  background:rgba(250,250,248,0.96);
+  background:rgba(250,250,248,0.97);
   backdrop-filter:blur(18px);
   border-bottom:1px solid var(--border);
+  transition:background 0.35s var(--ease),box-shadow 0.35s var(--ease);
+}
+.nav.scrolled{
+  box-shadow:0 2px 24px rgba(28,24,16,0.06);
 }
 .nav-inner{
   max-width:1100px;margin:0 auto;padding:0 32px;
@@ -86,22 +86,85 @@ section{padding:120px 0}
 .nav-logo-mark img{width:100%;height:100%;object-fit:cover}
 .nav-logo-mark:hover{background:var(--cyan-dim);color:var(--cyan)}
 .nav-links{display:flex;gap:0;align-items:center}
-.nav-link{
-  font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;
-  color:var(--text-2);padding:8px 14px;
-  transition:color 0.2s;position:relative;
-}
-.nav-link:hover{color:var(--text)}
-.nav-link::after{
-  content:'';position:absolute;bottom:4px;left:14px;right:14px;height:1px;
-  background:var(--cyan);transform:scaleX(0);transition:transform 0.2s var(--ease);
-  transform-origin:left;
-}
-.nav-link:hover{color:var(--text)}
-.nav-link.active{color:var(--cyan)}
-.nav-link.active::after,.nav-link:hover::after{transform:scaleX(1)}
+.nav-link{display:none} /* hidden — tabs take over */
 .nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:4px;flex-direction:column;gap:5px}
 .nav-toggle span{display:block;width:20px;height:1.5px;background:var(--text);transition:transform 0.25s,opacity 0.25s}
+
+/* ── TAB BAR (LinkedIn-style) ── */
+:root{ --tab-h:48px; }
+.tab-bar{
+  position:fixed;top:var(--nav-h);left:0;right:0;z-index:998;
+  height:var(--tab-h);
+  background:rgba(250,250,248,0.97);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:stretch;justify-content:center;
+  overflow-x:auto;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{
+  font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--text-3);
+  padding:0 18px;
+  border:none;background:none;cursor:pointer;
+  white-space:nowrap;
+  position:relative;
+  transition:color 0.2s var(--ease);
+  border-bottom:2px solid transparent;
+}
+.tab-btn:hover{color:var(--text-2)}
+.tab-btn.active{
+  color:var(--cyan);
+  border-bottom-color:var(--cyan);
+}
+/* slide indicator */
+.tab-indicator{
+  position:absolute;bottom:0;height:2px;
+  background:var(--cyan);
+  transition:left 0.32s var(--ease),width 0.32s var(--ease);
+  pointer-events:none;
+  z-index:1;
+}
+
+/* ── PAGE SYSTEM ── */
+body{overflow-x:hidden}
+.page-section{
+  display:none;
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity 0.38s var(--ease),transform 0.38s var(--ease);
+  padding-top:calc(var(--nav-h) + var(--tab-h));
+}
+.page-section.active{
+  display:block;
+}
+.page-section.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+/* override section padding since we handle it in page-section */
+.page-section section{padding:80px 0}
+.page-section.active section:first-child{padding-top:80px}
+
+/* hero is special: full viewport */
+#page-home{padding-top:0}
+#page-home .hero{
+  padding-top:calc(var(--nav-h) + var(--tab-h) + 60px);
+  min-height:100vh;
+}
+
+/* page-enter from right (forward) */
+@keyframes pageEnterRight{
+  from{opacity:0;transform:translateX(32px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes pageEnterLeft{
+  from{opacity:0;transform:translateX(-32px)}
+  to{opacity:1;transform:translateX(0)}
+}
+.page-section.enter-right{animation:pageEnterRight 0.35s var(--ease) forwards}
+.page-section.enter-left{animation:pageEnterLeft 0.35s var(--ease) forwards}
 
 /* ── HERO ── */
 .hero{
@@ -214,7 +277,6 @@ section{padding:120px 0}
   display:flex;align-items:center;gap:16px;margin-bottom:16px;
 }
 .sec-label::before{content:'';width:24px;height:1px;background:var(--cyan)}
-section+section{border-top:1px solid var(--border)}
 .sec-title{
   font-family:var(--font-display);font-size:clamp(2rem,4vw,3.2rem);
   font-weight:700;line-height:1.1;letter-spacing:-0.02em;
@@ -504,50 +566,108 @@ section+section{border-top:1px solid var(--border)}
   .exp-item{grid-template-columns:1fr;gap:8px}
 }
 @media(max-width:640px){
-  section{padding:80px 0}
+  section{padding:60px 0}
   .skills-grid{grid-template-columns:1fr}
   .sk-card:nth-child(n){border-right:none}
   .sk-card:nth-last-child(-n+1){border-bottom:none}
   .sk-card:nth-last-child(n+2){border-bottom:1px solid var(--border)}
-  .nav-links{
-    display:none;flex-direction:column;gap:0;
-    position:fixed;top:var(--nav-h);left:0;right:0;
-    background:rgba(8,8,16,0.97);backdrop-filter:blur(18px);
-    padding:12px 0 24px;border-bottom:1px solid var(--border);
-  }
-  .nav-links.open{display:flex}
-  .nav-link{padding:13px 24px;font-size:0.76rem}
-  .nav-toggle{display:flex}
   .hero-name{font-size:3.5rem}
   .hero-stats{grid-template-columns:repeat(3,1fr);width:100%}
   .stat+.stat{padding-left:24px}
   .stat{padding-right:24px}
+  .tab-btn{padding:0 12px;font-size:0.6rem;letter-spacing:0.05em}
 }
+@media(prefers-reduced-motion:reduce){
+  .page-section,.page-section.enter-right,.page-section.enter-left{
+    animation:none!important;transition:none!important;
+    opacity:1!important;transform:none!important;
+  }
+}
+
+/* ── ROBOTICS HUD CURSOR ── */
+* { cursor: none !important; }
+#hud-canvas {
+  pointer-events:none;
+  position:fixed;inset:0;
+  z-index:9997;
+}
+body:not(.cursor-active) #hud-canvas { opacity:0; transition:opacity 0.4s; }
+body.cursor-active #hud-canvas { opacity:1; }
+
+/* scan line sweep on cards */
+.sk-card, .proj, .edu-card, .exp-item {
+  overflow:hidden;
+  will-change:transform;
+}
+.sk-card::after, .proj::after, .edu-card::after, .exp-item::after {
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(180deg, transparent 0%, rgba(218,166,19,0.06) 50%, transparent 100%);
+  transform:translateY(-100%);
+  pointer-events:none;
+  transition:none;
+  z-index:2;
+}
+.sk-card.scanning::after, .proj.scanning::after,
+.edu-card.scanning::after, .exp-item.scanning::after {
+  animation: scanSweep 0.8s linear forwards;
+}
+@keyframes scanSweep {
+  from { transform:translateY(-100%); }
+  to   { transform:translateY(200%); }
+}
+
+/* HUD data readout tag */
+#hud-tag {
+  pointer-events:none;
+  position:fixed;
+  font-family:var(--font-mono);
+  font-size:0.58rem;
+  letter-spacing:0.08em;
+  color:var(--cyan);
+  background:rgba(0,5,20,0.82);
+  border:1px solid rgba(218,166,19,0.4);
+  padding:4px 8px;
+  z-index:9999;
+  white-space:nowrap;
+  opacity:0;
+  transition:opacity 0.15s;
+  text-transform:uppercase;
+}
+#hud-tag.visible { opacity:1; }
 </style>
 </head>
 <body>
+<canvas id="particle-canvas" aria-hidden="true"></canvas>
+<canvas id="hud-canvas" aria-hidden="true"></canvas>
+<div id="hud-tag" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav class="nav" id="siteNav">
   <div class="nav-inner">
-    <a href="#home" class="nav-logo">
+    <a href="#" class="nav-logo" data-tab="home">
       <div class="nav-logo-mark"><img src="assets/img/logo.png" alt="JZ" onerror="this.parentElement.textContent='JZ'"/></div>
       Jin Ziyu
     </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#home"       class="nav-link">Home</a></li>
-      <li><a href="#about"      class="nav-link">About</a></li>
-      <li><a href="#skills"     class="nav-link">Skills</a></li>
-      <li><a href="#experience" class="nav-link">Experience</a></li>
-      <li><a href="#projects"   class="nav-link">Projects</a></li>
-      <li><a href="#education"  class="nav-link">Education</a></li>
-      <li><a href="#resume"     class="nav-link">Resume</a></li>
-      <li><a href="#contact"    class="nav-link">Contact</a></li>
-    </ul>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks"></ul>
   </div>
 </nav>
 
+<!-- TAB BAR -->
+<div class="tab-bar" id="tabBar" role="tablist">
+  <button class="tab-btn active" data-tab="home"       role="tab">Home</button>
+  <button class="tab-btn"        data-tab="about"      role="tab">About</button>
+  <button class="tab-btn"        data-tab="skills"     role="tab">Skills</button>
+  <button class="tab-btn"        data-tab="experience" role="tab">Experience</button>
+  <button class="tab-btn"        data-tab="projects"   role="tab">Projects</button>
+  <button class="tab-btn"        data-tab="education"  role="tab">Education</button>
+  <button class="tab-btn"        data-tab="resume"     role="tab">Resume</button>
+  <button class="tab-btn"        data-tab="contact"    role="tab">Contact</button>
+  <div class="tab-indicator" id="tabIndicator"></div>
+</div>
+
+<!-- PAGE: HOME -->
+<div class="page-section active" id="page-home" role="tabpanel">
 <!-- HERO -->
 <section id="home" class="hero">
   <canvas id="sigCanvas" aria-hidden="true"></canvas>
@@ -594,7 +714,10 @@ section+section{border-top:1px solid var(--border)}
     </div>
   </div>
 </section>
+</div><!-- /page-home -->
 
+<!-- PAGE: ABOUT -->
+<div class="page-section" id="page-about" role="tabpanel">
 <!-- ABOUT -->
 <section id="about">
   <div class="container">
@@ -626,7 +749,10 @@ section+section{border-top:1px solid var(--border)}
     </div>
   </div>
 </section>
+</div><!-- /page-about -->
 
+<!-- PAGE: SKILLS -->
+<div class="page-section" id="page-skills" role="tabpanel">
 <!-- SKILLS -->
 <section id="skills">
   <div class="container">
@@ -642,7 +768,10 @@ section+section{border-top:1px solid var(--border)}
     </div>
   </div>
 </section>
+</div><!-- /page-skills -->
 
+<!-- PAGE: EXPERIENCE -->
+<div class="page-section" id="page-experience" role="tabpanel">
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="container">
@@ -683,7 +812,10 @@ section+section{border-top:1px solid var(--border)}
     </div>
   </div>
 </section>
+</div><!-- /page-experience -->
 
+<!-- PAGE: PROJECTS -->
+<div class="page-section" id="page-projects" role="tabpanel">
 <!-- PROJECTS -->
 <section id="projects">
   <div class="container">
@@ -827,7 +959,10 @@ section+section{border-top:1px solid var(--border)}
     </div>
   </div>
 </section>
+</div><!-- /page-projects -->
 
+<!-- PAGE: EDUCATION -->
+<div class="page-section" id="page-education" role="tabpanel">
 <!-- EDUCATION -->
 <section id="education">
   <div class="container">
@@ -865,7 +1000,10 @@ section+section{border-top:1px solid var(--border)}
     </div>
   </div>
 </section>
+</div><!-- /page-education -->
 
+<!-- PAGE: RESUME -->
+<div class="page-section" id="page-resume" role="tabpanel">
 <!-- RESUME -->
 <section id="resume">
   <div class="container">
@@ -880,7 +1018,10 @@ section+section{border-top:1px solid var(--border)}
     </div>
   </div>
 </section>
+</div><!-- /page-resume -->
 
+<!-- PAGE: CONTACT -->
+<div class="page-section" id="page-contact" role="tabpanel">
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
@@ -917,94 +1058,183 @@ section+section{border-top:1px solid var(--border)}
     </div>
   </div>
 </footer>
+</div><!-- /page-contact -->
 
 <script>
-/* NAV */
-const nav=document.getElementById('siteNav');
-const secs=document.querySelectorAll('section[id]');
-const nls=document.querySelectorAll('.nav-link');
-function updateNav(){
-  nav.classList.toggle('scrolled',window.scrollY>30);
-  let cur='';
-  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});
-  nls.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+/* ── TAB PAGE SYSTEM ── */
+const TAB_ORDER = ['home','about','skills','experience','projects','education','resume','contact'];
+let currentTab = 'home';
+
+const tabBtns = document.querySelectorAll('.tab-btn');
+const pages   = document.querySelectorAll('.page-section');
+const indicator = document.getElementById('tabIndicator');
+
+function updateIndicator(activeBtn) {
+  const bar = document.getElementById('tabBar');
+  const barRect = bar.getBoundingClientRect();
+  const btnRect = activeBtn.getBoundingClientRect();
+  indicator.style.left  = (btnRect.left - barRect.left + bar.scrollLeft) + 'px';
+  indicator.style.width = btnRect.width + 'px';
 }
-window.addEventListener('scroll',updateNav,{passive:true});
-updateNav();
 
-const tog=document.getElementById('navToggle');
-const nlEl=document.getElementById('navLinks');
-tog.addEventListener('click',()=>{
-  nlEl.classList.toggle('open');
-  const sp=tog.querySelectorAll('span');
-  if(nlEl.classList.contains('open')){
-    sp[0].style.transform='rotate(45deg) translate(5px,5px)';
-    sp[1].style.opacity='0';
-    sp[2].style.transform='rotate(-45deg) translate(5px,-5px)';
-  } else {sp.forEach(s=>{s.style.transform='';s.style.opacity=''})}
+function switchTab(tabId, direction) {
+  if (tabId === currentTab) return;
+  const prevTab = currentTab;
+  currentTab = tabId;
+
+  // update tab buttons
+  tabBtns.forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
+  const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+  if (activeBtn) {
+    updateIndicator(activeBtn);
+    // scroll tab into view on narrow screens
+    activeBtn.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+  }
+
+  // determine slide direction
+  const prevIdx = TAB_ORDER.indexOf(prevTab);
+  const nextIdx = TAB_ORDER.indexOf(tabId);
+  const dir = direction || (nextIdx > prevIdx ? 'right' : 'left');
+
+  // hide old page
+  const prevPage = document.getElementById('page-' + prevTab);
+  if (prevPage) {
+    prevPage.classList.remove('active','visible','enter-right','enter-left');
+  }
+
+  // show new page
+  const nextPage = document.getElementById('page-' + tabId);
+  if (nextPage) {
+    nextPage.classList.add('active');
+    nextPage.classList.remove('enter-right','enter-left','visible');
+    void nextPage.offsetWidth; // force reflow
+    nextPage.classList.add(dir === 'right' ? 'enter-right' : 'enter-left');
+    // scroll page to top
+    window.scrollTo({top:0, behavior:'instant'});
+    // trigger reveals in new page
+    setTimeout(() => {
+      nextPage.querySelectorAll('.reveal:not(.up)').forEach(el => {
+        if (!el._obsAttached) {
+          revealObs.observe(el);
+          el._obsAttached = true;
+        }
+      });
+    }, 50);
+    // re-init canvas if going home
+    if (tabId === 'home') reinitCanvas();
+  }
+  // update URL hash
+  history.replaceState(null,'','#' + tabId);
+}
+
+// Tab click events
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
-nlEl.querySelectorAll('.nav-link').forEach(a=>a.addEventListener('click',()=>{
-  nlEl.classList.remove('open');
-  tog.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity=''});
-}));
 
-/* SCROLL REVEAL */
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('up');obs.unobserve(e.target)}});
-},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+// Logo click → home
+document.querySelector('.nav-logo').addEventListener('click', e => {
+  e.preventDefault();
+  switchTab('home');
+});
 
-/* SIGNAL CANVAS — cursor-reactive oscilloscope trace */
-(function(){
-  const c=document.getElementById('sigCanvas');
-  const ctx=c.getContext('2d');
-  let W,H,mx=0.5,my=0.5,t=0;
-  function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight}
-  window.addEventListener('resize',resize);
+// Handle internal anchor links like href="#projects"
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a) return;
+  const hash = a.getAttribute('href').slice(1);
+  if (TAB_ORDER.includes(hash)) {
+    e.preventDefault();
+    switchTab(hash);
+  }
+});
+
+// Init indicator position
+window.addEventListener('load', () => {
+  const homeBtn = document.querySelector('.tab-btn[data-tab="home"]');
+  if (homeBtn) updateIndicator(homeBtn);
+  // Activate home page with entrance animation
+  const homePage = document.getElementById('page-home');
+  if (homePage) {
+    void homePage.offsetWidth;
+    homePage.classList.add('enter-right');
+  }
+  // handle hash on load
+  const hash = location.hash.slice(1);
+  if (hash && TAB_ORDER.includes(hash)) switchTab(hash);
+});
+
+window.addEventListener('resize', () => {
+  const activeBtn = document.querySelector('.tab-btn.active');
+  if (activeBtn) updateIndicator(activeBtn);
+});
+
+/* ── NAV scroll effect ── */
+const nav = document.getElementById('siteNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 10);
+}, {passive:true});
+
+/* ── SCROLL REVEAL ── */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('up'); revealObs.unobserve(e.target); }
+  });
+}, {threshold:0.1, rootMargin:'0px 0px -40px 0px'});
+// Observe only the initial (home) page reveals on load
+document.querySelectorAll('#page-home .reveal').forEach(el => {
+  revealObs.observe(el);
+  el._obsAttached = true;
+});
+
+/* ── SIGNAL CANVAS ── */
+function reinitCanvas() {
+  const c = document.getElementById('sigCanvas');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  let W, H, mx=0.5, my=0.5, t=0, rafId;
+  function resize(){ W=c.width=c.offsetWidth; H=c.height=c.offsetHeight; }
+  window.addEventListener('resize', resize);
   resize();
-  document.querySelector('.hero').addEventListener('mousemove',e=>{
-    const r=c.getBoundingClientRect();
-    mx=(e.clientX-r.left)/W;my=(e.clientY-r.top)/H;
+  document.querySelector('.hero').addEventListener('mousemove', e => {
+    const r = c.getBoundingClientRect();
+    mx=(e.clientX-r.left)/W; my=(e.clientY-r.top)/H;
   });
   function draw(){
     ctx.clearRect(0,0,W,H);
     t+=0.012;
-    /* grid dots */
-    const gx=W/18,gy=H/10;
+    const gx=W/18, gy=H/10;
     for(let r=0;r<=10;r++) for(let cc=0;cc<=18;cc++){
-      const px=cc*gx,py=r*gy;
-      const dist=Math.hypot(px/W-mx,py/H-my);
+      const px=cc*gx, py=r*gy;
+      const dist=Math.hypot(px/W-mx, py/H-my);
       const a=Math.max(0,0.12-dist*0.22);
-      ctx.beginPath();ctx.arc(px,py,1,0,Math.PI*2);
-      ctx.fillStyle=`rgba(218,166,19,${a})`;ctx.fill();
+      ctx.beginPath(); ctx.arc(px,py,1,0,Math.PI*2);
+      ctx.fillStyle=`rgba(218,166,19,${a})`; ctx.fill();
     }
-    /* primary signal trace */
     ctx.beginPath();
-    ctx.strokeStyle='rgba(218,166,19,0.20)';ctx.lineWidth=1.5;
+    ctx.strokeStyle='rgba(218,166,19,0.20)'; ctx.lineWidth=1.5;
     for(let x=0;x<=W;x+=2){
-      const norm=x/W;
-      const freq=3+mx*4;
-      const amp=H*0.08*(0.5+my*0.8);
+      const norm=x/W, freq=3+mx*4, amp=H*0.08*(0.5+my*0.8);
       const y=H*0.5+Math.sin(norm*Math.PI*freq+t)*amp+Math.sin(norm*Math.PI*freq*1.7+t*0.7)*(amp*0.3);
       x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
     }
     ctx.stroke();
-    /* secondary faint trace */
     ctx.beginPath();
-    ctx.strokeStyle='rgba(97,61,170,0.12)';ctx.lineWidth=1;
+    ctx.strokeStyle='rgba(97,61,170,0.12)'; ctx.lineWidth=1;
     for(let x=0;x<=W;x+=2){
       const norm=x/W;
       const y=H*0.35+Math.sin(norm*Math.PI*5+t*1.3)*H*0.04;
       x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
     }
     ctx.stroke();
-    requestAnimationFrame(draw);
+    rafId=requestAnimationFrame(draw);
   }
   draw();
-})();
+}
+reinitCanvas();
 
-/* CONTACT FORM */
-document.getElementById('contactForm').addEventListener('submit',function(e){
+/* ── CONTACT FORM ── */
+document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const name=document.getElementById('cf-name').value.trim();
   const email=document.getElementById('cf-email').value.trim();
@@ -1014,27 +1244,307 @@ document.getElementById('contactForm').addEventListener('submit',function(e){
   if(!name||!email||!msg){fb.textContent='Please fill in all required fields.';fb.className='cf-fb err';return}
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){fb.textContent='Please enter a valid email address.';fb.className='cf-fb err';return}
   window.location.href=`mailto:jinziyu100@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent('Name: '+name+'\nEmail: '+email+'\n\n'+msg)}`;
-  fb.textContent='Opening your email client…';fb.className='cf-fb ok';
-  this.reset();setTimeout(()=>{fb.textContent='';fb.className='cf-fb'},4000);
+  fb.textContent='Opening your email client…'; fb.className='cf-fb ok';
+  this.reset(); setTimeout(()=>{fb.textContent='';fb.className='cf-fb'},4000);
 });
 
-/* RESUME IFRAME FALLBACK */
-
-/* NAVY ACTIVE TOGGLE — skill chips */
+/* ── SKILL CHIPS ── */
 document.querySelectorAll('.skill-chip').forEach(chip => {
-  chip.style.cursor = 'pointer';
-  chip.addEventListener('click', () => {
-    chip.classList.toggle('active');
-  });
-});
-/* NAVY ACTIVE TOGGLE — proj tags */
-document.querySelectorAll('.proj-tag').forEach(tag => {
-  tag.style.cursor = 'default';
+  chip.style.cursor='pointer';
+  chip.addEventListener('click', () => chip.classList.toggle('active'));
 });
 
-document.getElementById('resumeIframe').addEventListener('error',function(){
-  this.closest('.resume-frame').outerHTML='<div style="background:var(--card);border:1px solid var(--border);padding:60px 40px;text-align:center;max-width:820px;width:100%"><i class="bi bi-file-earmark-pdf" style="font-size:2.5rem;color:var(--amber);display:block;margin-bottom:16px"></i><p style="color:var(--text-2);margin-bottom:0">Resume preview unavailable — use the download button below.</p></div>';
-});
+/* ── RESUME IFRAME FALLBACK ── */
+const resumeIframe = document.getElementById('resumeIframe');
+if (resumeIframe) {
+  resumeIframe.addEventListener('error', function(){
+    this.closest('.resume-frame').outerHTML='<div style="background:var(--card);border:1px solid var(--border);padding:60px 40px;text-align:center;max-width:820px;width:100%"><i class="bi bi-file-earmark-pdf" style="font-size:2.5rem;color:var(--amber);display:block;margin-bottom:16px"></i><p style="color:var(--text-2);margin-bottom:0">Resume preview unavailable — use the download button below.</p></div>';
+  });
+}
+/* ══════════════════════════════════════════════
+   ROBOTICS HUD MOUSE SYSTEM
+   1. Targeting reticle cursor (crosshair + rotating bracket arms)
+   2. Circuit-trace trail (right-angle wire routing)
+   3. Sensor sweep on card hover (scan line + telemetry readout)
+   4. Radar ping on click
+   ══════════════════════════════════════════════ */
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+  const hud  = document.getElementById('hud-canvas');
+  const hctx = hud.getContext('2d');
+  const tag  = document.getElementById('hud-tag');
+  const pc   = document.getElementById('particle-canvas');
+  const pctx = pc.getContext('2d');
+
+  let W, H;
+  function resize(){
+    W = hud.width  = pc.width  = window.innerWidth;
+    H = hud.height = pc.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  let mx = W/2, my = H/2;   // mouse position
+  let lx = W/2, ly = H/2;   // lerped reticle position
+  let t  = 0;                // global time tick
+  let hoveredEl = null;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    document.body.classList.add('cursor-active');
+    addTraceNode(mx, my);
+    updateTag(e);
+  });
+  document.addEventListener('mouseleave', () => document.body.classList.remove('cursor-active'));
+  document.addEventListener('mouseenter', () => document.body.classList.add('cursor-active'));
+
+  /* ── 1. TARGETING RETICLE ── */
+  function drawReticle(x, y, isHover){
+    const R  = isHover ? 22 : 16;   // inner ring radius
+    const R2 = isHover ? 34 : 26;   // bracket tip distance
+    const ROT = t * (isHover ? 1.8 : 0.9);  // rotation speed
+    const GOLD   = 'rgba(218,166,19,';
+    const PURPLE = 'rgba(97,61,170,';
+    const NAVY   = 'rgba(0,13,170,';
+
+    hctx.save();
+    hctx.translate(x, y);
+
+    // outer dashed rotating ring
+    hctx.beginPath();
+    hctx.arc(0, 0, R2, 0, Math.PI*2);
+    hctx.setLineDash([4, 6]);
+    hctx.lineDashOffset = -ROT * 18;
+    hctx.strokeStyle = GOLD + (isHover ? '0.55' : '0.30') + ')';
+    hctx.lineWidth = 1;
+    hctx.stroke();
+    hctx.setLineDash([]);
+
+    // inner solid ring
+    hctx.beginPath();
+    hctx.arc(0, 0, R, 0, Math.PI*2);
+    hctx.strokeStyle = GOLD + (isHover ? '0.90' : '0.65') + ')';
+    hctx.lineWidth = isHover ? 1.5 : 1;
+    hctx.stroke();
+
+    // centre dot
+    hctx.beginPath();
+    hctx.arc(0, 0, 2, 0, Math.PI*2);
+    hctx.fillStyle = GOLD + '1)';
+    hctx.fill();
+
+    // 4 crosshair lines (gap in middle)
+    const GAP = R + 4, LEN = 10;
+    hctx.strokeStyle = GOLD + '0.85)';
+    hctx.lineWidth = 1;
+    hctx.beginPath();
+    hctx.moveTo(-GAP-LEN, 0); hctx.lineTo(-GAP, 0);
+    hctx.moveTo( GAP,     0); hctx.lineTo( GAP+LEN, 0);
+    hctx.moveTo(0, -GAP-LEN); hctx.lineTo(0, -GAP);
+    hctx.moveTo(0,  GAP);     hctx.lineTo(0,  GAP+LEN);
+    hctx.stroke();
+
+    // 4 rotating L-bracket corners
+    const angles = [ROT, ROT + Math.PI/2, ROT + Math.PI, ROT + 3*Math.PI/2];
+    hctx.strokeStyle = isHover ? 'rgba(218,160,0,0.95)' : GOLD + '0.65)';
+    hctx.lineWidth = isHover ? 2 : 1.5;
+    angles.forEach(a => {
+      const bx = Math.cos(a) * R2, by = Math.sin(a) * R2;
+      const tx = Math.cos(a + Math.PI/2) * 7;
+      const ty = Math.sin(a + Math.PI/2) * 7;
+      hctx.beginPath();
+      hctx.moveTo(bx + tx, by + ty);
+      hctx.lineTo(bx, by);
+      hctx.lineTo(bx - tx, by - ty);
+      hctx.stroke();
+    });
+
+    // hover: secondary purple arc (sensor cone indicator)
+    if (isHover) {
+      hctx.beginPath();
+      hctx.arc(0, 0, R2 + 10, -ROT*0.5, -ROT*0.5 + Math.PI*0.6);
+      hctx.strokeStyle = PURPLE + '0.55)';
+      hctx.lineWidth = 1;
+      hctx.stroke();
+
+      hctx.beginPath();
+      hctx.arc(0, 0, R + 6, ROT, ROT + Math.PI*1.3);
+      hctx.strokeStyle = NAVY + '0.45)';
+      hctx.lineWidth = 1;
+      hctx.stroke();
+    }
+
+    hctx.restore();
+  }
+
+  /* ── 2. CIRCUIT TRACE TRAIL ── */
+  // Trail is a sequence of "nodes" connected by right-angle (Manhattan) wire segments
+  const trailNodes = [];
+  const MAX_NODES = 18;
+  let lastTX = mx, lastTY = my, distAcc = 0;
+
+  function addTraceNode(x, y){
+    const dx = x - lastTX, dy = y - lastTY;
+    distAcc += Math.hypot(dx, dy);
+    if (distAcc < 14) return;
+    distAcc = 0;
+    lastTX = x; lastTY = y;
+    trailNodes.push({ x, y, life: 1.0 });
+    if (trailNodes.length > MAX_NODES) trailNodes.shift();
+  }
+
+  function drawTrail(){
+    if (trailNodes.length < 2) return;
+    for (let i = 1; i < trailNodes.length; i++){
+      const a = trailNodes[i-1];
+      const b = trailNodes[i];
+      const alpha = (i / trailNodes.length) * a.life * 0.55;
+      hctx.beginPath();
+      hctx.moveTo(a.x, a.y);
+      // right-angle routing: go horizontal first, then vertical
+      hctx.lineTo(b.x, a.y);
+      hctx.lineTo(b.x, b.y);
+      hctx.strokeStyle = `rgba(218,166,19,${alpha})`;
+      hctx.lineWidth = 1;
+      hctx.setLineDash([3, 4]);
+      hctx.stroke();
+      hctx.setLineDash([]);
+
+      // node dot at each waypoint
+      hctx.beginPath();
+      hctx.arc(b.x, b.y, 2, 0, Math.PI*2);
+      hctx.fillStyle = `rgba(218,160,0,${alpha * 0.8})`;
+      hctx.fill();
+    }
+    // fade all nodes slowly
+    trailNodes.forEach(n => n.life -= 0.018);
+    for (let i = trailNodes.length-1; i >= 0; i--){
+      if (trailNodes[i].life <= 0) trailNodes.splice(i, 1);
+    }
+  }
+
+  /* ── 3. RADAR PING on click ── */
+  const pings = [];
+  document.addEventListener('click', e => {
+    pings.push({ x: e.clientX, y: e.clientY, r: 0, life: 1 });
+  });
+
+  function drawPings(){
+    for (let i = pings.length-1; i >= 0; i--){
+      const p = pings[i];
+      p.r   += 4;
+      p.life -= 0.035;
+      if (p.life <= 0){ pings.splice(i,1); continue; }
+
+      // outer expanding ring
+      hctx.beginPath();
+      hctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      hctx.strokeStyle = `rgba(218,166,19,${p.life * 0.7})`;
+      hctx.lineWidth = 1.5;
+      hctx.stroke();
+
+      // second ring, smaller offset
+      if (p.r > 14){
+        hctx.beginPath();
+        hctx.arc(p.x, p.y, p.r - 12, 0, Math.PI*2);
+        hctx.strokeStyle = `rgba(97,61,170,${p.life * 0.4})`;
+        hctx.lineWidth = 1;
+        hctx.stroke();
+      }
+
+      // 4 cardinal tick marks
+      [0, Math.PI/2, Math.PI, 3*Math.PI/2].forEach(a => {
+        const ix = p.x + Math.cos(a)*(p.r-4);
+        const iy = p.y + Math.sin(a)*(p.r-4);
+        const ox = p.x + Math.cos(a)*(p.r+4);
+        const oy = p.y + Math.sin(a)*(p.r+4);
+        hctx.beginPath();
+        hctx.moveTo(ix,iy); hctx.lineTo(ox,oy);
+        hctx.strokeStyle = `rgba(218,166,19,${p.life})`;
+        hctx.lineWidth = 1.5;
+        hctx.stroke();
+      });
+    }
+  }
+
+  /* ── 4. HUD TAG — telemetry readout near cursor ── */
+  const CARD_LABELS = {
+    'sk-card':      label => { const h=label.querySelector('h3'); return h ? 'SYS · '+h.textContent.toUpperCase() : 'MODULE'; },
+    'proj':         label => { const h=label.querySelector('h3'); return h ? 'RBX · '+h.textContent.slice(0,22).toUpperCase() : 'PROJECT'; },
+    'edu-card':     label => { const s=label.querySelector('.edu-school'); return s ? 'EDU · '+s.textContent.toUpperCase() : 'EDUCATION'; },
+    'exp-item':     label => { const h=label.querySelector('h3'); return h ? 'EXP · '+h.textContent.toUpperCase() : 'EXPERIENCE'; },
+    'btn':          label => 'ACTION · '+label.textContent.trim().toUpperCase().slice(0,20),
+    'contact-link': label => 'COMMS · LINK',
+    'tab-btn':      label => 'NAV · '+label.textContent.toUpperCase(),
+  };
+
+  let tagTimeout;
+  function updateTag(e){
+    clearTimeout(tagTimeout);
+    let found = false;
+    for (const [cls, fn] of Object.entries(CARD_LABELS)){
+      const el = e.target.closest('.'+cls);
+      if (el){
+        tag.textContent = fn(el);
+        tag.classList.add('visible');
+        tag.style.left = (mx + 22)+'px';
+        tag.style.top  = (my - 18)+'px';
+        found = true;
+        break;
+      }
+    }
+    if (!found){
+      tag.classList.remove('visible');
+    }
+  }
+
+  /* ── 5. CARD SCAN SWEEP on mouseenter ── */
+  const SCAN_TARGETS = '.sk-card, .proj, .edu-card, .exp-item';
+  document.addEventListener('mouseover', e => {
+    const el = e.target.closest(SCAN_TARGETS);
+    if (el && el !== hoveredEl){
+      hoveredEl = el;
+      el.classList.remove('scanning');
+      void el.offsetWidth;
+      el.classList.add('scanning');
+    }
+  });
+  document.addEventListener('mouseout', e => {
+    const el = e.target.closest(SCAN_TARGETS);
+    if (el && !el.contains(e.relatedTarget)){
+      el.classList.remove('scanning');
+      hoveredEl = null;
+    }
+  });
+
+  /* ── MAIN RENDER LOOP ── */
+  function loop(){
+    hctx.clearRect(0, 0, W, H);
+    t += 0.04;
+
+    // lerp reticle toward mouse
+    lx += (mx - lx) * 0.18;
+    ly += (my - ly) * 0.18;
+
+    const isHover = !!document.querySelector(':hover > ' + SCAN_TARGETS.replace(/\./g,'.').split(',').join(', :hover > .'))
+                 || !!document.elementFromPoint(mx, my)?.closest(SCAN_TARGETS + ', a, button, .tab-btn');
+
+    drawTrail();
+    drawPings();
+    drawReticle(lx, ly, isHover);
+
+    // coordinate readout near reticle (HUD telemetry)
+    hctx.font = '9px "DM Mono", monospace';
+    hctx.fillStyle = 'rgba(218,166,19,0.45)';
+    hctx.fillText(`X:${Math.round(mx).toString().padStart(4,'0')}`, lx + 38, ly - 6);
+    hctx.fillText(`Y:${Math.round(my).toString().padStart(4,'0')}`, lx + 38, ly + 8);
+
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+})();
 </script>
 </body>
 </html>
