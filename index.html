@@ -135,7 +135,14 @@ body{overflow-x:hidden}
   transform:translateY(18px);
   transition:opacity 0.38s var(--ease),transform 0.38s var(--ease);
   padding-top:calc(var(--nav-h) + var(--tab-h));
+  position:relative;
 }
+.page-bg-canvas{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;
+}
+.page-section > section{position:relative;z-index:1}
+#page-home .page-bg-canvas{display:none} /* home already has its own hero canvas */
 .page-section.active{
   display:block;
 }
@@ -717,6 +724,7 @@ body{overflow-x:hidden}
 
 <!-- PAGE: ABOUT -->
 <div class="page-section" id="page-about" role="tabpanel">
+<canvas class="page-bg-canvas" data-theme="about"></canvas>
 <!-- ABOUT -->
 <section id="about">
   <div class="container">
@@ -752,6 +760,7 @@ body{overflow-x:hidden}
 
 <!-- PAGE: SKILLS -->
 <div class="page-section" id="page-skills" role="tabpanel">
+<canvas class="page-bg-canvas" data-theme="skills"></canvas>
 <!-- SKILLS -->
 <section id="skills">
   <div class="container">
@@ -771,6 +780,7 @@ body{overflow-x:hidden}
 
 <!-- PAGE: EXPERIENCE -->
 <div class="page-section" id="page-experience" role="tabpanel">
+<canvas class="page-bg-canvas" data-theme="experience"></canvas>
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="container">
@@ -815,6 +825,7 @@ body{overflow-x:hidden}
 
 <!-- PAGE: PROJECTS -->
 <div class="page-section" id="page-projects" role="tabpanel">
+<canvas class="page-bg-canvas" data-theme="projects"></canvas>
 <!-- PROJECTS -->
 <section id="projects">
   <div class="container">
@@ -962,6 +973,7 @@ body{overflow-x:hidden}
 
 <!-- PAGE: EDUCATION -->
 <div class="page-section" id="page-education" role="tabpanel">
+<canvas class="page-bg-canvas" data-theme="education"></canvas>
 <!-- EDUCATION -->
 <section id="education">
   <div class="container">
@@ -1003,6 +1015,7 @@ body{overflow-x:hidden}
 
 <!-- PAGE: RESUME -->
 <div class="page-section" id="page-resume" role="tabpanel">
+<canvas class="page-bg-canvas" data-theme="resume"></canvas>
 <!-- RESUME -->
 <section id="resume">
   <div class="container">
@@ -1021,6 +1034,7 @@ body{overflow-x:hidden}
 
 <!-- PAGE: CONTACT -->
 <div class="page-section" id="page-contact" role="tabpanel">
+<canvas class="page-bg-canvas" data-theme="contact"></canvas>
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
@@ -1076,6 +1090,22 @@ function updateIndicator(activeBtn) {
   indicator.style.width = btnRect.width + 'px';
 }
 
+/* Play a staggered fade-up for every .reveal element inside a page,
+   every single time that page becomes active — not just on first load. */
+function playRevealAnimation(page) {
+  const items = page.querySelectorAll('.reveal');
+  items.forEach((el, i) => {
+    el.classList.remove('up');
+    el.style.transitionDelay = '0ms';
+    void el.offsetWidth; // force reflow so the removal registers
+    const delay = Math.min(i * 70, 560); // stagger, capped so long pages don't lag
+    el.style.transitionDelay = delay + 'ms';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      el.classList.add('up');
+    }));
+  });
+}
+
 function switchTab(tabId, direction) {
   if (tabId === currentTab) return;
   const prevTab = currentTab;
@@ -1110,15 +1140,11 @@ function switchTab(tabId, direction) {
     nextPage.classList.add(dir === 'right' ? 'enter-right' : 'enter-left');
     // scroll page to top
     window.scrollTo({top:0, behavior:'instant'});
-    // trigger reveals in new page
-    setTimeout(() => {
-      nextPage.querySelectorAll('.reveal:not(.up)').forEach(el => {
-        if (!el._obsAttached) {
-          revealObs.observe(el);
-          el._obsAttached = true;
-        }
-      });
-    }, 50);
+    // trigger a fresh staggered reveal animation every time this page is shown
+    setTimeout(() => playRevealAnimation(nextPage), 60);
+    // resize this page's background wave canvas now that it's visible
+    const bgCanvas = nextPage.querySelector('.page-bg-canvas');
+    if (bgCanvas && bgCanvas._resize) bgCanvas._resize();
     // re-init canvas if going home
     if (tabId === 'home') reinitCanvas();
   }
@@ -1160,7 +1186,12 @@ window.addEventListener('load', () => {
   }
   // handle hash on load
   const hash = location.hash.slice(1);
-  if (hash && TAB_ORDER.includes(hash)) switchTab(hash);
+  if (hash && TAB_ORDER.includes(hash)) {
+    switchTab(hash);
+  } else {
+    // play the reveal animation for the initial home page too
+    setTimeout(() => playRevealAnimation(homePage), 60);
+  }
 });
 
 window.addEventListener('resize', () => {
@@ -1173,18 +1204,6 @@ const nav = document.getElementById('siteNav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 10);
 }, {passive:true});
-
-/* ── SCROLL REVEAL ── */
-const revealObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('up'); revealObs.unobserve(e.target); }
-  });
-}, {threshold:0.1, rootMargin:'0px 0px -40px 0px'});
-// Observe only the initial (home) page reveals on load
-document.querySelectorAll('#page-home .reveal').forEach(el => {
-  revealObs.observe(el);
-  el._obsAttached = true;
-});
 
 /* ── SIGNAL CANVAS ── */
 function reinitCanvas() {
@@ -1232,7 +1251,93 @@ function reinitCanvas() {
 }
 reinitCanvas();
 
-/* ── CONTACT FORM ── */
+/* ── PAGE BACKGROUND SIGNAL CANVASES ──
+   Every non-home tab gets its own continuously-animating
+   waveform, themed loosely to that section's content. */
+const PAGE_WAVE_THEMES = {
+  about:      { color:'218,166,19', color2:'97,61,170',  freq:2.2, amp:0.05, speed:0.9,  mode:'single' },
+  skills:     { color:'218,166,19', color2:'0,13,170',   freq:4,   amp:0.045,speed:1.3,  mode:'multi'  },
+  experience: { color:'218,166,19', color2:'97,61,170',  freq:1.4, amp:0.04, speed:0.6,  mode:'step'   },
+  projects:   { color:'0,13,170',   color2:'218,166,19', freq:5,   amp:0.05, speed:1.6,  mode:'multi'  },
+  education:  { color:'97,61,170',  color2:'218,166,19', freq:1.8, amp:0.04, speed:0.5,  mode:'single' },
+  resume:     { color:'218,166,19', color2:'97,61,170',  freq:3,   amp:0.035,speed:0.8,  mode:'single' },
+  contact:    { color:'218,166,19', color2:'0,13,170',   freq:2.6, amp:0.045,speed:1.0,  mode:'ping'   }
+};
+
+function initPageWave(canvas) {
+  const theme = PAGE_WAVE_THEMES[canvas.dataset.theme] || PAGE_WAVE_THEMES.about;
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
+  let pingT = 0;
+
+  function resize() {
+    const parent = canvas.parentElement;
+    W = canvas.width  = parent.offsetWidth;
+    H = canvas.height = parent.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  canvas._resize = resize;
+
+  function drawWave(freqMul, ampMul, color, alphaBase, yBase) {
+    ctx.beginPath();
+    for (let x = 0; x <= W; x += 3) {
+      const norm = x / Math.max(W,1);
+      const y = yBase + Math.sin(norm * Math.PI * theme.freq * freqMul + t) * (H * theme.amp * ampMul)
+                       + Math.sin(norm * Math.PI * theme.freq * freqMul * 1.7 + t * 0.6) * (H * theme.amp * ampMul * 0.3);
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = `rgba(${color},${alphaBase})`;
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+  }
+
+  function drawStep(color, alphaBase, yBase) {
+    ctx.beginPath();
+    const seg = W / (theme.freq * 4);
+    let y = yBase;
+    for (let x = 0; x <= W; x += seg) {
+      const phase = Math.floor(x / seg + t * 2) % 2;
+      y = yBase + (phase ? -1 : 1) * H * theme.amp;
+      ctx.lineTo(x, y);
+      ctx.lineTo(x + seg, y);
+    }
+    ctx.strokeStyle = `rgba(${color},${alphaBase})`;
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.012 * theme.speed;
+
+    if (theme.mode === 'multi') {
+      drawWave(1,    1,   theme.color,  0.18, H * 0.35);
+      drawWave(1.6,  0.7, theme.color2, 0.12, H * 0.62);
+      drawWave(0.6,  1.3, theme.color,  0.08, H * 0.85);
+    } else if (theme.mode === 'step') {
+      drawStep(theme.color, 0.14, H * 0.4);
+      drawWave(1, 1, theme.color2, 0.1, H * 0.75);
+    } else if (theme.mode === 'ping') {
+      drawWave(1, 1, theme.color, 0.16, H * 0.5);
+      pingT += 0.012;
+      const pingX = (pingT % 1) * W;
+      const grad = ctx.createRadialGradient(pingX, H*0.5, 0, pingX, H*0.5, 60);
+      grad.addColorStop(0, `rgba(${theme.color2},0.25)`);
+      grad.addColorStop(1, `rgba(${theme.color2},0)`);
+      ctx.fillStyle = grad;
+      ctx.beginPath(); ctx.arc(pingX, H*0.5, 60, 0, Math.PI*2); ctx.fill();
+    } else {
+      drawWave(1,   1,   theme.color,  0.16, H * 0.4);
+      drawWave(1.4, 0.6, theme.color2, 0.10, H * 0.7);
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+document.querySelectorAll('.page-bg-canvas').forEach(initPageWave);
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const name=document.getElementById('cf-name').value.trim();
