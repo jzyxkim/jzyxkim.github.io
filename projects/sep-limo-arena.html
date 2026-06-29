@@ -3,105 +3,435 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SEP — LIMO Autonomous Navigation — Jin Ziyu</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<title>SEP — LIMO Autonomous Navigation System — Jin Ziyu</title>
+<link rel="icon" type="image/png" href="../assets/img/logo.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F0F6FF;--bg2:#E4EEFB;--card:#FFFFFF;--card2:#F5F9FF;
-  --border:#C2D8F0;--text:#0D1B2A;--muted:#4A6580;
-  --accent:#0077CC;--accent2:#E85D04;--accent-glow:rgba(0,119,204,0.12);
-  --font-head:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;
-  --font-mono:'Space Mono',monospace;--radius:12px;--transition:0.3s cubic-bezier(0.4,0,0.2,1);
+  --void:#FAFAF8;
+  --surface:#F2F1ED;
+  --panel:#FFFFFF;
+  --card:#F7F6F2;
+  --border:rgba(28,24,16,0.10);
+  --border-hi:rgba(28,24,16,0.20);
+  --cyan:#DAA613;
+  --cyan-dim:rgba(218,166,19,0.08);
+  --cyan-mid:rgba(218,166,19,0.35);
+  --amber:#DAA000;
+  --amber-dim:rgba(218,160,0,0.10);
+  --purple:#613DAA;
+  --purple-dim:rgba(97,61,170,0.08);
+  --navy:#000DAA;
+  --text:#1C1810;
+  --text-2:rgba(28,24,16,0.58);
+  --text-3:rgba(28,24,16,0.35);
+  --font-display:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'DM Mono',monospace;
+  --nav-h:64px;
+  --ease:cubic-bezier(0.4,0,0.2,1);
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.65;overflow-x:hidden}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--void);color:var(--text);font-family:var(--font-body);line-height:1.7;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
+ul{list-style:none}
 img{max-width:100%;display:block}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.container{max-width:860px;margin:0 auto;padding:0 24px}
-.topbar{position:sticky;top:0;z-index:99;background:rgba(240,246,255,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
-.topbar-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.75rem;color:var(--muted);transition:color var(--transition)}
-.topbar-back:hover{color:var(--accent)}
-.topbar-title{font-family:var(--font-mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.05em}
-.proj-hero{background:#07111F;padding:80px 24px 64px;text-align:center;position:relative;overflow:hidden}
-.proj-hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,119,204,0.02) 2px,rgba(0,119,204,0.02) 4px)}
-.proj-eyebrow{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,150,255,0.7);margin-bottom:20px}
-.proj-title{font-family:var(--font-head);font-size:clamp(1.8rem,5vw,3rem);font-weight:700;color:#EEF4FF;line-height:1.1;margin-bottom:20px;position:relative;z-index:1}
-.proj-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px;position:relative;z-index:1}
-.proj-tags span{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.06em;padding:4px 12px;border-radius:20px;border:1px solid rgba(0,119,204,0.35);color:rgba(0,150,255,0.8)}
-.proj-meta{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;font-family:var(--font-mono);font-size:0.72rem;color:rgba(168,200,240,0.6);position:relative;z-index:1}
-.proj-meta span{display:flex;align-items:center;gap:6px}
-.proj-img-banner{width:100%;max-height:420px;object-fit:cover;display:block;background:var(--card2)}
-.proj-img-placeholder{height:360px;background:linear-gradient(135deg,var(--card),var(--card2));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--muted)}
-.proj-img-placeholder i{font-size:3rem;color:var(--border)}
-.proj-img-placeholder span{font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em}
-.proj-body{padding:64px 0 80px}
-.proj-section{margin-bottom:52px}
-.proj-section-label{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:12px;margin-bottom:24px}
-.proj-section-label::after{content:'';flex:1;height:1px;background:var(--accent);opacity:0.2}
-.proj-section h2{font-family:var(--font-head);font-size:1.35rem;font-weight:600;margin-bottom:14px}
-.proj-section p{color:var(--muted);font-size:0.96rem;line-height:1.75;margin-bottom:14px}
+.container{max-width:900px;margin:0 auto;padding:0 32px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:rgba(218,166,19,0.4);border-radius:0}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:999;height:var(--nav-h);
+  display:flex;align-items:center;
+  background:transparent;
+  transition:background 0.35s var(--ease),backdrop-filter 0.35s var(--ease);
+}
+.nav.scrolled{
+  background:rgba(250,250,248,0.96);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 32px;width:100%;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--font-mono);font-size:0.78rem;font-weight:500;color:var(--text);letter-spacing:0.04em;display:flex;align-items:center;gap:10px}
+.nav-logo-mark{width:34px;height:34px;border:1px solid var(--border-hi);display:flex;align-items:center;justify-content:center;font-size:0.72rem;color:var(--text);transition:background 0.2s;overflow:hidden}
+.nav-logo-mark img{width:100%;height:100%;object-fit:cover}
+.nav-logo-mark:hover{background:var(--cyan-dim);color:var(--cyan)}
+.nav-links{display:flex;gap:0;align-items:center}
+.nav-link{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-2);padding:8px 14px;transition:color 0.2s;position:relative}
+.nav-link:hover{color:var(--text)}
+.nav-link::after{content:'';position:absolute;bottom:4px;left:14px;right:14px;height:1px;background:var(--cyan);transform:scaleX(0);transition:transform 0.2s var(--ease);transform-origin:left}
+.nav-link:hover::after{transform:scaleX(1)}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:4px;flex-direction:column;gap:5px}
+.nav-toggle span{display:block;width:20px;height:1.5px;background:var(--text);transition:transform 0.25s,opacity 0.25s}
+
+/* ── PROJ HERO ── */
+.proj-hero{
+  position:relative;
+  padding:calc(var(--nav-h) + 72px) 0 72px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  overflow:hidden;
+}
+.proj-hero::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:repeating-linear-gradient(to bottom,transparent,transparent 31px,rgba(218,166,19,0.07) 31px,rgba(218,166,19,0.07) 32px);
+  z-index:0;
+}
+#sigCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.hero-geo{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:1}
+.proj-hero-inner{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:0 32px}
+
+.proj-tagid{
+  display:inline-block;font-family:var(--font-mono);font-size:0.68rem;
+  letter-spacing:0.1em;color:var(--cyan);
+  border:1px solid rgba(218,166,19,0.4);padding:4px 12px;
+  margin-bottom:20px;text-transform:uppercase;
+  opacity:0;animation:fadeUp 0.8s 0.05s var(--ease) forwards;
+}
+.proj-eyebrow{
+  font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.18em;
+  color:var(--amber);text-transform:uppercase;
+  display:flex;align-items:center;gap:12px;margin-bottom:22px;
+  opacity:0;animation:fadeUp 0.8s 0.15s var(--ease) forwards;
+}
+.proj-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulseDot 2.4s infinite}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.7)}}
+.proj-title{
+  font-family:var(--font-display);
+  font-size:clamp(2rem,5vw,3.8rem);
+  font-weight:800;line-height:1.0;letter-spacing:-0.03em;
+  color:var(--text);margin-bottom:28px;
+  opacity:0;animation:fadeUp 0.9s 0.28s var(--ease) forwards;
+}
+.proj-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;opacity:0;animation:fadeUp 0.9s 0.42s var(--ease) forwards}
+.proj-tag{font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.04em;padding:5px 12px;border:1px solid rgba(97,61,170,0.4);color:rgba(160,127,224,0.85);text-transform:uppercase;background:rgba(97,61,170,0.10)}
+.proj-meta{display:flex;gap:28px;flex-wrap:wrap;font-family:var(--font-mono);font-size:0.72rem;color:var(--text-3);opacity:0;animation:fadeUp 0.9s 0.55s var(--ease) forwards}
+.proj-meta span{display:flex;align-items:center;gap:8px}
+.proj-meta i{color:var(--cyan)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── FIGURE / SVG DIAGRAM ── */
+.proj-figure{
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.proj-figure svg{width:100%;height:auto;display:block;max-height:440px}
+.proj-figure-cap{
+  font-family:var(--font-mono);font-size:0.64rem;letter-spacing:0.1em;
+  color:var(--text-3);text-transform:uppercase;text-align:center;
+  padding:10px 0;background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+
+/* ── MEDIA ── */
+.media-placeholder{
+  min-height:280px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;padding:48px;text-align:center;
+  border:1px solid var(--border);background:var(--card);
+}
+.media-placeholder i{font-size:2.2rem;color:var(--cyan);opacity:0.35}
+.media-placeholder span{font-family:var(--font-mono);font-size:0.74rem;color:var(--text-3);line-height:1.7}
+
+/* ── PDF FRAME ── */
+.pdf-frame{
+  width:100%;height:700px;
+  border:1px solid var(--border);
+  background:var(--card);overflow:hidden;
+}
+.pdf-frame iframe{width:100%;height:100%;border:none}
+.pdf-actions{margin-top:18px;display:flex;justify-content:flex-end}
+
+/* ── BODY ── */
+.proj-body{padding:80px 0 100px}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.65s var(--ease),transform 0.65s var(--ease)}
+.reveal.up{opacity:1;transform:translateY(0)}
+
+/* ── SECTION ── */
+.proj-section{margin-bottom:64px}
+.sec-label{
+  font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--cyan);
+  display:flex;align-items:center;gap:16px;margin-bottom:20px;
+}
+.sec-label::before{content:'';width:24px;height:1px;background:var(--cyan)}
+.sec-label .n{color:var(--text-3);font-size:0.62rem;margin-left:-6px}
+.proj-section p{color:var(--text-2);font-size:0.97rem;line-height:1.8;margin-bottom:14px}
 .proj-section p:last-child{margin-bottom:0}
-.spec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px}
-.spec-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
-.spec-card h4{font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.1em;color:var(--accent);margin-bottom:8px;text-transform:uppercase}
-.spec-card p{font-size:0.88rem;color:var(--muted);margin:0}
-.highlight-box{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--radius);padding:20px 24px;margin:20px 0}
-.highlight-box p{color:var(--muted);font-size:0.93rem;margin:0}
-.proj-list{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.proj-list li{font-size:0.93rem;color:var(--muted);padding-left:20px;position:relative}
-.proj-list li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:0.7rem;top:2px}
-.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--font-mono);font-size:0.78rem;color:var(--muted);transition:all var(--transition)}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-glow)}
-.proj-nav{border-top:1px solid var(--border);padding:40px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.proj-nav a{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:0.78rem;color:var(--muted);padding:10px 18px;border:1px solid var(--border);border-radius:8px;transition:all var(--transition)}
-.proj-nav a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* spec grid */
+.spec-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;background:rgba(218,166,19,0.10);
+  border:1px solid var(--border);margin-top:8px;
+}
+.spec-card{background:var(--panel);padding:28px 24px;transition:background 0.25s;position:relative;overflow:hidden}
+.spec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cyan);transform:scaleX(0);transform-origin:left;transition:transform 0.3s var(--ease)}
+.spec-card:hover{background:var(--card)}
+.spec-card:hover::before{transform:scaleX(1)}
+.spec-card h4{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.1em;color:var(--cyan);margin-bottom:10px;text-transform:uppercase}
+.spec-card p{font-size:0.88rem;color:var(--text-2);margin:0;line-height:1.7}
+
+/* objectives list */
+.obj-list{display:flex;flex-direction:column;gap:1px;background:rgba(218,166,19,0.10);border:1px solid var(--border);margin-top:8px}
+.obj-list li{background:var(--panel);font-size:0.92rem;color:var(--text-2);padding:18px 22px;display:flex;gap:18px;align-items:baseline;transition:background 0.2s}
+.obj-list li:hover{background:var(--card)}
+.obj-list li .ono{font-family:var(--font-mono);font-size:0.66rem;color:var(--cyan);flex:0 0 28px;opacity:0.7}
+
+/* highlight box */
+.highlight-box{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--cyan);padding:22px 26px;margin:16px 0}
+.highlight-box p{color:var(--text-2);font-size:0.95rem;margin:0;line-height:1.8}
+
+/* dash list */
+.proj-list{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.proj-list li{font-size:0.92rem;color:var(--text-2);padding-left:24px;position:relative;line-height:1.65}
+.proj-list li::before{content:'';position:absolute;left:0;top:11px;width:10px;height:1px;background:var(--cyan);opacity:0.7}
+
+/* ── VIDEO ── */
+.proj-media{
+  width:100%;height:480px;
+  border:1px solid var(--border);
+  background:#000;overflow:hidden;
+}
+.proj-media video{width:100%;height:100%;object-fit:contain;display:block}
+
+/* ── PDF FRAME ── */
+.pdf-frame{
+  width:100%;height:700px;
+  border:1px solid var(--border);
+  background:var(--card);overflow:hidden;
+}
+.pdf-frame iframe{width:100%;height:100%;border:none;display:block}
+.pdf-actions{margin-top:18px;display:flex;justify-content:flex-end}
+
+/* report card */
+.report-card{
+  display:flex;gap:20px;align-items:center;
+  border:1px solid var(--border);background:var(--panel);
+  padding:20px 22px;transition:background 0.2s;
+}
+.report-card:hover{background:var(--card)}
+.report-thumb{flex:0 0 54px;height:70px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center}
+.report-thumb i{font-size:1.5rem;color:var(--cyan);opacity:0.6}
+.report-info{flex:1}
+.report-info h4{font-family:var(--font-display);font-size:0.96rem;font-weight:600;margin-bottom:4px;color:var(--text)}
+.report-info p{font-size:0.84rem;color:var(--text-2);margin:0}
+.report-link{
+  font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--text-2);display:flex;align-items:center;gap:8px;flex:0 0 auto;
+  border:1px solid var(--border-hi);padding:10px 16px;
+  transition:all 0.22s var(--ease);
+}
+.report-link:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+
+/* repo card */
+.repo-card{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  border:1px solid var(--border);background:var(--panel);
+  padding:22px 24px;flex-wrap:wrap;
+}
+.repo-meta{font-family:var(--font-mono);font-size:0.76rem;color:var(--text-2)}
+.repo-meta strong{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text);display:block;margin-bottom:4px}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--text-2);border:1px solid var(--border-hi);padding:10px 18px;
+  transition:all 0.22s var(--ease);
+}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+
+/* proj nav */
+.proj-nav{
+  border-top:2px solid rgba(218,166,19,0.2);
+  padding:48px 0 0;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+}
+.proj-nav a{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-mono);font-size:0.74rem;letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--text-2);padding:13px 22px;border:1px solid var(--border-hi);
+  transition:all 0.22s var(--ease);
+}
+.proj-nav a:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
+
+/* footer */
+.footer{background:var(--panel);border-top:1px solid var(--border);padding:28px 0}
+.footer-inner{max-width:1100px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer p{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.04em;color:var(--text-3)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.04em;color:var(--text-3);transition:color 0.2s}
+.footer-links a:hover{color:var(--amber)}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+@media(max-width:640px){
+  .spec-grid{grid-template-columns:1fr}
+  .proj-nav{flex-direction:column}
+  .report-card{flex-direction:column;align-items:flex-start}
+  .nav-links{display:none;flex-direction:column;gap:0;position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(250,250,248,0.97);backdrop-filter:blur(18px);padding:12px 0 24px;border-bottom:1px solid var(--border)}
+  .nav-links.open{display:flex}
+  .nav-link{padding:13px 24px;font-size:0.76rem}
+  .nav-toggle{display:flex}
+}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <a href="../index.html" class="topbar-back"><i class="bi bi-arrow-left"></i> Back to Portfolio</a>
-  <span class="topbar-title">JIN ZIYU · PROJECTS</span>
-</div>
+<!-- NAV -->
+<nav class="nav" id="siteNav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-mark"><img src="../assets/img/logo.png" alt="JZ" onerror="this.parentElement.textContent='JZ'"/></div>
+      Jin Ziyu
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="../index.html#home"       class="nav-link">Home</a></li>
+      <li><a href="../index.html#about"      class="nav-link">About</a></li>
+      <li><a href="../index.html#skills"     class="nav-link">Skills</a></li>
+      <li><a href="../index.html#experience" class="nav-link">Experience</a></li>
+      <li><a href="../index.html#projects"   class="nav-link">Projects</a></li>
+      <li><a href="../index.html#education"  class="nav-link">Education</a></li>
+      <li><a href="../index.html#resume"     class="nav-link">Resume</a></li>
+      <li><a href="../index.html#contact"    class="nav-link">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
 
+<!-- HERO -->
 <div class="proj-hero">
-  <p class="proj-eyebrow">Robotics &amp; ROS · Autonomous Systems</p>
-  <h1 class="proj-title">SEP — LIMO Autonomous<br>Navigation System</h1>
-  <div class="proj-tags">
-    <span>ROS 1 Melodic</span><span>C++</span><span>SLAM</span>
-    <span>Autonomous Nav</span><span>Path Planning</span><span>Ubuntu 18.04</span>
+  <canvas id="sigCanvas" aria-hidden="true"></canvas>
+  <div class="hero-geo" aria-hidden="true">
+    <svg width="100%" height="100%" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="680,0 1440,0 1440,600 920,600" fill="#000DAA" opacity="0.03"/>
+      <polygon points="860,0 1440,0 1440,360" fill="#000DAA" opacity="0.025"/>
+      <line x1="680" y1="0" x2="920" y2="600" stroke="#DAA613" stroke-width="1" opacity="0.22"/>
+      <line x1="860" y1="0" x2="1440" y2="360" stroke="#DAA613" stroke-width="0.5" opacity="0.12"/>
+    </svg>
   </div>
-  <div class="proj-meta">
-    <span><i class="bi bi-calendar3"></i> 2024</span>
-    <span><i class="bi bi-people"></i> Group Project</span>
-    <span><i class="bi bi-building"></i> SIT Systems Engineering</span>
+  <div class="proj-hero-inner">
+    <span class="proj-tagid">RBX — 02</span>
+    <div class="proj-eyebrow">
+      <div class="proj-eyebrow-dot"></div>
+      Robotics &amp; ROS · Autonomous Systems
+    </div>
+    <h1 class="proj-title">SEP — LIMO Autonomous<br>Navigation System</h1>
+    <div class="proj-tags">
+      <span class="proj-tag">ROS 1 Melodic</span>
+      <span class="proj-tag">C++</span>
+      <span class="proj-tag">SLAM</span>
+      <span class="proj-tag">Autonomous Nav</span>
+      <span class="proj-tag">Path Planning</span>
+      <span class="proj-tag">Ubuntu 18.04</span>
+    </div>
+    <div class="proj-meta">
+      <span><i class="bi bi-calendar3"></i> 2024</span>
+      <span><i class="bi bi-people"></i> Group Project</span>
+      <span><i class="bi bi-building"></i> SIT Systems Engineering</span>
+    </div>
   </div>
 </div>
 
-<div class="proj-img-placeholder">
-  <i class="bi bi-robot"></i>
-  <span>LIMO · Autonomous Navigation Arena</span>
+<!-- SYSTEM DIAGRAM -->
+<div class="proj-figure">
+  <svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg">
+    <rect width="880" height="420" fill="#F7F6F2"/>
+    <!-- subtle grid -->
+    <g stroke="#DAA613" stroke-width="0.5" opacity="0.10">
+      <rect x="80" y="60" width="720" height="300" fill="none"/>
+      <line x1="80" y1="210" x2="800" y2="210"/>
+      <line x1="440" y1="60" x2="440" y2="360"/>
+    </g>
+    <!-- geometric accent -->
+    <polygon points="720,0 880,0 880,420 810,420" fill="#000DAA" opacity="0.025"/>
+    <line x1="720" y1="0" x2="810" y2="420" stroke="#DAA613" stroke-width="0.8" opacity="0.20"/>
+    <!-- robot -->
+    <rect x="120" y="270" width="40" height="40" fill="none" stroke="#1C1810" stroke-width="2"/>
+    <rect x="120" y="270" width="40" height="40" fill="none" stroke="#1C1810" stroke-width="2" transform="rotate(45 140 290)" opacity="0.25"/>
+    <!-- goal -->
+    <rect x="700" y="90" width="40" height="40" fill="none" stroke="#DAA613" stroke-width="2"/>
+    <!-- path dots -->
+    <circle cx="430" cy="220" r="6" fill="#DAA613"/>
+    <circle cx="500" cy="180" r="6" fill="#DAA613" opacity="0.7"/>
+    <circle cx="570" cy="150" r="6" fill="#DAA613" opacity="0.5"/>
+    <circle cx="640" cy="120" r="6" fill="#DAA613" opacity="0.3"/>
+    <!-- planned path -->
+    <path d="M160,280 C260,260 340,240 430,220 S560,165 700,110" fill="none" stroke="#DAA613" stroke-width="2" stroke-dasharray="6,5" opacity="0.8"/>
+    <!-- obstacle -->
+    <rect x="350" y="300" width="60" height="36" fill="none" stroke="#613DAA" stroke-width="1.5" opacity="0.6"/>
+    <!-- labels -->
+    <text x="140" y="330" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#1C1810" opacity="0.55">START</text>
+    <text x="720" y="150" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="#DAA613" opacity="0.8">GOAL</text>
+    <text x="380" y="296" text-anchor="middle" font-family="DM Mono,monospace" font-size="9" fill="rgba(97,61,170,0.6)">OBSTACLE</text>
+    <text x="440" y="40" text-anchor="middle" font-family="DM Mono,monospace" font-size="11" fill="rgba(28,24,16,0.28)" letter-spacing="0.12em">FIG.01 — ARENA OCCUPANCY MAP &amp; PLANNED PATH</text>
+  </svg>
 </div>
+<div class="proj-figure-cap">Fig.01 — Arena occupancy map and planned path</div>
 
+<!-- BODY -->
 <div class="proj-body">
   <div class="container">
 
-    <div class="proj-section">
-      <div class="proj-section-label">Overview</div>
+    <!-- 01 OVERVIEW -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">01 —</span> Project Overview</div>
       <p>The SEP (Systems Engineering Project) — LIMO Autonomous Navigation System involved designing, building, and validating a complete autonomous navigation stack for the AgileX LIMO differential-drive mobile robot using ROS 1 Melodic. The project covered the full pipeline: arena design, SLAM-based map building, localisation, path planning, and real-world obstacle avoidance.</p>
-      <p>The project was completed in a team and constituted a core deliverable in the Systems Engineering Project module at SIT, with the robot required to autonomously navigate a custom-designed arena and respond to dynamic obstacles.</p>
-      <div style="margin-top:20px">
-        <a href="https://github.com/Jin-Ziyu/Systems-Engineering-Project-1-Group-6" target="_blank" class="btn-outline"><i class="bi bi-github"></i> View on GitHub</a>
+      <p>Completed as a team, the module required the robot to autonomously navigate a custom-designed arena and respond to dynamic obstacles with reliable, repeatable performance.</p>
+    </div>
+
+    <!-- 02 OBJECTIVES -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">02 —</span> Objectives</div>
+      <ul class="obj-list">
+        <li><span class="ono">01</span><span>Build a 2D occupancy grid map of a custom-designed arena using SLAM</span></li>
+        <li><span class="ono">02</span><span>Achieve reliable real-time pose estimation within the mapped environment</span></li>
+        <li><span class="ono">03</span><span>Plan and execute collision-free paths from start to goal poses using the ROS Navigation Stack</span></li>
+        <li><span class="ono">04</span><span>Validate reactive obstacle avoidance against static and dynamic obstacles in the arena</span></li>
+      </ul>
+    </div>
+
+    <!-- 03 DEMO VIDEO -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">03 —</span> Demo Video</div>
+      <div class="proj-media">
+        <video
+          src="../assets/videos/sep-limo-arena.mp4"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          disablePictureInPicture>
+        </video>
       </div>
     </div>
 
-    <div class="proj-section">
-      <div class="proj-section-label">System Components</div>
+    <!-- 04 REPORT -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">04 —</span> Report Preview</div>
+      <div class="pdf-frame">
+        <iframe
+          src="../assets/reports/sep-limo-arena.pdf"
+          title="Systems Engineering Project Report">
+        </iframe>
+      </div>
+      <div class="pdf-actions">
+        <a href="../assets/reports/sep-limo-arena.pdf" target="_blank" class="btn-outline">
+          <i class="bi bi-box-arrow-up-right"></i> Open Full Report
+        </a>
+      </div>
+    </div>
+
+    <!-- 05 SYSTEM ARCHITECTURE -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">05 —</span> System Architecture</div>
       <div class="spec-grid">
         <div class="spec-card">
           <h4>SLAM</h4>
@@ -117,25 +447,14 @@ img{max-width:100%;display:block}
         </div>
         <div class="spec-card">
           <h4>Arena Design</h4>
-          <p>Custom physical arena built to specification, with defined start/goal poses, static obstacles, and challenge zones for navigation testing.</p>
+          <p>Custom physical arena built to specification, with defined start/goal poses, static obstacles, and challenge zones.</p>
         </div>
       </div>
     </div>
 
-    <div class="proj-section">
-      <div class="proj-section-label">Navigation Pipeline</div>
-      <ul class="proj-list">
-        <li>Teleoperated the LIMO robot to perform SLAM mapping of the arena using LiDAR sensor data</li>
-        <li>Saved and verified the occupancy grid map for use in the autonomous navigation phase</li>
-        <li>Configured AMCL parameters for reliable particle-filter localisation within the mapped environment</li>
-        <li>Tuned move_base costmap inflation radii and DWA local planner parameters for the arena geometry</li>
-        <li>Defined waypoint goals via RViz and validated end-to-end autonomous traversal</li>
-        <li>Tested dynamic obstacle handling and recovery behaviour under ROS Navigation Stack</li>
-      </ul>
-    </div>
-
-    <div class="proj-section">
-      <div class="proj-section-label">Technology Stack</div>
+    <!-- 06 TECH STACK -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">06 —</span> Technology Stack</div>
       <ul class="proj-list">
         <li><strong>Platform:</strong> AgileX LIMO differential-drive mobile robot</li>
         <li><strong>Middleware:</strong> ROS 1 Melodic on Ubuntu 18.04</li>
@@ -147,14 +466,54 @@ img{max-width:100%;display:block}
       </ul>
     </div>
 
-    <div class="proj-section">
-      <div class="proj-section-label">Outcomes</div>
+    <!-- 07 ROLE -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">07 —</span> Role &amp; Contribution</div>
+      <p>Within the team, I led the SLAM mapping phase — teleoperating the LIMO to scan the arena and producing the verified occupancy grid map — and tuned the AMCL localisation parameters for reliable pose estimation. I also worked on move_base costmap inflation and DWA local planner tuning to match the arena's geometry, and helped define and test waypoint goals in RViz during the autonomous validation runs.</p>
+    </div>
+
+    <!-- 08 V&V -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">08 —</span> Verification &amp; Validation</div>
+      <div class="spec-grid">
+        <div class="spec-card">
+          <h4>Map Verification</h4>
+          <p>Saved and visually verified the occupancy grid map before progressing to the autonomous phase.</p>
+        </div>
+        <div class="spec-card">
+          <h4>Localisation Tuning</h4>
+          <p>Adjusted AMCL particle filter parameters and confirmed pose stability across repeated runs.</p>
+        </div>
+        <div class="spec-card">
+          <h4>Planner Tuning</h4>
+          <p>Tuned costmap inflation radii and DWA parameters for the specific arena geometry.</p>
+        </div>
+        <div class="spec-card">
+          <h4>Obstacle Testing</h4>
+          <p>Tested dynamic obstacle handling and recovery behaviour under the ROS Navigation Stack.</p>
+        </div>
+      </div>
       <div class="highlight-box">
         <p>The LIMO robot successfully demonstrated fully autonomous navigation across the custom arena, including SLAM mapping, goal-directed path planning, and reactive obstacle avoidance — completing the Systems Engineering Project requirements with reliable multi-run performance.</p>
       </div>
     </div>
 
-    <div class="proj-nav">
+    <!-- 09 REPO -->
+    <div class="proj-section reveal">
+      <div class="sec-label"><span class="n">09 —</span> Project Repository</div>
+      <div class="repo-card">
+        <div class="repo-meta">
+          <strong>Project Repository</strong>
+          Source code, build files, and documentation on GitHub.
+        </div>
+        <a href="https://github.com/Jin-Ziyu/Systems-Engineering-Project-1-Group-6" target="_blank" class="btn-outline">
+          <i class="bi bi-github"></i> View Repository
+        </a>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <div class="proj-nav reveal">
       <a href="intelligent-pallet-optimization.html"><i class="bi bi-arrow-left"></i> Prev: Pallet System</a>
       <a href="../index.html#projects"><i class="bi bi-grid"></i> All Projects</a>
       <a href="hand-gesture-robot.html">Next: Haptic Glove Robot <i class="bi bi-arrow-right"></i></a>
@@ -163,5 +522,93 @@ img{max-width:100%;display:block}
   </div>
 </div>
 
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <p>© 2025 Jin Ziyu · Robotics Systems, SIT Singapore</p>
+    <div class="footer-links">
+      <a href="https://github.com/Jin-Ziyu" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/jin-ziyu/" target="_blank">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* NAV scroll */
+const nav = document.getElementById('siteNav');
+function updateNav(){ nav.classList.toggle('scrolled', window.scrollY > 30); }
+window.addEventListener('scroll', updateNav, {passive:true});
+updateNav();
+
+/* Mobile toggle */
+const tog = document.getElementById('navToggle');
+const nlEl = document.getElementById('navLinks');
+tog.addEventListener('click', () => {
+  nlEl.classList.toggle('open');
+  const sp = tog.querySelectorAll('span');
+  if(nlEl.classList.contains('open')){
+    sp[0].style.transform='rotate(45deg) translate(5px,5px)';
+    sp[1].style.opacity='0';
+    sp[2].style.transform='rotate(-45deg) translate(5px,-5px)';
+  } else { sp.forEach(s=>{ s.style.transform=''; s.style.opacity=''; }); }
+});
+nlEl.querySelectorAll('.nav-link').forEach(a => a.addEventListener('click', () => {
+  nlEl.classList.remove('open');
+  tog.querySelectorAll('span').forEach(s=>{ s.style.transform=''; s.style.opacity=''; });
+}));
+
+/* SCROLL REVEAL */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('up'); obs.unobserve(e.target); } });
+}, {threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* SIGNAL CANVAS */
+(function(){
+  const c = document.getElementById('sigCanvas');
+  const ctx = c.getContext('2d');
+  let W, H, mx = 0.5, my = 0.5, t = 0;
+  function resize(){ W = c.width = c.offsetWidth; H = c.height = c.offsetHeight; }
+  window.addEventListener('resize', resize);
+  resize();
+  document.querySelector('.proj-hero').addEventListener('mousemove', e => {
+    const r = c.getBoundingClientRect();
+    mx = (e.clientX - r.left) / W;
+    my = (e.clientY - r.top) / H;
+  });
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    t += 0.012;
+    const gx = W/18, gy = H/10;
+    for(let r=0; r<=10; r++) for(let cc=0; cc<=18; cc++){
+      const px = cc*gx, py = r*gy;
+      const dist = Math.hypot(px/W - mx, py/H - my);
+      const a = Math.max(0, 0.12 - dist*0.22);
+      ctx.beginPath(); ctx.arc(px, py, 1, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(218,166,19,${a})`; ctx.fill();
+    }
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(218,166,19,0.20)'; ctx.lineWidth = 1.5;
+    for(let x=0; x<=W; x+=2){
+      const norm = x/W;
+      const freq = 3 + mx*4;
+      const amp = H*0.08*(0.5 + my*0.8);
+      const y = H*0.5 + Math.sin(norm*Math.PI*freq + t)*amp + Math.sin(norm*Math.PI*freq*1.7 + t*0.7)*(amp*0.3);
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(97,61,170,0.12)'; ctx.lineWidth = 1;
+    for(let x=0; x<=W; x+=2){
+      const norm = x/W;
+      const y = H*0.35 + Math.sin(norm*Math.PI*5 + t*1.3)*H*0.04;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
 </body>
 </html>
