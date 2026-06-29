@@ -588,11 +588,11 @@ body{overflow-x:hidden}
 * { cursor: none !important; }
 #hud-canvas {
   pointer-events:none;
-  position:fixed;inset:0;
+  position:fixed;
+  top:0;left:0;
+  width:100vw;height:100vh;
   z-index:9997;
 }
-body:not(.cursor-active) #hud-canvas { opacity:0; transition:opacity 0.4s; }
-body.cursor-active #hud-canvas { opacity:1; }
 
 /* scan line sweep on cards */
 .sk-card, .proj, .edu-card, .exp-item {
@@ -602,22 +602,22 @@ body.cursor-active #hud-canvas { opacity:1; }
 .sk-card::after, .proj::after, .edu-card::after, .exp-item::after {
   content:'';
   position:absolute;inset:0;
-  background:linear-gradient(180deg, transparent 0%, rgba(218,166,19,0.06) 50%, transparent 100%);
-  transform:translateY(-100%);
+  background:linear-gradient(180deg, transparent 0%, rgba(218,166,19,0.07) 50%, transparent 100%);
+  transform:translateY(-110%);
   pointer-events:none;
   transition:none;
   z-index:2;
 }
 .sk-card.scanning::after, .proj.scanning::after,
 .edu-card.scanning::after, .exp-item.scanning::after {
-  animation: scanSweep 0.8s linear forwards;
+  animation: scanSweep 0.75s linear forwards;
 }
 @keyframes scanSweep {
-  from { transform:translateY(-100%); }
-  to   { transform:translateY(200%); }
+  from { transform:translateY(-110%); }
+  to   { transform:translateY(210%); }
 }
 
-/* HUD data readout tag */
+/* HUD tag */
 #hud-tag {
   pointer-events:none;
   position:fixed;
@@ -625,9 +625,9 @@ body.cursor-active #hud-canvas { opacity:1; }
   font-size:0.58rem;
   letter-spacing:0.08em;
   color:var(--cyan);
-  background:rgba(0,5,20,0.82);
+  background:rgba(0,5,20,0.85);
   border:1px solid rgba(218,166,19,0.4);
-  padding:4px 8px;
+  padding:4px 9px;
   z-index:9999;
   white-space:nowrap;
   opacity:0;
@@ -638,7 +638,6 @@ body.cursor-active #hud-canvas { opacity:1; }
 </style>
 </head>
 <body>
-<canvas id="particle-canvas" aria-hidden="true"></canvas>
 <canvas id="hud-canvas" aria-hidden="true"></canvas>
 <div id="hud-tag" aria-hidden="true"></div>
 
@@ -1261,285 +1260,186 @@ if (resumeIframe) {
     this.closest('.resume-frame').outerHTML='<div style="background:var(--card);border:1px solid var(--border);padding:60px 40px;text-align:center;max-width:820px;width:100%"><i class="bi bi-file-earmark-pdf" style="font-size:2.5rem;color:var(--amber);display:block;margin-bottom:16px"></i><p style="color:var(--text-2);margin-bottom:0">Resume preview unavailable — use the download button below.</p></div>';
   });
 }
-/* ══════════════════════════════════════════════
+/* ══════════════════════════════════════════
    ROBOTICS HUD MOUSE SYSTEM
-   1. Targeting reticle cursor (crosshair + rotating bracket arms)
-   2. Circuit-trace trail (right-angle wire routing)
-   3. Sensor sweep on card hover (scan line + telemetry readout)
-   4. Radar ping on click
-   ══════════════════════════════════════════════ */
+   ══════════════════════════════════════════ */
 (function(){
   if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
 
-  const hud  = document.getElementById('hud-canvas');
-  const hctx = hud.getContext('2d');
-  const tag  = document.getElementById('hud-tag');
-  const pc   = document.getElementById('particle-canvas');
-  const pctx = pc.getContext('2d');
+  const canvas = document.getElementById('hud-canvas');
+  const ctx    = canvas.getContext('2d');
+  const tag    = document.getElementById('hud-tag');
 
   let W, H;
   function resize(){
-    W = hud.width  = pc.width  = window.innerWidth;
-    H = hud.height = pc.height = window.innerHeight;
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
   }
   window.addEventListener('resize', resize);
   resize();
 
-  let mx = W/2, my = H/2;   // mouse position
-  let lx = W/2, ly = H/2;   // lerped reticle position
-  let t  = 0;                // global time tick
-  let hoveredEl = null;
+  let mx = W/2, my = H/2;
+  let lx = W/2, ly = H/2;
+  let t = 0, isHover = false;
+  let lastTX = mx, lastTY = my, distAcc = 0;
+  const trail = [];
+  const pings = [];
 
+  /* ── MOUSE MOVE ── */
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
-    document.body.classList.add('cursor-active');
-    addTraceNode(mx, my);
-    updateTag(e);
+
+    /* circuit trace trail nodes */
+    const dx = mx - lastTX, dy = my - lastTY;
+    distAcc += Math.hypot(dx, dy);
+    if (distAcc >= 12) {
+      distAcc = 0; lastTX = mx; lastTY = my;
+      trail.push({ x: mx, y: my, life: 1.0 });
+      if (trail.length > 22) trail.shift();
+    }
+
+    /* hover detection: cards / links / buttons */
+    const hoverEl = e.target.closest('.sk-card,.proj,.edu-card,.exp-item,a,button,.tab-btn,.skill-chip');
+    isHover = !!hoverEl;
+
+    /* HUD label tag */
+    const cardEl = e.target.closest('.sk-card,.proj,.edu-card,.exp-item');
+    if (cardEl) {
+      const h = cardEl.querySelector('h3');
+      const num = cardEl.querySelector('.sk-num,.proj-id,.edu-period,.exp-date');
+      tag.textContent = (num ? num.textContent.trim().toUpperCase() + ' · ' : '') + (h ? h.textContent.trim().toUpperCase().slice(0,28) : 'TARGET');
+      tag.style.left = (mx + 24) + 'px';
+      tag.style.top  = (my - 18) + 'px';
+      tag.classList.add('visible');
+
+      if (!cardEl._scanning) {
+        cardEl._scanning = true;
+        cardEl.classList.remove('scanning');
+        void cardEl.offsetWidth;
+        cardEl.classList.add('scanning');
+        setTimeout(() => { cardEl._scanning = false; }, 900);
+      }
+    } else {
+      tag.classList.remove('visible');
+    }
   });
-  document.addEventListener('mouseleave', () => document.body.classList.remove('cursor-active'));
-  document.addEventListener('mouseenter', () => document.body.classList.add('cursor-active'));
 
-  /* ── 1. TARGETING RETICLE ── */
-  function drawReticle(x, y, isHover){
-    const R  = isHover ? 22 : 16;   // inner ring radius
-    const R2 = isHover ? 34 : 26;   // bracket tip distance
-    const ROT = t * (isHover ? 1.8 : 0.9);  // rotation speed
-    const GOLD   = 'rgba(218,166,19,';
-    const PURPLE = 'rgba(97,61,170,';
-    const NAVY   = 'rgba(0,13,170,';
+  /* ── CLICK: radar ping ── */
+  document.addEventListener('click', e => {
+    pings.push({ x: e.clientX, y: e.clientY, r: 0, life: 1.0 });
+  });
 
-    hctx.save();
-    hctx.translate(x, y);
+  /* ── DRAW: targeting reticle ── */
+  function drawReticle(x, y, hover) {
+    const R  = hover ? 24 : 16;
+    const R2 = hover ? 38 : 28;
+    const ROT = t * (hover ? 2.0 : 0.9);
 
-    // outer dashed rotating ring
-    hctx.beginPath();
-    hctx.arc(0, 0, R2, 0, Math.PI*2);
-    hctx.setLineDash([4, 6]);
-    hctx.lineDashOffset = -ROT * 18;
-    hctx.strokeStyle = GOLD + (isHover ? '0.55' : '0.30') + ')';
-    hctx.lineWidth = 1;
-    hctx.stroke();
-    hctx.setLineDash([]);
+    ctx.save(); ctx.translate(x, y);
 
-    // inner solid ring
-    hctx.beginPath();
-    hctx.arc(0, 0, R, 0, Math.PI*2);
-    hctx.strokeStyle = GOLD + (isHover ? '0.90' : '0.65') + ')';
-    hctx.lineWidth = isHover ? 1.5 : 1;
-    hctx.stroke();
+    /* outer dashed rotating ring */
+    ctx.beginPath(); ctx.arc(0, 0, R2, 0, Math.PI*2);
+    ctx.setLineDash([5, 7]); ctx.lineDashOffset = -ROT * 20;
+    ctx.strokeStyle = `rgba(218,166,19,${hover ? 0.6 : 0.32})`; ctx.lineWidth = 1;
+    ctx.stroke(); ctx.setLineDash([]);
 
-    // centre dot
-    hctx.beginPath();
-    hctx.arc(0, 0, 2, 0, Math.PI*2);
-    hctx.fillStyle = GOLD + '1)';
-    hctx.fill();
+    /* inner solid ring */
+    ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(218,166,19,${hover ? 0.95 : 0.70})`;
+    ctx.lineWidth = hover ? 1.5 : 1; ctx.stroke();
 
-    // 4 crosshair lines (gap in middle)
-    const GAP = R + 4, LEN = 10;
-    hctx.strokeStyle = GOLD + '0.85)';
-    hctx.lineWidth = 1;
-    hctx.beginPath();
-    hctx.moveTo(-GAP-LEN, 0); hctx.lineTo(-GAP, 0);
-    hctx.moveTo( GAP,     0); hctx.lineTo( GAP+LEN, 0);
-    hctx.moveTo(0, -GAP-LEN); hctx.lineTo(0, -GAP);
-    hctx.moveTo(0,  GAP);     hctx.lineTo(0,  GAP+LEN);
-    hctx.stroke();
+    /* centre dot */
+    ctx.beginPath(); ctx.arc(0, 0, 2.5, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(218,166,19,1)'; ctx.fill();
 
-    // 4 rotating L-bracket corners
-    const angles = [ROT, ROT + Math.PI/2, ROT + Math.PI, ROT + 3*Math.PI/2];
-    hctx.strokeStyle = isHover ? 'rgba(218,160,0,0.95)' : GOLD + '0.65)';
-    hctx.lineWidth = isHover ? 2 : 1.5;
-    angles.forEach(a => {
-      const bx = Math.cos(a) * R2, by = Math.sin(a) * R2;
-      const tx = Math.cos(a + Math.PI/2) * 7;
-      const ty = Math.sin(a + Math.PI/2) * 7;
-      hctx.beginPath();
-      hctx.moveTo(bx + tx, by + ty);
-      hctx.lineTo(bx, by);
-      hctx.lineTo(bx - tx, by - ty);
-      hctx.stroke();
+    /* crosshair ticks */
+    const gap = R + 5, len = 10;
+    ctx.strokeStyle = 'rgba(218,166,19,0.85)'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(-gap-len, 0); ctx.lineTo(-gap, 0);
+    ctx.moveTo(gap, 0);      ctx.lineTo(gap+len, 0);
+    ctx.moveTo(0, -gap-len); ctx.lineTo(0, -gap);
+    ctx.moveTo(0, gap);      ctx.lineTo(0, gap+len);
+    ctx.stroke();
+
+    /* 4 rotating L-bracket corner arms */
+    ctx.lineWidth = hover ? 2 : 1.5;
+    ctx.strokeStyle = hover ? 'rgba(218,160,0,1)' : 'rgba(218,166,19,0.7)';
+    [0, Math.PI/2, Math.PI, 3*Math.PI/2].forEach(a => {
+      const bx = Math.cos(a + ROT) * R2, by = Math.sin(a + ROT) * R2;
+      const tx = Math.cos(a + ROT + Math.PI/2) * 8;
+      const ty = Math.sin(a + ROT + Math.PI/2) * 8;
+      ctx.beginPath();
+      ctx.moveTo(bx + tx, by + ty); ctx.lineTo(bx, by); ctx.lineTo(bx - tx, by - ty);
+      ctx.stroke();
     });
 
-    // hover: secondary purple arc (sensor cone indicator)
-    if (isHover) {
-      hctx.beginPath();
-      hctx.arc(0, 0, R2 + 10, -ROT*0.5, -ROT*0.5 + Math.PI*0.6);
-      hctx.strokeStyle = PURPLE + '0.55)';
-      hctx.lineWidth = 1;
-      hctx.stroke();
-
-      hctx.beginPath();
-      hctx.arc(0, 0, R + 6, ROT, ROT + Math.PI*1.3);
-      hctx.strokeStyle = NAVY + '0.45)';
-      hctx.lineWidth = 1;
-      hctx.stroke();
+    /* hover: purple sensor arc + navy arc */
+    if (hover) {
+      ctx.beginPath(); ctx.arc(0, 0, R2 + 12, -ROT*0.6, -ROT*0.6 + Math.PI*0.65);
+      ctx.strokeStyle = 'rgba(97,61,170,0.6)'; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, 0, R + 8, ROT*0.5, ROT*0.5 + Math.PI*1.2);
+      ctx.strokeStyle = 'rgba(0,13,170,0.4)'; ctx.lineWidth = 1; ctx.stroke();
     }
 
-    hctx.restore();
+    /* XY coordinate readout */
+    ctx.font = '9px "DM Mono",monospace';
+    ctx.fillStyle = 'rgba(218,166,19,0.5)';
+    ctx.fillText('X:' + String(Math.round(x)).padStart(4,'0'), R2 + 7, -5);
+    ctx.fillText('Y:' + String(Math.round(y)).padStart(4,'0'), R2 + 7,  9);
+
+    ctx.restore();
   }
 
-  /* ── 2. CIRCUIT TRACE TRAIL ── */
-  // Trail is a sequence of "nodes" connected by right-angle (Manhattan) wire segments
-  const trailNodes = [];
-  const MAX_NODES = 18;
-  let lastTX = mx, lastTY = my, distAcc = 0;
-
-  function addTraceNode(x, y){
-    const dx = x - lastTX, dy = y - lastTY;
-    distAcc += Math.hypot(dx, dy);
-    if (distAcc < 14) return;
-    distAcc = 0;
-    lastTX = x; lastTY = y;
-    trailNodes.push({ x, y, life: 1.0 });
-    if (trailNodes.length > MAX_NODES) trailNodes.shift();
-  }
-
-  function drawTrail(){
-    if (trailNodes.length < 2) return;
-    for (let i = 1; i < trailNodes.length; i++){
-      const a = trailNodes[i-1];
-      const b = trailNodes[i];
-      const alpha = (i / trailNodes.length) * a.life * 0.55;
-      hctx.beginPath();
-      hctx.moveTo(a.x, a.y);
-      // right-angle routing: go horizontal first, then vertical
-      hctx.lineTo(b.x, a.y);
-      hctx.lineTo(b.x, b.y);
-      hctx.strokeStyle = `rgba(218,166,19,${alpha})`;
-      hctx.lineWidth = 1;
-      hctx.setLineDash([3, 4]);
-      hctx.stroke();
-      hctx.setLineDash([]);
-
-      // node dot at each waypoint
-      hctx.beginPath();
-      hctx.arc(b.x, b.y, 2, 0, Math.PI*2);
-      hctx.fillStyle = `rgba(218,160,0,${alpha * 0.8})`;
-      hctx.fill();
+  /* ── DRAW: circuit trace trail ── */
+  function drawTrail() {
+    for (let i = 1; i < trail.length; i++) {
+      const a = trail[i-1], b = trail[i];
+      const alpha = (i / trail.length) * a.life * 0.5;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, a.y); ctx.lineTo(b.x, b.y); /* right-angle Manhattan routing */
+      ctx.strokeStyle = `rgba(218,166,19,${alpha})`;
+      ctx.lineWidth = 1; ctx.setLineDash([3,5]); ctx.stroke(); ctx.setLineDash([]);
+      ctx.beginPath(); ctx.arc(b.x, b.y, 2, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(218,160,0,${alpha * 0.7})`; ctx.fill();
     }
-    // fade all nodes slowly
-    trailNodes.forEach(n => n.life -= 0.018);
-    for (let i = trailNodes.length-1; i >= 0; i--){
-      if (trailNodes[i].life <= 0) trailNodes.splice(i, 1);
+    trail.forEach(n => n.life -= 0.016);
+    for (let i = trail.length - 1; i >= 0; i--) {
+      if (trail[i].life <= 0) trail.splice(i, 1);
     }
   }
 
-  /* ── 3. RADAR PING on click ── */
-  const pings = [];
-  document.addEventListener('click', e => {
-    pings.push({ x: e.clientX, y: e.clientY, r: 0, life: 1 });
-  });
-
-  function drawPings(){
-    for (let i = pings.length-1; i >= 0; i--){
+  /* ── DRAW: radar pings ── */
+  function drawPings() {
+    for (let i = pings.length - 1; i >= 0; i--) {
       const p = pings[i];
-      p.r   += 4;
-      p.life -= 0.035;
-      if (p.life <= 0){ pings.splice(i,1); continue; }
+      p.r += 4.5; p.life -= 0.032;
+      if (p.life <= 0) { pings.splice(i, 1); continue; }
 
-      // outer expanding ring
-      hctx.beginPath();
-      hctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      hctx.strokeStyle = `rgba(218,166,19,${p.life * 0.7})`;
-      hctx.lineWidth = 1.5;
-      hctx.stroke();
-
-      // second ring, smaller offset
-      if (p.r > 14){
-        hctx.beginPath();
-        hctx.arc(p.x, p.y, p.r - 12, 0, Math.PI*2);
-        hctx.strokeStyle = `rgba(97,61,170,${p.life * 0.4})`;
-        hctx.lineWidth = 1;
-        hctx.stroke();
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.strokeStyle = `rgba(218,166,19,${p.life * 0.75})`; ctx.lineWidth = 1.5; ctx.stroke();
+      if (p.r > 16) {
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r - 14, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(97,61,170,${p.life * 0.4})`; ctx.lineWidth = 1; ctx.stroke();
       }
-
-      // 4 cardinal tick marks
       [0, Math.PI/2, Math.PI, 3*Math.PI/2].forEach(a => {
-        const ix = p.x + Math.cos(a)*(p.r-4);
-        const iy = p.y + Math.sin(a)*(p.r-4);
-        const ox = p.x + Math.cos(a)*(p.r+4);
-        const oy = p.y + Math.sin(a)*(p.r+4);
-        hctx.beginPath();
-        hctx.moveTo(ix,iy); hctx.lineTo(ox,oy);
-        hctx.strokeStyle = `rgba(218,166,19,${p.life})`;
-        hctx.lineWidth = 1.5;
-        hctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(p.x + Math.cos(a)*(p.r-5), p.y + Math.sin(a)*(p.r-5));
+        ctx.lineTo(p.x + Math.cos(a)*(p.r+5), p.y + Math.sin(a)*(p.r+5));
+        ctx.strokeStyle = `rgba(218,166,19,${p.life})`; ctx.lineWidth = 1.5; ctx.stroke();
       });
     }
   }
 
-  /* ── 4. HUD TAG — telemetry readout near cursor ── */
-  const CARD_LABELS = {
-    'sk-card':      label => { const h=label.querySelector('h3'); return h ? 'SYS · '+h.textContent.toUpperCase() : 'MODULE'; },
-    'proj':         label => { const h=label.querySelector('h3'); return h ? 'RBX · '+h.textContent.slice(0,22).toUpperCase() : 'PROJECT'; },
-    'edu-card':     label => { const s=label.querySelector('.edu-school'); return s ? 'EDU · '+s.textContent.toUpperCase() : 'EDUCATION'; },
-    'exp-item':     label => { const h=label.querySelector('h3'); return h ? 'EXP · '+h.textContent.toUpperCase() : 'EXPERIENCE'; },
-    'btn':          label => 'ACTION · '+label.textContent.trim().toUpperCase().slice(0,20),
-    'contact-link': label => 'COMMS · LINK',
-    'tab-btn':      label => 'NAV · '+label.textContent.toUpperCase(),
-  };
-
-  let tagTimeout;
-  function updateTag(e){
-    clearTimeout(tagTimeout);
-    let found = false;
-    for (const [cls, fn] of Object.entries(CARD_LABELS)){
-      const el = e.target.closest('.'+cls);
-      if (el){
-        tag.textContent = fn(el);
-        tag.classList.add('visible');
-        tag.style.left = (mx + 22)+'px';
-        tag.style.top  = (my - 18)+'px';
-        found = true;
-        break;
-      }
-    }
-    if (!found){
-      tag.classList.remove('visible');
-    }
-  }
-
-  /* ── 5. CARD SCAN SWEEP on mouseenter ── */
-  const SCAN_TARGETS = '.sk-card, .proj, .edu-card, .exp-item';
-  document.addEventListener('mouseover', e => {
-    const el = e.target.closest(SCAN_TARGETS);
-    if (el && el !== hoveredEl){
-      hoveredEl = el;
-      el.classList.remove('scanning');
-      void el.offsetWidth;
-      el.classList.add('scanning');
-    }
-  });
-  document.addEventListener('mouseout', e => {
-    const el = e.target.closest(SCAN_TARGETS);
-    if (el && !el.contains(e.relatedTarget)){
-      el.classList.remove('scanning');
-      hoveredEl = null;
-    }
-  });
-
-  /* ── MAIN RENDER LOOP ── */
-  function loop(){
-    hctx.clearRect(0, 0, W, H);
+  /* ── MAIN LOOP ── */
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
     t += 0.04;
-
-    // lerp reticle toward mouse
     lx += (mx - lx) * 0.18;
     ly += (my - ly) * 0.18;
-
-    const isHover = !!document.querySelector(':hover > ' + SCAN_TARGETS.replace(/\./g,'.').split(',').join(', :hover > .'))
-                 || !!document.elementFromPoint(mx, my)?.closest(SCAN_TARGETS + ', a, button, .tab-btn');
-
     drawTrail();
     drawPings();
     drawReticle(lx, ly, isHover);
-
-    // coordinate readout near reticle (HUD telemetry)
-    hctx.font = '9px "DM Mono", monospace';
-    hctx.fillStyle = 'rgba(218,166,19,0.45)';
-    hctx.fillText(`X:${Math.round(mx).toString().padStart(4,'0')}`, lx + 38, ly - 6);
-    hctx.fillText(`Y:${Math.round(my).toString().padStart(4,'0')}`, lx + 38, ly + 8);
-
     requestAnimationFrame(loop);
   }
   loop();
