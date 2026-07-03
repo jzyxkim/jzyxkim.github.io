@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" href="assets/img/logo.png"/>
 <title>Jin Ziyu — Robotics Systems</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet"/>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -565,9 +565,13 @@ body{overflow-x:hidden}
   .reveal{opacity:1;transform:none}
 }
 
+@media(max-width:960px){
+  .about-grid{grid-template-columns:1fr;gap:40px}
   .about-img-wrap{max-width:280px;margin:0 auto}
   .contact-grid{grid-template-columns:1fr;gap:40px}
 }
+@media(max-width:780px){
+  .skills-grid{grid-template-columns:repeat(2,1fr)}
   .sk-card:nth-child(3n){border-right:1px solid var(--border)}
   .sk-card:nth-child(2n){border-right:none}
   .sk-card:nth-last-child(-n+2){border-bottom:none}
@@ -578,6 +582,8 @@ body{overflow-x:hidden}
   .edu-grid{grid-template-columns:1fr}
   .exp-item{grid-template-columns:1fr;gap:8px}
 }
+@media(max-width:640px){
+  section{padding:60px 0}
   .skills-grid{grid-template-columns:1fr}
   .sk-card:nth-child(n){border-right:none}
   .sk-card:nth-last-child(-n+1){border-bottom:none}
@@ -588,6 +594,8 @@ body{overflow-x:hidden}
   .stat{padding-right:24px}
   .tab-btn{padding:0 12px;font-size:0.6rem;letter-spacing:0.05em}
 }
+@media(min-width:641px) and (max-width:900px){
+  .tab-btn{padding:0 14px;font-size:0.64rem}
 }
 @media(prefers-reduced-motion:reduce){
   .page-section,.page-section.enter-right,.page-section.enter-left{
@@ -730,147 +738,216 @@ body{overflow-x:hidden}
   .reveal,.reveal-left,.reveal-right,.stagger-children>*,.spec-grid .spec-card,.proj-list li,.obj-list li{opacity:1!important;transform:none!important}
 }
 
+/* ══════════════════════════════════════════════
+   PRELOADER — scoped variable names so nothing
+   here touches the site's own --void/--cyan/--text
+   ══════════════════════════════════════════════ */
+:root{
+  --pl-bg:#FAFAF8;
+  --pl-fg:#1C1810;
+  --pl-fg-dim:rgba(28,24,16,0.35);
+  --pl-accent:#DAA613;
+  --pl-ease:cubic-bezier(0.65,0,0.35,1);
+}
+body.preloading{ overflow:hidden; }
 
-/* ══════════════════════════════════════════════════════
-   RESPONSIVE — Phone · iPad · Laptop
-   Breakpoints:
-     phone  : ≤ 639px
-     tablet : 640px – 1023px
-     laptop : 1024px+  (default styles)
-   ══════════════════════════════════════════════════════ */
+#preloader{
+  position:fixed;inset:0;z-index:99999;
+  background:var(--pl-bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:40px;
+  transition:transform 1s var(--pl-ease);
+  font-family:var(--font-mono);
+  overflow:hidden;
+}
+#preloader.pl-fade-out{transform:translateY(-100%)}
 
-/* ── TABLET (iPad: 640–1023px) ── */
-@media(min-width:640px) and (max-width:1023px){
-  :root{ --nav-h:60px; }
-  .container{padding:0 24px}
-  .nav-inner{padding:0 24px}
-
-  /* hero */
-  .hero{padding-top:calc(var(--nav-h) + var(--tab-h) + 48px)}
-  #page-home .hero{padding-top:calc(var(--nav-h) + var(--tab-h) + 48px)}
-  .hero-name{font-size:clamp(3rem,7vw,5.5rem)}
-  .hero-stats{grid-template-columns:repeat(3,auto)}
-
-  /* about */
-  .about-grid{grid-template-columns:240px 1fr;gap:48px}
-
-  /* skills – 2 cols on tablet */
-  .skills-grid{grid-template-columns:repeat(2,1fr)}
-  .sk-card:nth-child(3n){border-right:1px solid var(--border)}
-  .sk-card:nth-child(2n){border-right:none}
-  .sk-card:nth-last-child(-n+2){border-bottom:none}
-  .sk-card:nth-last-child(3){border-bottom:1px solid var(--border)}
-
-  /* projects – 1 col on tablet */
-  .projects-grid{grid-template-columns:1fr}
-  .proj-span{grid-column:span 1}
-  .proj-span .proj-img{aspect-ratio:16/9}
-
-  /* exp – stack */
-  .exp-item{grid-template-columns:1fr;gap:12px;padding:36px 0}
-  .exp-date{margin-bottom:4px}
-
-  /* edu – 2 cols */
-  .edu-grid{grid-template-columns:repeat(2,1fr)}
-
-  /* contact */
-  .contact-grid{grid-template-columns:1fr;gap:40px}
-
-  /* resume iframe shorter */
-  .resume-frame iframe{height:500px}
-
-  /* tab bar */
-  .tab-btn{padding:0 14px;font-size:0.63rem;letter-spacing:0.06em}
-
-  /* footer */
-  .footer-inner{flex-direction:column;align-items:flex-start;gap:10px}
+/* faint diagonal geometry echoing the hero section, ties the intro to the reveal */
+.pl-geo{ position:absolute;inset:0;pointer-events:none;opacity:0;animation:plFadeIn 1.2s ease forwards .1s; }
+.pl-geo::before{
+  content:'';position:absolute;top:0;right:0;width:60%;height:100%;
+  background:linear-gradient(135deg,transparent 40%,rgba(97,61,170,0.05) 40%,rgba(97,61,170,0.05) 41%,transparent 41%),
+             linear-gradient(135deg,transparent 55%,rgba(218,166,19,0.06) 55%,rgba(218,166,19,0.06) 55.4%,transparent 55.4%);
+}
+.pl-scan{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:repeating-linear-gradient(to bottom,transparent,transparent 31px,rgba(28,24,16,0.035) 31px,rgba(28,24,16,0.035) 32px);
+  opacity:0;animation:plFadeIn 1s ease forwards .1s;
 }
 
-/* ── PHONE (≤ 639px) ── */
-@media(max-width:639px){
-  :root{ --nav-h:56px; --tab-h:44px; }
-  html{font-size:15px}
-  section{padding:52px 0}
-  .container{padding:0 18px}
-  .nav-inner{padding:0 18px}
+/* HUD corner brackets */
+.pl-corner{ position:absolute;width:22px;height:22px;opacity:0;animation:plFadeIn .5s ease forwards; }
+.pl-corner svg{width:100%;height:100%}
+.pl-corner path{ fill:none;stroke:var(--pl-accent);stroke-width:1.2 }
+.pl-corner.tl{ top:28px;left:28px;animation-delay:.15s }
+.pl-corner.tr{ top:28px;right:28px;transform:scaleX(-1);animation-delay:.22s }
+.pl-corner.bl{ bottom:28px;left:28px;transform:scaleY(-1);animation-delay:.29s }
+.pl-corner.br{ bottom:28px;right:28px;transform:scale(-1,-1);animation-delay:.36s }
 
-  /* hero */
-  #page-home .hero{padding-top:calc(var(--nav-h) + var(--tab-h) + 36px)}
-  .hero-name{font-size:clamp(2.6rem,12vw,3.6rem);line-height:0.92}
-  .hero-role{font-size:0.78rem;gap:12px}
-  .hero-role-sep{width:20px}
-  .hero-desc{font-size:0.93rem;margin-bottom:32px}
-  .hero-actions{gap:10px}
-  .hero-actions .btn{padding:11px 18px;font-size:0.7rem}
-  .hero-stats{
-    grid-template-columns:repeat(3,1fr);
-    width:100%;margin-top:48px;padding-top:28px;
-  }
-  .stat{padding:0 16px 0 0}
-  .stat+.stat{padding-left:16px}
-  .stat-n{font-size:1.8rem}
-  .stat-n span{font-size:1.3rem}
+.pl-stage{width:280px;display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
 
-  /* nav logo */
-  .nav-logo span, .nav-logo > span{display:none} /* hide "Jin Ziyu" text, keep mark */
+.pl-bar-label{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--font-mono);font-weight:300;font-size:.68rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--pl-fg-dim);
+  opacity:0;animation:plFadeIn .4s ease forwards .1s;
+}
+.pl-bar-label-l{display:flex;align-items:center;gap:9px}
+.pl-bar-dot{width:5px;height:5px;border-radius:50%;background:var(--pl-accent);animation:plPulseDot 2.2s infinite}
+@keyframes plPulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
+.pl-bar-label b{color:var(--pl-fg);font-weight:400;font-variant-numeric:tabular-nums;letter-spacing:0;text-transform:none}
 
-  /* about */
-  .about-grid{grid-template-columns:1fr;gap:32px}
-  .about-img-wrap{max-width:220px;margin:0 auto}
-  .about-content h2{font-size:1.35rem}
-
-  /* skills – 1 col */
-  .skills-grid{grid-template-columns:1fr}
-  .sk-card:nth-child(n){border-right:none}
-  .sk-card:nth-last-child(1){border-bottom:none}
-  .sk-card{padding:26px 22px}
-
-  /* exp */
-  .exp-item{grid-template-columns:1fr;gap:10px;padding:28px 0}
-  .exp-body h3{font-size:1rem}
-
-  /* projects – 1 col */
-  .projects-grid{grid-template-columns:1fr}
-  .proj-span{grid-column:span 1}
-  .proj-span .proj-img{aspect-ratio:16/9}
-  .proj-body{padding:20px 20px}
-  .proj-body h3{font-size:0.95rem}
-
-  /* edu – 1 col */
-  .edu-grid{grid-template-columns:1fr}
-  .edu-card{padding:28px 22px}
-
-  /* contact */
-  .contact-grid{grid-template-columns:1fr;gap:32px}
-  .contact-info h2{font-size:clamp(1.6rem,6vw,2rem)}
-  .fg input,.fg textarea{font-size:0.88rem;padding:11px 14px}
-
-  /* resume */
-  .resume-frame iframe{height:400px}
-
-  /* tab bar */
-  .tab-btn{padding:0 10px;font-size:0.58rem;letter-spacing:0.04em}
-  .tab-bar{justify-content:flex-start}
-
-  /* section titles */
-  .sec-title{font-size:clamp(1.6rem,6vw,2.2rem);margin-bottom:40px}
-  .sec-label{font-size:0.62rem}
-
-  /* footer */
-  .footer-inner{flex-direction:column;align-items:flex-start;gap:8px;padding:0 18px}
-  .footer-links{gap:14px}
+.pl-track-wrap{ position:relative; height:36px; }
+.pl-track{
+  position:absolute;bottom:0;left:0;width:100%;height:2px;background:rgba(28,24,16,0.10);
+  opacity:0;animation:plFadeIn .4s ease forwards .2s;
+  overflow:visible;
+}
+.pl-tick{ position:absolute;bottom:-3px;width:1px;height:8px;background:rgba(28,24,16,0.14); }
+.pl-fill{
+  position:absolute;top:0;left:0;height:100%;width:0%;
+  background:var(--pl-accent);
+  box-shadow:0 0 8px 0 var(--pl-accent);
+}
+.pl-track.pl-done{ animation:plTrackPulse .5s var(--pl-ease) forwards; }
+@keyframes plTrackPulse{
+  0%{ box-shadow:0 0 0 0 rgba(218,166,19,0); }
+  40%{ box-shadow:0 0 14px 2px rgba(218,166,19,0.55); }
+  100%{ box-shadow:0 0 0 0 rgba(218,166,19,0); }
 }
 
-/* ── DISABLE CUSTOM CURSOR ON TOUCH / MOBILE ── */
-@media(hover:none),(pointer:coarse){
-  * { cursor: auto !important; }
-  #hud-canvas { display:none !important; }
-  #hud-tag { display:none !important; }
+.pl-walker{
+  position:absolute;bottom:2px;left:0%;
+  width:22px;height:34px;
+  transform:translate(-50%,0);
+  opacity:0;animation:plFadeIn .3s ease forwards .3s;
+  transition:left .08s linear;
 }
+.pl-walker svg{width:100%;height:100%;overflow:visible}
+.wk-part{fill:none;stroke:var(--pl-fg);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.wk-light{fill:var(--pl-accent)}
 
+.wk-legL,.wk-legR{transform-box:fill-box;transform-origin:top center;animation:walkStep .38s linear infinite}
+.wk-legR{animation-delay:.19s}
+.wk-armL,.wk-armR{transform-box:fill-box;transform-origin:top center;animation:armSwing .38s linear infinite}
+.wk-armR{animation-delay:.19s}
+@keyframes walkStep{ 0%,100%{transform:rotate(24deg)} 50%{transform:rotate(-24deg)} }
+@keyframes armSwing{ 0%,100%{transform:rotate(-18deg)} 50%{transform:rotate(18deg)} }
+.wk-body{transform-box:fill-box;transform-origin:center;animation:walkBob .19s ease-in-out infinite alternate}
+@keyframes walkBob{ 0%{transform:translateY(0)} 100%{transform:translateY(-1.5px)} }
+
+.pl-walker.pl-arrived .wk-legL,.pl-walker.pl-arrived .wk-legR,
+.pl-walker.pl-arrived .wk-armL,.pl-walker.pl-arrived .wk-armR{ animation-play-state:paused; transform:rotate(0deg); }
+.pl-walker.pl-arrived .wk-body{ animation:plBreathe 2.2s ease-in-out infinite; }
+@keyframes plBreathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+.pl-walker.pl-arrived{ transition:left .3s var(--pl-ease); }
+
+.pl-sig-row{display:flex;align-items:baseline;gap:18px}
+.pl-bracket{
+  font-family:var(--font-mono);font-weight:300;font-size:1.4rem;
+  color:var(--pl-fg-dim);opacity:0;
+  animation:plBracketIn .4s var(--pl-ease) forwards 1.9s;
+}
+.pl-bracket.r{animation-name:plBracketInR;animation-delay:2.05s}
+@keyframes plBracketIn{0%{opacity:0;transform:translateX(6px)}100%{opacity:1;transform:translateX(0)}}
+@keyframes plBracketInR{0%{opacity:0;transform:translateX(-6px)}100%{opacity:1;transform:translateX(0)}}
+
+.pl-sig-wrap{overflow:hidden;position:relative}
+.pl-sig{
+  font-family:'Caveat',cursive;font-weight:700;
+  font-size:clamp(2.6rem,6.5vw,4.2rem);
+  color:var(--pl-fg);line-height:1;
+  clip-path:inset(0 100% 0 0);
+  animation:plSigWipe 1s var(--pl-ease) forwards 2.2s;
+  transform:rotate(-1.5deg);
+}
+@keyframes plSigWipe{to{clip-path:inset(0 0% 0 0)}}
+
+.pl-underline{
+  height:1px;width:0%;background:var(--pl-accent);margin-top:2px;
+  animation:plUnderline .5s var(--pl-ease) forwards 3.15s;
+}
+@keyframes plUnderline{to{width:100%}}
+
+.pl-role-tag{
+  font-family:var(--font-mono);font-weight:300;font-size:.64rem;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--pl-fg-dim);
+  text-align:center;margin-top:4px;
+  opacity:0;animation:plFadeIn .5s ease forwards 3.3s;
+}
+@keyframes plFadeIn{to{opacity:1}}
+
+.pl-index{
+  position:absolute;top:40px;left:44px;z-index:2;
+  font-family:var(--font-mono);font-weight:300;font-size:.66rem;
+  color:var(--pl-fg-dim);letter-spacing:.1em;opacity:0;
+  animation:plFadeIn .4s ease forwards .3s;
+  transition:opacity .5s ease;
+  display:flex;align-items:center;gap:8px;
+}
+.pl-index::before{ content:'';width:5px;height:5px;background:var(--pl-accent);opacity:.6 }
+.pl-index.pl-done{ opacity:0 !important; }
+
+@media (max-width:520px){
+  .pl-stage{width:80vw;max-width:280px}
+  .pl-index{top:24px;left:24px}
+}
 </style>
 </head>
-<body>
+<body class="preloading">
+<div id="preloader">
+  <div class="pl-geo" aria-hidden="true"></div>
+  <div class="pl-scan" aria-hidden="true"></div>
+
+  <div class="pl-corner tl" aria-hidden="true"><svg viewBox="0 0 22 22"><path d="M0,8 L0,0 L8,0"/></svg></div>
+  <div class="pl-corner tr" aria-hidden="true"><svg viewBox="0 0 22 22"><path d="M0,8 L0,0 L8,0"/></svg></div>
+  <div class="pl-corner bl" aria-hidden="true"><svg viewBox="0 0 22 22"><path d="M0,8 L0,0 L8,0"/></svg></div>
+  <div class="pl-corner br" aria-hidden="true"><svg viewBox="0 0 22 22"><path d="M0,8 L0,0 L8,0"/></svg></div>
+
+  <div class="pl-index">01 / 01</div>
+
+  <div class="pl-stage">
+    <div class="pl-bar-label">
+      <span class="pl-bar-label-l"><span class="pl-bar-dot"></span>Initializing System</span>
+      <span><b id="plPctNum">00</b>%</span>
+    </div>
+    <div class="pl-track-wrap">
+      <div class="pl-walker" id="plWalker">
+        <svg viewBox="0 0 22 34">
+          <line class="wk-part wk-armL" x1="8" y1="14" x2="4" y2="22"/>
+          <line class="wk-part wk-armR" x1="14" y1="14" x2="18" y2="22"/>
+          <g class="wk-body">
+            <circle class="wk-part" cx="11" cy="7" r="5"/>
+            <circle class="wk-light" cx="9" cy="7" r="1"/>
+            <circle class="wk-light" cx="13" cy="7" r="1"/>
+            <line class="wk-part" x1="11" y1="12" x2="11" y2="14"/>
+            <rect class="wk-part" x="6" y="14" width="10" height="10" rx="2"/>
+            <circle class="wk-light" cx="11" cy="19" r="1.4"/>
+          </g>
+          <line class="wk-part wk-legL" x1="9" y1="24" x2="7" y2="33"/>
+          <line class="wk-part wk-legR" x1="13" y1="24" x2="15" y2="33"/>
+        </svg>
+      </div>
+      <div class="pl-track" id="plTrack">
+        <div class="pl-tick" style="left:25%"></div>
+        <div class="pl-tick" style="left:50%"></div>
+        <div class="pl-tick" style="left:75%"></div>
+        <div class="pl-fill" id="plFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="pl-sig-row">
+      <div class="pl-bracket l">&lt;</div>
+      <div class="pl-sig-wrap"><div class="pl-sig">Jin Ziyu</div></div>
+      <div class="pl-bracket r">/&gt;</div>
+    </div>
+    <div class="pl-underline"></div>
+    <div class="pl-role-tag">Robotics Systems</div>
+  </div>
+</div>
+
 <canvas id="hud-canvas" aria-hidden="true"></canvas>
 <div id="hud-tag" aria-hidden="true"></div>
 
@@ -1802,6 +1879,59 @@ if (resumeIframe) {
   document.head.appendChild(style);
 })();
 
+</script>
+<script>
+/* ── PRELOADER ── */
+(function(){
+  const pl = document.getElementById('preloader');
+  if(!pl) return;
+  const track = document.getElementById('plTrack');
+  const fill = document.getElementById('plFill');
+  const walker = document.getElementById('plWalker');
+  const pctNum = document.getElementById('plPctNum');
+  const indexLabel = pl.querySelector('.pl-index');
+  let pctTimer = null;
+
+  const FILL_DONE_AT = 1300; // ms — bar reaches 100%
+  const HOLD_UNTIL = 3900;   // ms — when the slide-up starts
+
+  function runFill(){
+    clearInterval(pctTimer);
+    let n = 0;
+    const steps = Math.round(FILL_DONE_AT / 80);
+    const perStep = 100 / steps;
+    pctNum.textContent = '00';
+    fill.style.width = '0%';
+    walker.style.left = '0%';
+    pctTimer = setInterval(() => {
+      n += perStep * (0.6 + Math.random()*0.8);
+      if(n >= 100){ n = 100; clearInterval(pctTimer); }
+      pctNum.textContent = String(Math.round(n)).padStart(2,'0');
+      fill.style.width = n + '%';
+      walker.style.left = n + '%';
+    }, 80);
+  }
+
+  function runIntro(){
+    document.body.classList.add('preloading');
+    pl.classList.remove('pl-fade-out');
+    track.classList.remove('pl-done');
+    walker.classList.remove('pl-arrived');
+    indexLabel.classList.remove('pl-done');
+    runFill();
+    setTimeout(()=> { track.classList.add('pl-done'); walker.classList.add('pl-arrived'); }, FILL_DONE_AT);
+    setTimeout(()=> indexLabel.classList.add('pl-done'), FILL_DONE_AT + 250);
+    setTimeout(()=> {
+      pl.classList.add('pl-fade-out');
+      // unlock page scroll once the preloader is on its way out
+      document.body.classList.remove('preloading');
+    }, HOLD_UNTIL);
+    // fully remove from the DOM after the slide-up transition finishes
+    setTimeout(()=> { pl.style.display = 'none'; }, HOLD_UNTIL + 1000);
+  }
+
+  document.addEventListener('DOMContentLoaded', runIntro);
+})();
 </script>
 </body>
 </html>
